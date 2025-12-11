@@ -1,4 +1,4 @@
-version: "3"
+#version: "3"
 
 services:
   #  rabbitmq:
@@ -236,14 +236,14 @@ services:
       networks:
           - my-network
 
-  ts-ticketinfo-service:
-        build: ts-ticketinfo-service
-        image: ${IMG_REPO}/ts-ticketinfo-service:${IMG_TAG}
-        restart: always
-        ports:
-          - 15681:15681
-        networks:
-          - my-network
+  #ts-ticketinfo-service:
+  #      build: ts-ticketinfo-service
+  #      image: ${IMG_REPO}/ts-ticketinfo-service:${IMG_TAG}
+  #      restart: always
+  #      ports:
+  #        - 15681:15681
+  #      networks:
+  #       - my-network
 
   ts-price-service:
         build: ts-price-service
@@ -348,7 +348,7 @@ services:
         image: ${IMG_REPO}/ts-assurance-service:${IMG_TAG}
         restart: always
         ports:
-          - 18888:18888
+          - 18889:18889
         networks:
           - my-network
 
@@ -425,14 +425,14 @@ services:
           networks:
             - my-network
 
-  ts-food-map-service:
-        build: ts-food-map-service
-        image: ${IMG_REPO}/ts-food-map-service:${IMG_TAG}
-        restart: always
-        ports:
-          - 18855:18855
-        networks:
-          - my-network
+  #ts-food-map-service:
+  #      build: ts-food-map-service
+  #      image: ${IMG_REPO}/ts-food-map-service:${IMG_TAG}
+  #      restart: always
+  #      ports:
+  #        - 18855:18855
+  #      networks:
+  #        - my-network
 
   ts-food-map-mongo:
     image: mongo
@@ -548,10 +548,50 @@ services:
       - my-network
 
   ts-avatar-service:
-    image: ${NAMESPACE}/ts-avatar-service:${TAG}
+    build: ts-avatar-service
+    image: ${IMG_REPO}/ts-avatar-service:${IMG_TAG}
     restart: always
     ports:
       - 17001:17001
+    networks:
+      - my-network
+
+  ts-gateway-service:
+    image: ${IMG_REPO}/ts-gateway-service:${TAG}
+    restart: always
+    ports:
+      - 18888:18888
+    networks:
+      - my-network
+
+  ts-gateway-mongo:
+    image: mongo
+    networks:
+      - my-network
+  
+  ts-food-delivery-service:
+    image: ${IMG_REPO}/ts-food-delivery-service:${TAG}
+    restart: always
+    ports:
+      - 18957:18957
+    networks:
+      - my-network
+
+  ts-food-delivery-mongo:
+    image: mongo
+    networks:
+      - my-network
+
+  ts-train-food-service:
+    image: ${IMG_REPO}/ts-train-food-service:${TAG}
+    restart: always
+    ports:
+      - 19999:19999
+    networks:
+      - my-network
+
+  ts-train-food-mongo:
+    image: mongo
     networks:
       - my-network
 
