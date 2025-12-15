@@ -557,6 +557,7 @@ services:
       - my-network
 
   ts-gateway-service:
+    build: ts-gateway-service
     image: ${IMG_REPO}/ts-gateway-service:${TAG}
     restart: always
     ports:
@@ -570,6 +571,7 @@ services:
       - my-network
   
   ts-food-delivery-service:
+    build: ts-food-delivery-service
     image: ${IMG_REPO}/ts-food-delivery-service:${TAG}
     restart: always
     ports:
@@ -583,6 +585,7 @@ services:
       - my-network
 
   ts-train-food-service:
+    build: ts-train-food-service
     image: ${IMG_REPO}/ts-train-food-service:${TAG}
     restart: always
     ports:
