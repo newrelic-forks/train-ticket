@@ -1,8 +1,8 @@
 # Codewisdom Train-Ticket system
 
-Repo=codewisdom
+Repo=test-store
 Tag=latest
-Namespace="default"
+Namespace="test-store"
 DeployArgs=""
 
 
