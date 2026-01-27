@@ -34,7 +34,7 @@ services:
 
   ts-ui-dashboard:
     build: ts-ui-dashboard
-    image: ${IMG_REPO}/ts-ui-dashboard:${IMG_TAG}
+    image: ${IMG_REPO}:ts-ui-dashboard-${IMG_TAG}
     restart: always
     ports:
       - 8080:8080
@@ -43,7 +43,7 @@ services:
 
   ts-auth-service:
     build: ts-auth-service
-    image: ${IMG_REPO}/ts-auth-service:${IMG_TAG}
+    image: ${IMG_REPO}:ts-auth-service-${IMG_TAG}
     restart: always
     ports:
       - 12340:12340
@@ -57,7 +57,7 @@ services:
 
   ts-user-service:
     build: ts-user-service
-    image: ${IMG_REPO}/ts-user-service:${IMG_TAG}
+    image: ${IMG_REPO}:ts-user-service-${IMG_TAG}
     restart: always
     ports:
       - 12342:12342
@@ -71,7 +71,7 @@ services:
 
   ts-verification-code-service:
     build: ts-verification-code-service
-    image: ${IMG_REPO}/ts-verification-code-service:${IMG_TAG}
+    image: ${IMG_REPO}:ts-verification-code-service-${IMG_TAG}
     restart: always
     ports:
       - 15678:15678
@@ -85,7 +85,7 @@ services:
 
   ts-route-service:
     build: ts-route-service
-    image: ${IMG_REPO}/ts-route-service:${IMG_TAG}
+    image: ${IMG_REPO}:ts-route-service-${IMG_TAG}
     restart: always
     ports:
       - 11178:11178
@@ -99,7 +99,7 @@ services:
 
   ts-contacts-service:
     build: ts-contacts-service
-    image: ${IMG_REPO}/ts-contacts-service:${IMG_TAG}
+    image: ${IMG_REPO}:ts-contacts-service-${IMG_TAG}
     restart: always
     ports:
       - 12347:12347
@@ -113,7 +113,7 @@ services:
 
   ts-order-service:
     build: ts-order-service
-    image: ${IMG_REPO}/ts-order-service:${IMG_TAG}
+    image: ${IMG_REPO}:ts-order-service-${IMG_TAG}
     restart: always
     ports:
       - 12031:12031
@@ -127,7 +127,7 @@ services:
 
   ts-order-other-service:
     build: ts-order-other-service
-    image: ${IMG_REPO}/ts-order-other-service:${IMG_TAG}
+    image: ${IMG_REPO}:ts-order-other-service-${IMG_TAG}
     restart: always
     ports:
       - 12032:12032
@@ -141,7 +141,7 @@ services:
 
   ts-config-service:
     build: ts-config-service
-    image: ${IMG_REPO}/ts-config-service:${IMG_TAG}
+    image: ${IMG_REPO}:ts-config-service-${IMG_TAG}
     restart: always
     ports:
       - 15679:15679
@@ -155,7 +155,7 @@ services:
 
   ts-station-service:
     build: ts-station-service
-    image: ${IMG_REPO}/ts-station-service:${IMG_TAG}
+    image: ${IMG_REPO}:ts-station-service-${IMG_TAG}
     restart: always
     ports:
       - 12345:12345
@@ -169,7 +169,7 @@ services:
 
   ts-train-service:
     build: ts-train-service
-    image: ${IMG_REPO}/ts-train-service:${IMG_TAG}
+    image: ${IMG_REPO}:ts-train-service-${IMG_TAG}
     restart: always
     ports:
       - 14567:14567
@@ -183,7 +183,7 @@ services:
 
   ts-travel-service:
     build: ts-travel-service
-    image: ${IMG_REPO}/ts-travel-service:${IMG_TAG}
+    image: ${IMG_REPO}:ts-travel-service-${IMG_TAG}
     restart: always
     ports:
       - 12346:12346
@@ -197,7 +197,7 @@ services:
 
   ts-travel2-service:
       build: ts-travel2-service
-      image: ${IMG_REPO}/ts-travel2-service:${IMG_TAG}
+      image: ${IMG_REPO}:ts-travel2-service-${IMG_TAG}
       restart: always
       ports:
         - 16346:16346
@@ -211,7 +211,7 @@ services:
 
   ts-preserve-service:
     build: ts-preserve-service
-    image: ${IMG_REPO}/ts-preserve-service:${IMG_TAG}
+    image: ${IMG_REPO}:ts-preserve-service-${IMG_TAG}
     restart: always
     ports:
       - 14568:14568
@@ -220,7 +220,7 @@ services:
 
   ts-preserve-other-service:
     build: ts-preserve-other-service
-    image: ${IMG_REPO}/ts-preserve-other-service:${IMG_TAG}
+    image: ${IMG_REPO}:ts-preserve-other-service-${IMG_TAG}
     restart: always
     ports:
       - 14569:14569
@@ -229,7 +229,7 @@ services:
 
   ts-basic-service:
       build: ts-basic-service
-      image: ${IMG_REPO}/ts-basic-service:${IMG_TAG}
+      image: ${IMG_REPO}:ts-basic-service-${IMG_TAG}
       restart: always
       ports:
         - 15680:15680
@@ -247,7 +247,7 @@ services:
 
   ts-price-service:
         build: ts-price-service
-        image: ${IMG_REPO}/ts-price-service:${IMG_TAG}
+        image: ${IMG_REPO}:ts-price-service-${IMG_TAG}
         restart: always
         ports:
           - 16579:16579
@@ -262,7 +262,7 @@ services:
 
   ts-notification-service:
         build: ts-notification-service
-        image: ${IMG_REPO}/ts-notification-service:${IMG_TAG}
+        image: ${IMG_REPO}:ts-notification-service-${IMG_TAG}
         restart: always
         ports:
           - 17853:17853
@@ -271,7 +271,7 @@ services:
 
   ts-security-service:
         build: ts-security-service
-        image: ${IMG_REPO}/ts-security-service:${IMG_TAG}
+        image: ${IMG_REPO}:ts-security-service-${IMG_TAG}
         restart: always
         ports:
           - 11188:11188
@@ -285,7 +285,7 @@ services:
 
   ts-inside-payment-service:
         build: ts-inside-payment-service
-        image: ${IMG_REPO}/ts-inside-payment-service:${IMG_TAG}
+        image: ${IMG_REPO}:ts-inside-payment-service-${IMG_TAG}
         restart: always
         ports:
           - 18673:18673
@@ -299,7 +299,7 @@ services:
 
   ts-execute-service:
         build: ts-execute-service
-        image: ${IMG_REPO}/ts-execute-service:${IMG_TAG}
+        image: ${IMG_REPO}:ts-execute-service-${IMG_TAG}
         restart: always
         ports:
           - 12386:12386
@@ -308,7 +308,7 @@ services:
 
   ts-payment-service:
         build: ts-payment-service
-        image: ${IMG_REPO}/ts-payment-service:${IMG_TAG}
+        image: ${IMG_REPO}:ts-payment-service-${IMG_TAG}
         restart: always
         ports:
           - 19001:19001
@@ -322,7 +322,7 @@ services:
 
   ts-rebook-service:
         build: ts-rebook-service
-        image: ${IMG_REPO}/ts-rebook-service:${IMG_TAG}
+        image: ${IMG_REPO}:ts-rebook-service-${IMG_TAG}
         restart: always
         ports:
           - 18886:18886
@@ -336,7 +336,7 @@ services:
 
   ts-cancel-service:
         build: ts-cancel-service
-        image: ${IMG_REPO}/ts-cancel-service:${IMG_TAG}
+        image: ${IMG_REPO}:ts-cancel-service-${IMG_TAG}
         restart: always
         ports:
           - 18885:18885
@@ -345,7 +345,7 @@ services:
 
   ts-assurance-service:
         build: ts-assurance-service
-        image: ${IMG_REPO}/ts-assurance-service:${IMG_TAG}
+        image: ${IMG_REPO}:ts-assurance-service-${IMG_TAG}
         restart: always
         ports:
           - 18889:18889
@@ -359,7 +359,7 @@ services:
 
   ts-seat-service:
         build: ts-seat-service
-        image: ${IMG_REPO}/ts-seat-service:${IMG_TAG}
+        image: ${IMG_REPO}:ts-seat-service-${IMG_TAG}
         restart: always
         ports:
           - 18898:18898
@@ -368,7 +368,7 @@ services:
 
   ts-travel-plan-service:
         build: ts-travel-plan-service
-        image: ${IMG_REPO}/ts-travel-plan-service:${IMG_TAG}
+        image: ${IMG_REPO}:ts-travel-plan-service-${IMG_TAG}
         restart: always
         ports:
           - 14322:14322
@@ -377,7 +377,7 @@ services:
 
   ts-ticket-office-service:
         build: ts-ticket-office-service
-        image: ${IMG_REPO}/ts-ticket-office-service:${IMG_TAG}
+        image: ${IMG_REPO}:ts-ticket-office-service-${IMG_TAG}
         restart: always
         ports:
           - 16108:16108
@@ -391,7 +391,7 @@ services:
 
   ts-news-service:
     build: ts-news-service
-    image: ${IMG_REPO}/ts-news-service:${IMG_TAG}
+    image: ${IMG_REPO}:ts-news-service-${IMG_TAG}
     restart: always
     ports:
       - 12862:12862
@@ -414,7 +414,7 @@ services:
 
   ts-voucher-service:
           build: ts-voucher-service
-          image: ${IMG_REPO}/ts-voucher-service:${IMG_TAG}
+          image: ${IMG_REPO}:ts-voucher-service-${IMG_TAG}
           restart: always
           ports:
             - 16101:16101
@@ -441,7 +441,7 @@ services:
 
   ts-route-plan-service:
           build: ts-route-plan-service
-          image: ${IMG_REPO}/ts-route-plan-service:${IMG_TAG}
+          image: ${IMG_REPO}:ts-route-plan-service-${IMG_TAG}
           restart: always
           ports:
             - 14578:14578
@@ -450,7 +450,7 @@ services:
 
   ts-food-service:
       build: ts-food-service
-      image: ${IMG_REPO}/ts-food-service:${IMG_TAG}
+      image: ${IMG_REPO}:ts-food-service-${IMG_TAG}
       restart: always
       ports:
         - 18856:18856
@@ -459,7 +459,7 @@ services:
 
   ts-consign-service:
             build: ts-consign-service
-            image: ${IMG_REPO}/ts-consign-service:${IMG_TAG}
+            image: ${IMG_REPO}:ts-consign-service-${IMG_TAG}
             restart: always
             ports:
               - 16111:16111
@@ -473,7 +473,7 @@ services:
 
   ts-consign-price-service:
             build: ts-consign-price-service
-            image: ${IMG_REPO}/ts-consign-price-service:${IMG_TAG}
+            image: ${IMG_REPO}:ts-consign-price-service-${IMG_TAG}
             restart: always
             ports:
               - 16110:16110
@@ -492,7 +492,7 @@ services:
 
   ts-admin-basic-info-service:
         build: ts-admin-basic-info-service
-        image: ${IMG_REPO}/ts-admin-basic-info-service:${IMG_TAG}
+        image: ${IMG_REPO}:ts-admin-basic-info-service-${IMG_TAG}
         restart: always
         ports:
           - 18767:18767
@@ -501,7 +501,7 @@ services:
 
   ts-admin-order-service:
             build: ts-admin-order-service
-            image: ${IMG_REPO}/ts-admin-order-service:${IMG_TAG}
+            image: ${IMG_REPO}:ts-admin-order-service-${IMG_TAG}
             restart: always
             ports:
               - 16112:16112
@@ -510,7 +510,7 @@ services:
 
   ts-admin-route-service:
               build: ts-admin-route-service
-              image: ${IMG_REPO}/ts-admin-route-service:${IMG_TAG}
+              image: ${IMG_REPO}:ts-admin-route-service-${IMG_TAG}
               restart: always
               ports:
                 - 16113:16113
@@ -523,7 +523,7 @@ services:
 
   ts-admin-travel-service:
                 build: ts-admin-travel-service
-                image: ${IMG_REPO}/ts-admin-travel-service:${IMG_TAG}
+                image: ${IMG_REPO}:ts-admin-travel-service-${IMG_TAG}
                 restart: always
                 ports:
                   - 16114:16114
@@ -536,7 +536,7 @@ services:
 
   ts-admin-user-service:
     build: ts-admin-user-service
-    image: ${IMG_REPO}/ts-admin-user-service:${IMG_TAG}
+    image: ${IMG_REPO}:ts-admin-user-service-${IMG_TAG}
     restart: always
     ports:
       - 16115:16115
@@ -549,7 +549,7 @@ services:
 
   ts-avatar-service:
     build: ts-avatar-service
-    image: ${IMG_REPO}/ts-avatar-service:${IMG_TAG}
+    image: ${IMG_REPO}:ts-avatar-service-${IMG_TAG}
     restart: always
     ports:
       - 17001:17001
@@ -558,7 +558,7 @@ services:
 
   ts-gateway-service:
     build: ts-gateway-service
-    image: ${IMG_REPO}/ts-gateway-service:${TAG}
+    image: ${IMG_REPO}:ts-gateway-service-${IMG_TAG}
     restart: always
     ports:
       - 18888:18888
@@ -572,7 +572,7 @@ services:
   
   ts-food-delivery-service:
     build: ts-food-delivery-service
-    image: ${IMG_REPO}/ts-food-delivery-service:${TAG}
+    image: ${IMG_REPO}:ts-food-delivery-service-${IMG_TAG}
     restart: always
     ports:
       - 18957:18957
@@ -586,7 +586,7 @@ services:
 
   ts-train-food-service:
     build: ts-train-food-service
-    image: ${IMG_REPO}/ts-train-food-service:${TAG}
+    image: ${IMG_REPO}:ts-train-food-service-${IMG_TAG}
     restart: always
     ports:
       - 19999:19999
