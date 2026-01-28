@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-user-mongo
 spec:
   selector:
@@ -16,28 +17,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-user-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+      volumes:
+      - name: mongo-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-auth-mongo
 spec:
   selector:
@@ -53,28 +58,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-auth-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-route-mongo
 spec:
   selector:
@@ -90,28 +99,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-route-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-contacts-mongo
 spec:
   selector:
@@ -127,28 +140,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-contacts-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-order-mongo
 spec:
   selector:
@@ -164,28 +181,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-order-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-order-other-mongo
 spec:
   selector:
@@ -201,28 +222,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-order-other-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-config-mongo
 spec:
   selector:
@@ -238,28 +263,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-config-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-station-mongo
 spec:
   selector:
@@ -275,28 +304,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-station-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-train-mongo
 spec:
   selector:
@@ -312,28 +345,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-train-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-travel-mongo
 spec:
   selector:
@@ -349,28 +386,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-travel-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-travel2-mongo
 spec:
   selector:
@@ -386,28 +427,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-travel2-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-price-mongo
 spec:
   selector:
@@ -423,28 +468,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-price-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-security-mongo
 spec:
   selector:
@@ -460,28 +509,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-security-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-inside-payment-mongo
 spec:
   selector:
@@ -497,28 +550,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-inside-payment-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-payment-mongo
 spec:
   selector:
@@ -534,28 +591,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-payment-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-assurance-mongo
 spec:
   selector:
@@ -571,28 +632,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-assurance-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-ticket-office-mongo
 spec:
   selector:
@@ -608,28 +673,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-ticket-office-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-voucher-mysql
 spec:
   selector:
@@ -645,18 +714,16 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node4
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node4
       containers:
       - name: ts-voucher-mysql
         image: mysql:5.6.35
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         env:
-        # Use secret in real usage
         - name: MYSQL_ROOT_PASSWORD
           value: root
         ports:
@@ -665,12 +732,17 @@ spec:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-food-map-mongo
 spec:
   selector:
@@ -686,28 +758,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-food-map-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-consign-mongo
 spec:
   selector:
@@ -723,28 +799,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-consign-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-consign-price-mongo
 spec:
   selector:
@@ -760,28 +840,32 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-consign-price-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-food-mongo
 spec:
   selector:
@@ -797,283 +881,266 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node1
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
       containers:
       - name: ts-food-mongo
         image: mongo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         ports:
         - containerPort: 27017
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
-
+        volumeMounts:
+        - name: db-data
+          mountPath: /data/db
+      volumes:
+      - name: db-data
+        emptyDir: {}
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
-  name: ts-user-mongo 
+  namespace: store
+  name: ts-user-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-user-mongo 
-
+    app: ts-user-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-auth-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-auth-mongo
-
+    app: ts-auth-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-route-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-route-mongo
-
+    app: ts-route-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-contacts-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-contacts-mongo
-
+    app: ts-contacts-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-order-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-order-mongo
-
+    app: ts-order-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-order-other-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-order-other-mongo
-
+    app: ts-order-other-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-config-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-config-mongo
-
+    app: ts-config-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-station-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-station-mongo
-
+    app: ts-station-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-train-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-train-mongo
-
+    app: ts-train-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-travel-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-travel-mongo
-
+    app: ts-travel-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-travel2-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-travel2-mongo
-
+    app: ts-travel2-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-price-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-price-mongo
-
+    app: ts-price-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-security-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-security-mongo
-
+    app: ts-security-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-inside-payment-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-inside-payment-mongo
-
+    app: ts-inside-payment-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-payment-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-payment-mongo
-
+    app: ts-payment-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-assurance-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-assurance-mongo
-
+    app: ts-assurance-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-ticket-office-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-ticket-office-mongo
-
+    app: ts-ticket-office-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-voucher-mysql
 spec:
   ports:
-    - port: 3306
+  - port: 3306
   selector:
-   app: ts-voucher-mysql
-
+    app: ts-voucher-mysql
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-food-map-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-food-map-mongo
-
+    app: ts-food-map-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-consign-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-consign-mongo
-
+    app: ts-consign-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-consign-price-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-consign-price-mongo
-
+    app: ts-consign-price-mongo
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-food-mongo
 spec:
   ports:
-    - port: 27017
+  - port: 27017
   selector:
-   app: ts-food-mongo
+    app: ts-food-mongo

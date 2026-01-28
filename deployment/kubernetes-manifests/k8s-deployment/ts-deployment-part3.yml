@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-ui-dashboard
 spec:
   selector:
@@ -16,12 +17,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node4
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node4
       containers:
       - name: ts-ui-dashboard
         image: newrelic/train-ticket:ts-ui-dashboard-0.0.4
@@ -35,20 +35,19 @@ spec:
           limits:
             cpu: 500m
             memory: 500Mi
-
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-ui-dashboard
 spec:
   type: NodePort
   ports:
-    - name: http
-      port: 8080
-      nodePort: 32677
+  - name: http
+    port: 8080
+    nodePort: 32677
   selector:
-   app: ts-ui-dashboard
-
+    app: ts-ui-dashboard
 ---
+
