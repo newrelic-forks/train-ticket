@@ -12,6 +12,7 @@
 #     app: rest-service-collect
 # ---
 
+
 # apiVersion: extensions/v1beta1
 # kind: Deployment
 # metadata:
@@ -28,7 +29,7 @@
 #       containers:
 #       - name: rest-service-collect
 #         image: header/rest-service-collect
-#         imagePullPolicy: IfNotPresent
+#         imagePullPolicy: Always
 #         ports:
 #         - containerPort: 9413
 #         volumeMounts:
@@ -40,10 +41,10 @@
 #           path: /home/parquet
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-admin-basic-info-service
 spec:
   selector:
@@ -59,12 +60,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node2
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node2
       containers:
       - name: ts-admin-basic-info-service
         image: newrelic/train-ticket:ts-admin-basic-info-service-0.0.4
@@ -83,13 +83,12 @@ spec:
             port: 18767
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5   
-
+          timeoutSeconds: 5
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-admin-order-service
 spec:
   selector:
@@ -105,12 +104,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node3
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
       containers:
       - name: ts-admin-order-service
         image: newrelic/train-ticket:ts-admin-order-service-0.0.4
@@ -130,12 +128,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-admin-route-service
 spec:
   selector:
@@ -151,12 +148,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node4
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node4
       containers:
       - name: ts-admin-route-service
         image: newrelic/train-ticket:ts-admin-route-service-0.0.4
@@ -176,12 +172,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-admin-travel-service
 spec:
   selector:
@@ -197,12 +192,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node2
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node2
       containers:
       - name: ts-admin-travel-service
         image: newrelic/train-ticket:ts-admin-travel-service-0.0.4
@@ -222,12 +216,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-admin-user-service
 spec:
   selector:
@@ -243,12 +236,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node3
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
       containers:
       - name: ts-admin-user-service
         image: newrelic/train-ticket:ts-admin-user-service-0.0.4
@@ -268,12 +260,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-assurance-service
 spec:
   selector:
@@ -289,12 +280,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node4
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node4
       containers:
       - name: ts-assurance-service
         image: newrelic/train-ticket:ts-assurance-service-0.0.4
@@ -314,12 +304,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-basic-service
 spec:
   selector:
@@ -335,12 +324,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node2
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node2
       containers:
       - name: ts-basic-service
         image: newrelic/train-ticket:ts-basic-service-0.0.4
@@ -360,12 +348,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-cancel-service
 spec:
   selector:
@@ -381,12 +368,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node3
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
       containers:
       - name: ts-cancel-service
         image: newrelic/train-ticket:ts-cancel-service-0.0.4
@@ -406,12 +392,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-config-service
 spec:
   selector:
@@ -427,12 +412,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node4
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node4
       containers:
       - name: ts-config-service
         image: newrelic/train-ticket:ts-config-service-0.0.4
@@ -452,12 +436,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-consign-price-service
 spec:
   selector:
@@ -473,12 +456,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node2
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node2
       containers:
       - name: ts-consign-price-service
         image: newrelic/train-ticket:ts-consign-price-service-0.0.4
@@ -498,12 +480,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-consign-service
 spec:
   selector:
@@ -519,12 +500,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node3
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
       containers:
       - name: ts-consign-service
         image: newrelic/train-ticket:ts-consign-service-0.0.4
@@ -544,12 +524,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-contacts-service
 spec:
   selector:
@@ -565,12 +544,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node4
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node4
       containers:
       - name: ts-contacts-service
         image: newrelic/train-ticket:ts-contacts-service-0.0.4
@@ -589,13 +567,12 @@ spec:
             port: 12347
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
-
+          timeoutSeconds: 5
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-execute-service
 spec:
   selector:
@@ -611,12 +588,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node2
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node2
       containers:
       - name: ts-execute-service
         image: newrelic/train-ticket:ts-execute-service-0.0.4
@@ -636,12 +612,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-food-map-service
 spec:
   selector:
@@ -657,12 +632,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node3
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
       containers:
       - name: ts-food-map-service
         image: newrelic/train-ticket:ts-food-map-service-0.0.4
@@ -682,12 +656,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-food-service
 spec:
   selector:
@@ -703,12 +676,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node4
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node4
       containers:
       - name: ts-food-service
         image: newrelic/train-ticket:ts-food-service-0.0.4
@@ -728,12 +700,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-inside-payment-service
 spec:
   selector:
@@ -749,12 +720,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node2
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node2
       containers:
       - name: ts-inside-payment-service
         image: newrelic/train-ticket:ts-inside-payment-service-0.0.4
@@ -774,12 +744,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-auth-service
 spec:
   selector:
@@ -795,12 +764,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node3
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
       containers:
       - name: ts-auth-service
         image: newrelic/train-ticket:ts-auth-service-0.0.4
@@ -819,13 +787,12 @@ spec:
             port: 12340
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
-
+          timeoutSeconds: 5
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-news-service
 spec:
   selector:
@@ -841,12 +808,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node4
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node4
       containers:
       - name: ts-news-service
         image: newrelic/train-ticket:ts-news-service-0.0.4
@@ -866,12 +832,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-notification-service
 spec:
   selector:
@@ -887,12 +852,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node2
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node2
       containers:
       - name: ts-notification-service
         image: newrelic/train-ticket:ts-notification-service-0.0.4
@@ -912,12 +876,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-order-other-service
 spec:
   selector:
@@ -933,12 +896,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node3
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
       containers:
       - name: ts-order-other-service
         image: newrelic/train-ticket:ts-order-other-service-0.0.4
@@ -958,12 +920,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-order-service
 spec:
   selector:
@@ -979,12 +940,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node4
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node4
       containers:
       - name: ts-order-service
         image: newrelic/train-ticket:ts-order-service-0.0.4
@@ -1004,12 +964,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-payment-service
 spec:
   selector:
@@ -1025,12 +984,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node2
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node2
       containers:
       - name: ts-payment-service
         image: newrelic/train-ticket:ts-payment-service-0.0.4
@@ -1049,13 +1007,12 @@ spec:
             port: 19001
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
-
+          timeoutSeconds: 5
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-preserve-other-service
 spec:
   selector:
@@ -1071,12 +1028,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node3
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
       containers:
       - name: ts-preserve-other-service
         image: newrelic/train-ticket:ts-preserve-other-service-0.0.4
@@ -1096,12 +1052,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-preserve-service
 spec:
   selector:
@@ -1117,12 +1072,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node4
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node4
       containers:
       - name: ts-preserve-service
         image: newrelic/train-ticket:ts-preserve-service-0.0.4
@@ -1142,12 +1096,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-price-service
 spec:
   selector:
@@ -1163,12 +1116,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node2
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node2
       containers:
       - name: ts-price-service
         image: newrelic/train-ticket:ts-price-service-0.0.4
@@ -1188,12 +1140,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-rebook-service
 spec:
   selector:
@@ -1209,12 +1160,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node3
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
       containers:
       - name: ts-rebook-service
         image: newrelic/train-ticket:ts-rebook-service-0.0.4
@@ -1233,13 +1183,12 @@ spec:
             port: 18886
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
-
+          timeoutSeconds: 5
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-route-plan-service
 spec:
   selector:
@@ -1255,12 +1204,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node4
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node4
       containers:
       - name: ts-route-plan-service
         image: newrelic/train-ticket:ts-route-plan-service-0.0.4
@@ -1280,12 +1228,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-route-service
 spec:
   selector:
@@ -1301,12 +1248,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node2
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node2
       containers:
       - name: ts-route-service
         image: newrelic/train-ticket:ts-route-service-0.0.4
@@ -1325,13 +1271,12 @@ spec:
             port: 11178
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
-
+          timeoutSeconds: 5
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-seat-service
 spec:
   selector:
@@ -1347,12 +1292,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node3
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
       containers:
       - name: ts-seat-service
         image: newrelic/train-ticket:ts-seat-service-0.0.4
@@ -1371,13 +1315,12 @@ spec:
             port: 18898
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
-
+          timeoutSeconds: 5
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-security-service
 spec:
   selector:
@@ -1393,12 +1336,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node4
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node4
       containers:
       - name: ts-security-service
         image: newrelic/train-ticket:ts-security-service-0.0.4
@@ -1418,12 +1360,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-user-service
 spec:
   selector:
@@ -1439,12 +1380,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node2
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node2
       containers:
       - name: ts-user-service
         image: newrelic/train-ticket:ts-user-service-0.0.4
@@ -1463,13 +1403,12 @@ spec:
             port: 12342
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
-
+          timeoutSeconds: 5
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-station-service
 spec:
   selector:
@@ -1485,12 +1424,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node3
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
       containers:
       - name: ts-station-service
         image: newrelic/train-ticket:ts-station-service-0.0.4
@@ -1510,12 +1448,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-ticket-office-service
 spec:
   selector:
@@ -1525,18 +1462,17 @@ spec:
   template:
     metadata:
       labels:
-        app: ts-ticket-office-service 
+        app: ts-ticket-office-service
     spec:
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node4
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node4
       containers:
       - name: ts-ticket-office-service
         image: newrelic/train-ticket:ts-ticket-office-service-0.0.4
@@ -1555,13 +1491,12 @@ spec:
             port: 16108
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
-
+          timeoutSeconds: 5
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-ticketinfo-service
 spec:
   selector:
@@ -1577,12 +1512,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node2
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node2
       containers:
       - name: ts-ticketinfo-service
         image: newrelic/train-ticket:ts-ticketinfo-service-0.0.4
@@ -1601,13 +1535,12 @@ spec:
             port: 15681
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
-
+          timeoutSeconds: 5
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-train-service
 spec:
   selector:
@@ -1623,12 +1556,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node3
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
       containers:
       - name: ts-train-service
         image: newrelic/train-ticket:ts-train-service-0.0.4
@@ -1647,13 +1579,12 @@ spec:
             port: 14567
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
-
+          timeoutSeconds: 5
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-travel2-service
 spec:
   selector:
@@ -1669,12 +1600,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node4
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node4
       containers:
       - name: ts-travel2-service
         image: newrelic/train-ticket:ts-travel2-service-0.0.4
@@ -1694,12 +1624,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-travel-plan-service
 spec:
   selector:
@@ -1715,12 +1644,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node2
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node2
       containers:
       - name: ts-travel-plan-service
         image: newrelic/train-ticket:ts-travel-plan-service-0.0.4
@@ -1740,12 +1668,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-travel-service
 spec:
   selector:
@@ -1761,12 +1688,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node3
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
       containers:
       - name: ts-travel-service
         image: newrelic/train-ticket:ts-travel-service-0.0.4
@@ -1785,13 +1711,12 @@ spec:
             port: 12346
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
-
+          timeoutSeconds: 5
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-verification-code-service
 spec:
   selector:
@@ -1807,12 +1732,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node4
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node4
       containers:
       - name: ts-verification-code-service
         image: newrelic/train-ticket:ts-verification-code-service-0.0.4
@@ -1832,12 +1756,11 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-voucher-service
 spec:
   selector:
@@ -1853,12 +1776,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node2
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node2
       containers:
       - name: ts-voucher-service
         image: newrelic/train-ticket:ts-voucher-service-0.0.4
@@ -1877,13 +1799,12 @@ spec:
             port: 16101
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
-
+          timeoutSeconds: 5
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: store
   name: ts-avatar-service
 spec:
   selector:
@@ -1899,12 +1820,11 @@ spec:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-              - matchExpressions:
-                  - key: role
-                    operator: In
-                    values:
-                      - node3
-
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
       containers:
       - name: ts-avatar-service
         image: newrelic/train-ticket:ts-avatar-service-0.1.0
@@ -1924,537 +1844,496 @@ spec:
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
-
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-admin-basic-info-service
 spec:
   ports:
-    - name: http
-      port: 18767
+  - name: http
+    port: 18767
   selector:
-   app: ts-admin-basic-info-service
-
+    app: ts-admin-basic-info-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-admin-order-service
 spec:
   ports:
-    - name: http
-      port: 16112
+  - name: http
+    port: 16112
   selector:
-   app: ts-admin-order-service
-
+    app: ts-admin-order-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-admin-route-service
 spec:
   ports:
-    - name: http
-      port: 16113
+  - name: http
+    port: 16113
   selector:
-   app: ts-admin-route-service
-
+    app: ts-admin-route-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-admin-travel-service
 spec:
   ports:
-    - name: http
-      port: 16114
+  - name: http
+    port: 16114
   selector:
-   app: ts-admin-travel-service
-
+    app: ts-admin-travel-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-admin-user-service
 spec:
   ports:
-    - name: http
-      port: 16115
+  - name: http
+    port: 16115
   selector:
-   app: ts-admin-user-service
-
+    app: ts-admin-user-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-assurance-service
 spec:
   ports:
-    - name: http
-      port: 18888
+  - name: http
+    port: 18888
   selector:
-   app: ts-assurance-service
-
+    app: ts-assurance-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-basic-service
 spec:
   ports:
-    - name: http
-      port: 15680
+  - name: http
+    port: 15680
   selector:
-   app: ts-basic-service
-
+    app: ts-basic-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-cancel-service
 spec:
   ports:
-    - name: http
-      port: 18885
+  - name: http
+    port: 18885
   selector:
-   app: ts-cancel-service
-
+    app: ts-cancel-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-config-service
 spec:
   ports:
-    - name: http
-      port: 15679
+  - name: http
+    port: 15679
   selector:
-   app: ts-config-service
-
+    app: ts-config-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-consign-price-service
 spec:
   ports:
-    - name: http
-      port: 16110
+  - name: http
+    port: 16110
   selector:
-   app: ts-consign-price-service
-
+    app: ts-consign-price-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-consign-service
 spec:
   ports:
-    - name: http
-      port: 16111
+  - name: http
+    port: 16111
   selector:
-   app: ts-consign-service
-
+    app: ts-consign-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-contacts-service
 spec:
   ports:
-    - name: http
-      port: 12347
+  - name: http
+    port: 12347
   selector:
-   app: ts-contacts-service
-
+    app: ts-contacts-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-execute-service
 spec:
   ports:
-    - name: http
-      port: 12386
+  - name: http
+    port: 12386
   selector:
-   app: ts-execute-service
-
+    app: ts-execute-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-food-map-service
 spec:
   ports:
-    - name: http
-      port: 18855
+  - name: http
+    port: 18855
   selector:
-   app: ts-food-map-service
-
+    app: ts-food-map-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-food-service
 spec:
   ports:
-    - name: http
-      port: 18856
+  - name: http
+    port: 18856
   selector:
-   app: ts-food-service
-
+    app: ts-food-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-inside-payment-service
 spec:
   ports:
-    - name: http
-      port: 18673
+  - name: http
+    port: 18673
   selector:
-   app: ts-inside-payment-service
-
+    app: ts-inside-payment-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-user-service
 spec:
   ports:
-    - name: http
-      port: 12342
+  - name: http
+    port: 12342
   selector:
-   app: ts-user-service
-
+    app: ts-user-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-notification-service
 spec:
   ports:
-    - name: http
-      port: 17853
+  - name: http
+    port: 17853
   selector:
-   app: ts-notification-service
-
+    app: ts-notification-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-news-service
 spec:
   ports:
-    - name: http
-      port: 12862
+  - name: http
+    port: 12862
   selector:
-   app: ts-news-service
-
+    app: ts-news-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-order-other-service
 spec:
   ports:
-    - name: http
-      port: 12032
+  - name: http
+    port: 12032
   selector:
-   app: ts-order-other-service
-
+    app: ts-order-other-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-order-service
 spec:
   ports:
-    - name: http
-      port: 12031
+  - name: http
+    port: 12031
   selector:
-   app: ts-order-service
-
+    app: ts-order-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-payment-service
 spec:
   ports:
-    - name: http
-      port: 19001
+  - name: http
+    port: 19001
   selector:
-   app: ts-payment-service
-
+    app: ts-payment-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-preserve-other-service
 spec:
   ports:
-    - name: http
-      port: 14569
+  - name: http
+    port: 14569
   selector:
-   app: ts-preserve-other-service
-
+    app: ts-preserve-other-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-preserve-service
 spec:
   ports:
-    - name: http
-      port: 14568
+  - name: http
+    port: 14568
   selector:
-   app: ts-preserve-service
-
+    app: ts-preserve-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-price-service
 spec:
   ports:
-    - name: http
-      port: 16579
+  - name: http
+    port: 16579
   selector:
-   app: ts-price-service
-
+    app: ts-price-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-rebook-service
 spec:
   ports:
-    - name: http
-      port: 18886
+  - name: http
+    port: 18886
   selector:
-   app: ts-rebook-service
-
+    app: ts-rebook-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-route-plan-service
 spec:
   ports:
-    - name: http
-      port: 14578
+  - name: http
+    port: 14578
   selector:
-   app: ts-route-plan-service
-
+    app: ts-route-plan-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-route-service
 spec:
   ports:
-    - name: http
-      port: 11178
+  - name: http
+    port: 11178
   selector:
-   app: ts-route-service
-
+    app: ts-route-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-seat-service
 spec:
   ports:
-    - name: http
-      port: 18898
+  - name: http
+    port: 18898
   selector:
-   app: ts-seat-service
-
+    app: ts-seat-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-security-service
 spec:
   ports:
-    - name: http
-      port: 11188
+  - name: http
+    port: 11188
   selector:
-   app: ts-security-service
-
+    app: ts-security-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-auth-service
 spec:
   type: LoadBalancer
   ports:
-    - name: http
-      port: 12340
+  - name: http
+    port: 12340
   selector:
-   app: ts-auth-service
-
+    app: ts-auth-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-station-service
 spec:
   ports:
-    - name: http
-      port: 12345
+  - name: http
+    port: 12345
   selector:
-   app: ts-station-service
-
+    app: ts-station-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-ticket-office-service
 spec:
   ports:
-    - name: http
-      port: 16108
+  - name: http
+    port: 16108
   selector:
-   app: ts-ticket-office-service
-
+    app: ts-ticket-office-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-ticketinfo-service
 spec:
   ports:
-    - name: http
-      port: 15681
+  - name: http
+    port: 15681
   selector:
-   app: ts-ticketinfo-service
-
+    app: ts-ticketinfo-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-train-service
 spec:
   ports:
-    - name: http
-      port: 14567
+  - name: http
+    port: 14567
   selector:
-   app: ts-train-service
-
+    app: ts-train-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-travel2-service
 spec:
   ports:
-    - name: http
-      port: 16346
+  - name: http
+    port: 16346
   selector:
-   app: ts-travel2-service
-
+    app: ts-travel2-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-travel-plan-service
 spec:
   ports:
-    - name: http
-      port: 14322
+  - name: http
+    port: 14322
   selector:
-   app: ts-travel-plan-service
-
+    app: ts-travel-plan-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-travel-service
 spec:
   ports:
-    - name: http
-      port: 12346
+  - name: http
+    port: 12346
   selector:
-   app: ts-travel-service
-
+    app: ts-travel-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-verification-code-service
 spec:
   ports:
-    - name: http
-      port: 15678
+  - name: http
+    port: 15678
   selector:
-   app: ts-verification-code-service
-
+    app: ts-verification-code-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-voucher-service
 spec:
   ports:
-    - name: http
-      port: 16101
+  - name: http
+    port: 16101
   selector:
-   app: ts-voucher-service
-
+    app: ts-voucher-service
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: store
   name: ts-avatar-service
 spec:
   ports:
-    - name: http
-      port: 17001
+  - name: http
+    port: 17001
   selector:
-   app: ts-avatar-service
+    app: ts-avatar-service
