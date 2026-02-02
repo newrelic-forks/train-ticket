@@ -69,6 +69,13 @@ spec:
       - name: ts-admin-basic-info-service
         image: newrelic/train-ticket:ts-admin-basic-info-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 18767
         resources:
@@ -78,12 +85,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 18767
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 18767
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -113,6 +127,13 @@ spec:
       - name: ts-admin-order-service
         image: newrelic/train-ticket:ts-admin-order-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 16112
         resources:
@@ -122,12 +143,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 16112
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 16112
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -157,6 +185,13 @@ spec:
       - name: ts-admin-route-service
         image: newrelic/train-ticket:ts-admin-route-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 16113
         resources:
@@ -166,12 +201,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 16113
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 16113
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -201,6 +243,13 @@ spec:
       - name: ts-admin-travel-service
         image: newrelic/train-ticket:ts-admin-travel-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 16114
         resources:
@@ -210,12 +259,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 16114
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 16114
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -245,6 +301,13 @@ spec:
       - name: ts-admin-user-service
         image: newrelic/train-ticket:ts-admin-user-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 16115
         resources:
@@ -254,12 +317,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 16115
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 16115
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -289,6 +359,23 @@ spec:
       - name: ts-assurance-service
         image: newrelic/train-ticket:ts-assurance-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: ASSURANCE_MYSQL_HOST
+          value: "ts-assurance-mysql"
+        - name: ASSURANCE_MYSQL_PORT
+          value: "3306"
+        - name: ASSURANCE_MYSQL_DATABASE
+          value: "ts-assurance-mysql"
+        - name: ASSURANCE_MYSQL_USER
+          value: "root"
+        - name: ASSURANCE_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 18888
         resources:
@@ -298,12 +385,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 18888
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 18888
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -333,6 +427,13 @@ spec:
       - name: ts-basic-service
         image: newrelic/train-ticket:ts-basic-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 15680
         resources:
@@ -342,12 +443,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 15680
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 15680
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -377,6 +485,13 @@ spec:
       - name: ts-cancel-service
         image: newrelic/train-ticket:ts-cancel-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 18885
         resources:
@@ -386,12 +501,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 18885
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 18885
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -421,6 +543,23 @@ spec:
       - name: ts-config-service
         image: newrelic/train-ticket:ts-config-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: CONFIG_MYSQL_HOST
+          value: "ts-config-mysql"
+        - name: CONFIG_MYSQL_PORT
+          value: "3306"
+        - name: CONFIG_MYSQL_DATABASE
+          value: "ts-config-mysql"
+        - name: CONFIG_MYSQL_USER
+          value: "root"
+        - name: CONFIG_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 15679
         resources:
@@ -430,12 +569,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 15679
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 15679
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -465,6 +611,23 @@ spec:
       - name: ts-consign-price-service
         image: newrelic/train-ticket:ts-consign-price-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: CONSIGN_PRICE_MYSQL_HOST
+          value: "ts-consign-price-mysql"
+        - name: CONSIGN_PRICE_MYSQL_PORT
+          value: "3306"
+        - name: CONSIGN_PRICE_MYSQL_DATABASE
+          value: "ts-consign-price-mysql"
+        - name: CONSIGN_PRICE_MYSQL_USER
+          value: "root"
+        - name: CONSIGN_PRICE_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 16110
         resources:
@@ -474,12 +637,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 16110
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 16110
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -509,6 +679,23 @@ spec:
       - name: ts-consign-service
         image: newrelic/train-ticket:ts-consign-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: CONSIGN_MYSQL_HOST
+          value: "ts-consign-mysql"
+        - name: CONSIGN_MYSQL_PORT
+          value: "3306"
+        - name: CONSIGN_MYSQL_DATABASE
+          value: "ts-consign-mysql"
+        - name: CONSIGN_MYSQL_USER
+          value: "root"
+        - name: CONSIGN_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 16111
         resources:
@@ -518,12 +705,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 16111
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 16111
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -553,6 +747,23 @@ spec:
       - name: ts-contacts-service
         image: newrelic/train-ticket:ts-contacts-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: CONTACTS_MYSQL_HOST
+          value: "ts-contacts-mysql"
+        - name: CONTACTS_MYSQL_PORT
+          value: "3306"
+        - name: CONTACTS_MYSQL_DATABASE
+          value: "ts-contacts-mysql"
+        - name: CONTACTS_MYSQL_USER
+          value: "root"
+        - name: CONTACTS_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 12347
         resources:
@@ -562,12 +773,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 12347
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 12347
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -597,6 +815,13 @@ spec:
       - name: ts-execute-service
         image: newrelic/train-ticket:ts-execute-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 12386
         resources:
@@ -606,12 +831,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 12386
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 12386
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -641,6 +873,13 @@ spec:
       - name: ts-food-map-service
         image: newrelic/train-ticket:ts-food-map-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 18855
         resources:
@@ -650,12 +889,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 18855
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 18855
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -685,6 +931,23 @@ spec:
       - name: ts-food-service
         image: newrelic/train-ticket:ts-food-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: FOOD_MYSQL_HOST
+          value: "ts-food-mysql"
+        - name: FOOD_MYSQL_PORT
+          value: "3306"
+        - name: FOOD_MYSQL_DATABASE
+          value: "ts-food-mysql"
+        - name: FOOD_MYSQL_USER
+          value: "root"
+        - name: FOOD_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 18856
         resources:
@@ -694,12 +957,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 18856
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 18856
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -729,6 +999,23 @@ spec:
       - name: ts-inside-payment-service
         image: newrelic/train-ticket:ts-inside-payment-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: INSIDE_PAYMENT_MYSQL_HOST
+          value: "ts-inside-payment-mysql"
+        - name: INSIDE_PAYMENT_MYSQL_PORT
+          value: "3306"
+        - name: INSIDE_PAYMENT_MYSQL_DATABASE
+          value: "ts-inside-payment-mysql"
+        - name: INSIDE_PAYMENT_MYSQL_USER
+          value: "root"
+        - name: INSIDE_PAYMENT_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 18673
         resources:
@@ -738,12 +1025,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 18673
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 18673
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -773,6 +1067,23 @@ spec:
       - name: ts-auth-service
         image: newrelic/train-ticket:ts-auth-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: AUTH_MYSQL_HOST
+          value: "ts-auth-mysql"
+        - name: AUTH_MYSQL_PORT
+          value: "3306"
+        - name: AUTH_MYSQL_DATABASE
+          value: "ts-auth-mysql"
+        - name: AUTH_MYSQL_USER
+          value: "root"
+        - name: AUTH_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 12340
         resources:
@@ -782,12 +1093,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 12340
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 12340
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -817,6 +1135,13 @@ spec:
       - name: ts-news-service
         image: newrelic/train-ticket:ts-news-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 12862
         resources:
@@ -826,12 +1151,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 12862
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 12862
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -861,6 +1193,19 @@ spec:
       - name: ts-notification-service
         image: newrelic/train-ticket:ts-notification-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: NOTIFICATION_MYSQL_HOST
+          value: "ts-notification-mysql"
+        - name: NOTIFICATION_MYSQL_PORT
+          value: "3306"
+        - name: NOTIFICATION_MYSQL_DATABASE
+          value: "ts-notification-mysql"
         ports:
         - containerPort: 17853
         resources:
@@ -870,12 +1215,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 17853
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 17853
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -905,6 +1257,23 @@ spec:
       - name: ts-order-other-service
         image: newrelic/train-ticket:ts-order-other-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: ORDER_OTHER_MYSQL_HOST
+          value: "ts-order-other-mysql"
+        - name: ORDER_OTHER_MYSQL_PORT
+          value: "3306"
+        - name: ORDER_OTHER_MYSQL_DATABASE
+          value: "ts-order-other-mysql"
+        - name: ORDER_OTHER_MYSQL_USER
+          value: "root"
+        - name: ORDER_OTHER_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 12032
         resources:
@@ -914,12 +1283,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 12032
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 12032
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -949,6 +1325,23 @@ spec:
       - name: ts-order-service
         image: newrelic/train-ticket:ts-order-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: ORDER_MYSQL_HOST
+          value: "ts-order-mysql"
+        - name: ORDER_MYSQL_PORT
+          value: "3306"
+        - name: ORDER_MYSQL_DATABASE
+          value: "ts-order-mysql"
+        - name: ORDER_MYSQL_USER
+          value: "root"
+        - name: ORDER_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 12031
         resources:
@@ -958,12 +1351,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 12031
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 12031
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -993,6 +1393,23 @@ spec:
       - name: ts-payment-service
         image: newrelic/train-ticket:ts-payment-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: PAYMENT_MYSQL_HOST
+          value: "ts-payment-mysql"
+        - name: PAYMENT_MYSQL_PORT
+          value: "3306"
+        - name: PAYMENT_MYSQL_DATABASE
+          value: "ts-payment-mysql"
+        - name: PAYMENT_MYSQL_USER
+          value: "root"
+        - name: PAYMENT_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 19001
         resources:
@@ -1002,12 +1419,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 19001
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 19001
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1037,6 +1461,13 @@ spec:
       - name: ts-preserve-other-service
         image: newrelic/train-ticket:ts-preserve-other-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 14569
         resources:
@@ -1046,12 +1477,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 14569
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 14569
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1081,6 +1519,13 @@ spec:
       - name: ts-preserve-service
         image: newrelic/train-ticket:ts-preserve-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 14568
         resources:
@@ -1090,12 +1535,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 14568
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 14568
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1125,6 +1577,23 @@ spec:
       - name: ts-price-service
         image: newrelic/train-ticket:ts-price-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: PRICE_MYSQL_HOST
+          value: "ts-price-mysql"
+        - name: PRICE_MYSQL_PORT
+          value: "3306"
+        - name: PRICE_MYSQL_DATABASE
+          value: "ts-price-mysql"
+        - name: PRICE_MYSQL_USER
+          value: "root"
+        - name: PRICE_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 16579
         resources:
@@ -1134,12 +1603,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 16579
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 16579
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1169,6 +1645,13 @@ spec:
       - name: ts-rebook-service
         image: newrelic/train-ticket:ts-rebook-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 18886
         resources:
@@ -1178,12 +1661,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 18886
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 18886
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1213,6 +1703,13 @@ spec:
       - name: ts-route-plan-service
         image: newrelic/train-ticket:ts-route-plan-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 14578
         resources:
@@ -1222,12 +1719,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 14578
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 14578
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1257,6 +1761,23 @@ spec:
       - name: ts-route-service
         image: newrelic/train-ticket:ts-route-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: ROUTE_MYSQL_HOST
+          value: "ts-route-mysql"
+        - name: ROUTE_MYSQL_PORT
+          value: "3306"
+        - name: ROUTE_MYSQL_DATABASE
+          value: "ts-route-mysql"
+        - name: ROUTE_MYSQL_USER
+          value: "root"
+        - name: ROUTE_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 11178
         resources:
@@ -1266,12 +1787,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 11178
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 11178
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1301,6 +1829,13 @@ spec:
       - name: ts-seat-service
         image: newrelic/train-ticket:ts-seat-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 18898
         resources:
@@ -1310,12 +1845,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 18898
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 18898
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1345,6 +1887,23 @@ spec:
       - name: ts-security-service
         image: newrelic/train-ticket:ts-security-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: SECURITY_MYSQL_HOST
+          value: "ts-security-mysql"
+        - name: SECURITY_MYSQL_PORT
+          value: "3306"
+        - name: SECURITY_MYSQL_DATABASE
+          value: "ts-security-mysql"
+        - name: SECURITY_MYSQL_USER
+          value: "root"
+        - name: SECURITY_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 11188
         resources:
@@ -1354,12 +1913,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 11188
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 11188
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1389,6 +1955,23 @@ spec:
       - name: ts-user-service
         image: newrelic/train-ticket:ts-user-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: USER_MYSQL_HOST
+          value: "ts-user-mysql"
+        - name: USER_MYSQL_PORT
+          value: "3306"
+        - name: USER_MYSQL_DATABASE
+          value: "ts-user-mysql"
+        - name: USER_MYSQL_USER
+          value: "root"
+        - name: USER_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 12342
         resources:
@@ -1398,12 +1981,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 12342
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 12342
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1433,6 +2023,23 @@ spec:
       - name: ts-station-service
         image: newrelic/train-ticket:ts-station-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: STATION_MYSQL_HOST
+          value: "ts-station-mysql"
+        - name: STATION_MYSQL_PORT
+          value: "3306"
+        - name: STATION_MYSQL_DATABASE
+          value: "ts-station-mysql"
+        - name: STATION_MYSQL_USER
+          value: "root"
+        - name: STATION_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 12345
         resources:
@@ -1442,12 +2049,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 12345
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 12345
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1477,6 +2091,13 @@ spec:
       - name: ts-ticket-office-service
         image: newrelic/train-ticket:ts-ticket-office-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 16108
         resources:
@@ -1486,12 +2107,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 16108
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 16108
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1521,6 +2149,13 @@ spec:
       - name: ts-ticketinfo-service
         image: newrelic/train-ticket:ts-ticketinfo-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 15681
         resources:
@@ -1530,12 +2165,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 15681
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 15681
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1565,6 +2207,23 @@ spec:
       - name: ts-train-service
         image: newrelic/train-ticket:ts-train-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: TRAIN_MYSQL_HOST
+          value: "ts-train-mysql"
+        - name: TRAIN_MYSQL_PORT
+          value: "3306"
+        - name: TRAIN_MYSQL_DATABASE
+          value: "ts-train-mysql"
+        - name: TRAIN_MYSQL_USER
+          value: "root"
+        - name: TRAIN_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 14567
         resources:
@@ -1574,12 +2233,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 14567
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 14567
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1609,6 +2275,23 @@ spec:
       - name: ts-travel2-service
         image: newrelic/train-ticket:ts-travel2-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: TRAVEL2_MYSQL_HOST
+          value: "ts-travel2-mysql"
+        - name: TRAVEL2_MYSQL_PORT
+          value: "3306"
+        - name: TRAVEL2_MYSQL_DATABASE
+          value: "ts-travel2-mysql"
+        - name: TRAVEL2_MYSQL_USER
+          value: "root"
+        - name: TRAVEL2_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 16346
         resources:
@@ -1618,12 +2301,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 16346
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 16346
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1653,6 +2343,13 @@ spec:
       - name: ts-travel-plan-service
         image: newrelic/train-ticket:ts-travel-plan-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 14322
         resources:
@@ -1662,12 +2359,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 14322
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 14322
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1697,6 +2401,23 @@ spec:
       - name: ts-travel-service
         image: newrelic/train-ticket:ts-travel-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: TRAVEL_MYSQL_HOST
+          value: "ts-travel-mysql"
+        - name: TRAVEL_MYSQL_PORT
+          value: "3306"
+        - name: TRAVEL_MYSQL_DATABASE
+          value: "ts-travel-mysql"
+        - name: TRAVEL_MYSQL_USER
+          value: "root"
+        - name: TRAVEL_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 12346
         resources:
@@ -1706,12 +2427,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 12346
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 12346
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1741,6 +2469,13 @@ spec:
       - name: ts-verification-code-service
         image: newrelic/train-ticket:ts-verification-code-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 15678
         resources:
@@ -1750,12 +2485,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 15678
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 15678
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1785,6 +2527,23 @@ spec:
       - name: ts-voucher-service
         image: newrelic/train-ticket:ts-voucher-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: VOUCHER_MYSQL_HOST
+          value: "ts-voucher-mysql"
+        - name: VOUCHER_MYSQL_PORT
+          value: "3306"
+        - name: VOUCHER_MYSQL_USER
+          value: "root"
+        - name: VOUCHER_MYSQL_PASSWORD
+          value: "Abcd1234#"
+        - name: VOUCHER_MYSQL_DATABASE
+          value: "ts-voucher-mysql"
         ports:
         - containerPort: 16101
         resources:
@@ -1794,12 +2553,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 16101
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 16101
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1827,8 +2593,15 @@ spec:
                 - node3
       containers:
       - name: ts-avatar-service
-        image: newrelic/train-ticket:ts-avatar-service-0.1.0
+        image: newrelic/train-ticket:ts-avatar-service-0.0.4
         imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
         ports:
         - containerPort: 17001
         resources:
@@ -1838,12 +2611,19 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 17001
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
         readinessProbe:
           tcpSocket:
             port: 17001
-          initialDelaySeconds: 160
+          initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: v1
 kind: Service
@@ -2337,3 +3117,499 @@ spec:
     port: 17001
   selector:
     app: ts-avatar-service
+# =============================================================================
+# Missing Services to Add to ts-deployment-part2.yml
+# Add these at the end of the file (after line 2923)
+# =============================================================================
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
+  name: ts-delivery-service
+spec:
+  selector:
+    matchLabels:
+      app: ts-delivery-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-delivery-service
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
+      containers:
+      - name: ts-delivery-service
+        image: newrelic/train-ticket:ts-delivery-service-0.0.4
+        imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: DELIVERY_MYSQL_HOST
+          value: "ts-delivery-mysql"
+        - name: DELIVERY_MYSQL_PORT
+          value: "3306"
+        - name: DELIVERY_MYSQL_DATABASE
+          value: "ts-delivery-mysql"
+        - name: DELIVERY_MYSQL_USER
+          value: "root"
+        - name: DELIVERY_MYSQL_PASSWORD
+          value: "root"
+        ports:
+        - containerPort: 18808
+        resources:
+          requests:
+            cpu: 50m
+            memory: 160Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 18808
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 18808
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
+  name: ts-food-delivery-service
+spec:
+  selector:
+    matchLabels:
+      app: ts-food-delivery-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-food-delivery-service
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
+      containers:
+      - name: ts-food-delivery-service
+        image: newrelic/train-ticket:ts-food-delivery-service-0.0.4
+        imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: FOOD_DELIVERY_MYSQL_HOST
+          value: "ts-food-delivery-mysql"
+        - name: FOOD_DELIVERY_MYSQL_PORT
+          value: "3306"
+        - name: FOOD_DELIVERY_MYSQL_DATABASE
+          value: "ts-food-delivery-mysql"
+        - name: FOOD_DELIVERY_MYSQL_USER
+          value: "root"
+        - name: FOOD_DELIVERY_MYSQL_PASSWORD
+          value: "root"
+        ports:
+        - containerPort: 18957
+        resources:
+          requests:
+            cpu: 50m
+            memory: 160Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 18957
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 18957
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
+  name: ts-station-food-service
+spec:
+  selector:
+    matchLabels:
+      app: ts-station-food-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-station-food-service
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
+      containers:
+      - name: ts-station-food-service
+        image: newrelic/train-ticket:ts-station-food-service-0.0.4
+        imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: STATION_FOOD_MYSQL_HOST
+          value: "ts-station-food-mysql"
+        - name: STATION_FOOD_MYSQL_PORT
+          value: "3306"
+        - name: STATION_FOOD_MYSQL_DATABASE
+          value: "ts-station-food-mysql"
+        - name: STATION_FOOD_MYSQL_USER
+          value: "root"
+        - name: STATION_FOOD_MYSQL_PASSWORD
+          value: "root"
+        ports:
+        - containerPort: 18855
+        resources:
+          requests:
+            cpu: 50m
+            memory: 160Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 18855
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 18855
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
+  name: ts-train-food-service
+spec:
+  selector:
+    matchLabels:
+      app: ts-train-food-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-train-food-service
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
+      containers:
+      - name: ts-train-food-service
+        image: newrelic/train-ticket:ts-train-food-service-0.0.4
+        imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: TRAIN_FOOD_MYSQL_HOST
+          value: "ts-train-food-mysql"
+        - name: TRAIN_FOOD_MYSQL_PORT
+          value: "3306"
+        - name: TRAIN_FOOD_MYSQL_DATABASE
+          value: "ts-train-food-mysql"
+        - name: TRAIN_FOOD_MYSQL_USER
+          value: "root"
+        - name: TRAIN_FOOD_MYSQL_PASSWORD
+          value: "root"
+        ports:
+        - containerPort: 19999
+        resources:
+          requests:
+            cpu: 50m
+            memory: 160Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 19999
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 19999
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
+  name: ts-wait-order-service
+spec:
+  selector:
+    matchLabels:
+      app: ts-wait-order-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-wait-order-service
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node3
+      containers:
+      - name: ts-wait-order-service
+        image: newrelic/train-ticket:ts-wait-order-service-0.0.4
+        imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: WAIT_ORDER_MYSQL_HOST
+          value: "ts-wait-order-mysql"
+        - name: WAIT_ORDER_MYSQL_PORT
+          value: "3306"
+        - name: WAIT_ORDER_MYSQL_DATABASE
+          value: "ts-wait-order-mysql"
+        - name: WAIT_ORDER_MYSQL_USER
+          value: "root"
+        - name: WAIT_ORDER_MYSQL_PASSWORD
+          value: "root"
+        ports:
+        - containerPort: 17525
+        resources:
+          requests:
+            cpu: 50m
+            memory: 160Mi
+          limits:
+            cpu: 200m
+            memory: 500Mi
+        startupProbe:
+          tcpSocket:
+            port: 17525
+          initialDelaySeconds: 90
+          failureThreshold: 40
+          periodSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 17525
+          initialDelaySeconds: 120
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+---
+# =============================================================================
+# Services
+# =============================================================================
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-delivery-service
+spec:
+  ports:
+  - name: http
+    port: 18808
+  selector:
+    app: ts-delivery-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-food-delivery-service
+spec:
+  ports:
+  - name: http
+    port: 18957
+  selector:
+    app: ts-food-delivery-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-station-food-service
+spec:
+  ports:
+  - name: http
+    port: 18855
+  selector:
+    app: ts-station-food-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-train-food-service
+spec:
+  ports:
+  - name: http
+    port: 19999
+  selector:
+    app: ts-train-food-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-wait-order-service
+spec:
+  ports:
+  - name: http
+    port: 17525
+  selector:
+    app: ts-wait-order-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
+  name: ts-gateway-service
+spec:
+  selector:
+    matchLabels:
+      app: ts-gateway-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-gateway-service
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node2
+      containers:
+      - name: ts-gateway-service
+        image: newrelic/train-ticket:ts-gateway-service-0.0.4
+        imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: SPRING_CLOUD_NACOS_CONFIG_ENABLED
+          value: "false"
+        - name: SERVER_PORT
+          value: "18888"
+        - name: JAVA_OPTS
+          value: "-Xms256m -Xmx768m"
+        ports:
+        - containerPort: 18888
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        startupProbe:
+          httpGet:
+            path: /actuator/health
+            port: 18888
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 18888
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 18888
+          initialDelaySeconds: 180
+          periodSeconds: 20
+          timeoutSeconds: 5
+          failureThreshold: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-gateway-service
+spec:
+  ports:
+  - name: http
+    port: 18888
+  selector:
+    app: ts-gateway-service
+
