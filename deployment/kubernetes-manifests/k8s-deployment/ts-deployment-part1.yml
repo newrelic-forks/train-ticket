@@ -1,58 +1,27 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: store
-  name: ts-user-mongo
-spec:
-  selector:
-    matchLabels:
-      app: ts-user-mongo
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: ts-user-mongo
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: role
-                operator: In
-                values:
-                - node1
-      containers:
-      - name: ts-user-mongo
-        image: mongo
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 27017
-        volumeMounts:
-        - name: mongo-data
-          mountPath: /data/db
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
-      volumes:
-      - name: mongo-data
-        emptyDir: {}
+# Train-Ticket Database Layer - CORRECTED
+# This file contains the correct database configurations
+# MySQL for services using JPA/Hibernate
+# MongoDB for services using Spring Data MongoDB
+
+# ============================================================================
+# MySQL Deployments
+# ============================================================================
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
-  name: ts-auth-mongo
+  name: ts-assurance-mysql
 spec:
   selector:
     matchLabels:
-      app: ts-auth-mongo
+      app: ts-assurance-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-auth-mongo
+        app: ts-assurance-mysql
     spec:
       affinity:
         nodeAffinity:
@@ -64,18 +33,42 @@ spec:
                 values:
                 - node1
       containers:
-      - name: ts-auth-mongo
-        image: mongo
-        imagePullPolicy: Always
+      - name: ts-assurance-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-assurance-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
-            memory: 100Mi
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
         volumeMounts:
         - name: db-data
-          mountPath: /data/db
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
       volumes:
       - name: db-data
         emptyDir: {}
@@ -84,16 +77,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
-  name: ts-route-mongo
+  name: ts-config-mysql
 spec:
   selector:
     matchLabels:
-      app: ts-route-mongo
+      app: ts-config-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-route-mongo
+        app: ts-config-mysql
     spec:
       affinity:
         nodeAffinity:
@@ -105,18 +98,42 @@ spec:
                 values:
                 - node1
       containers:
-      - name: ts-route-mongo
-        image: mongo
-        imagePullPolicy: Always
+      - name: ts-config-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-config-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
-            memory: 100Mi
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
         volumeMounts:
         - name: db-data
-          mountPath: /data/db
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
       volumes:
       - name: db-data
         emptyDir: {}
@@ -125,16 +142,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
-  name: ts-contacts-mongo
+  name: ts-consign-mysql
 spec:
   selector:
     matchLabels:
-      app: ts-contacts-mongo
+      app: ts-consign-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-contacts-mongo
+        app: ts-consign-mysql
     spec:
       affinity:
         nodeAffinity:
@@ -146,18 +163,42 @@ spec:
                 values:
                 - node1
       containers:
-      - name: ts-contacts-mongo
-        image: mongo
-        imagePullPolicy: Always
+      - name: ts-consign-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-consign-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
-            memory: 100Mi
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
         volumeMounts:
         - name: db-data
-          mountPath: /data/db
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
       volumes:
       - name: db-data
         emptyDir: {}
@@ -166,16 +207,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
-  name: ts-order-mongo
+  name: ts-consign-price-mysql
 spec:
   selector:
     matchLabels:
-      app: ts-order-mongo
+      app: ts-consign-price-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-order-mongo
+        app: ts-consign-price-mysql
     spec:
       affinity:
         nodeAffinity:
@@ -187,18 +228,42 @@ spec:
                 values:
                 - node1
       containers:
-      - name: ts-order-mongo
-        image: mongo
-        imagePullPolicy: Always
+      - name: ts-consign-price-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-consign-price-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
-            memory: 100Mi
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
         volumeMounts:
         - name: db-data
-          mountPath: /data/db
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
       volumes:
       - name: db-data
         emptyDir: {}
@@ -207,16 +272,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
-  name: ts-order-other-mongo
+  name: ts-contacts-mysql
 spec:
   selector:
     matchLabels:
-      app: ts-order-other-mongo
+      app: ts-contacts-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-order-other-mongo
+        app: ts-contacts-mysql
     spec:
       affinity:
         nodeAffinity:
@@ -228,18 +293,42 @@ spec:
                 values:
                 - node1
       containers:
-      - name: ts-order-other-mongo
-        image: mongo
-        imagePullPolicy: Always
+      - name: ts-contacts-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-contacts-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
-            memory: 100Mi
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
         volumeMounts:
         - name: db-data
-          mountPath: /data/db
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
       volumes:
       - name: db-data
         emptyDir: {}
@@ -248,16 +337,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
-  name: ts-config-mongo
+  name: ts-delivery-mysql
 spec:
   selector:
     matchLabels:
-      app: ts-config-mongo
+      app: ts-delivery-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-config-mongo
+        app: ts-delivery-mysql
     spec:
       affinity:
         nodeAffinity:
@@ -269,18 +358,42 @@ spec:
                 values:
                 - node1
       containers:
-      - name: ts-config-mongo
-        image: mongo
-        imagePullPolicy: Always
+      - name: ts-delivery-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-delivery-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
-            memory: 100Mi
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
         volumeMounts:
         - name: db-data
-          mountPath: /data/db
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
       volumes:
       - name: db-data
         emptyDir: {}
@@ -289,16 +402,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
-  name: ts-station-mongo
+  name: ts-food-mysql
 spec:
   selector:
     matchLabels:
-      app: ts-station-mongo
+      app: ts-food-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-station-mongo
+        app: ts-food-mysql
     spec:
       affinity:
         nodeAffinity:
@@ -310,18 +423,42 @@ spec:
                 values:
                 - node1
       containers:
-      - name: ts-station-mongo
-        image: mongo
-        imagePullPolicy: Always
+      - name: ts-food-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-food-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
-            memory: 100Mi
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
         volumeMounts:
         - name: db-data
-          mountPath: /data/db
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
       volumes:
       - name: db-data
         emptyDir: {}
@@ -330,16 +467,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
-  name: ts-train-mongo
+  name: ts-food-delivery-mysql
 spec:
   selector:
     matchLabels:
-      app: ts-train-mongo
+      app: ts-food-delivery-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-train-mongo
+        app: ts-food-delivery-mysql
     spec:
       affinity:
         nodeAffinity:
@@ -351,18 +488,42 @@ spec:
                 values:
                 - node1
       containers:
-      - name: ts-train-mongo
-        image: mongo
-        imagePullPolicy: Always
+      - name: ts-food-delivery-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-food-delivery-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
-            memory: 100Mi
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
         volumeMounts:
         - name: db-data
-          mountPath: /data/db
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
       volumes:
       - name: db-data
         emptyDir: {}
@@ -371,16 +532,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
-  name: ts-travel-mongo
+  name: ts-inside-payment-mysql
 spec:
   selector:
     matchLabels:
-      app: ts-travel-mongo
+      app: ts-inside-payment-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-travel-mongo
+        app: ts-inside-payment-mysql
     spec:
       affinity:
         nodeAffinity:
@@ -392,18 +553,42 @@ spec:
                 values:
                 - node1
       containers:
-      - name: ts-travel-mongo
-        image: mongo
-        imagePullPolicy: Always
+      - name: ts-inside-payment-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-inside-payment-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
-            memory: 100Mi
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
         volumeMounts:
         - name: db-data
-          mountPath: /data/db
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
       volumes:
       - name: db-data
         emptyDir: {}
@@ -412,16 +597,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
-  name: ts-travel2-mongo
+  name: ts-notification-mysql
 spec:
   selector:
     matchLabels:
-      app: ts-travel2-mongo
+      app: ts-notification-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-travel2-mongo
+        app: ts-notification-mysql
     spec:
       affinity:
         nodeAffinity:
@@ -433,18 +618,42 @@ spec:
                 values:
                 - node1
       containers:
-      - name: ts-travel2-mongo
-        image: mongo
-        imagePullPolicy: Always
+      - name: ts-notification-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-notification-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
-            memory: 100Mi
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
         volumeMounts:
         - name: db-data
-          mountPath: /data/db
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
       volumes:
       - name: db-data
         emptyDir: {}
@@ -453,16 +662,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
-  name: ts-price-mongo
+  name: ts-order-mysql
 spec:
   selector:
     matchLabels:
-      app: ts-price-mongo
+      app: ts-order-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-price-mongo
+        app: ts-order-mysql
     spec:
       affinity:
         nodeAffinity:
@@ -474,18 +683,42 @@ spec:
                 values:
                 - node1
       containers:
-      - name: ts-price-mongo
-        image: mongo
-        imagePullPolicy: Always
+      - name: ts-order-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-order-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
-            memory: 100Mi
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
         volumeMounts:
         - name: db-data
-          mountPath: /data/db
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
       volumes:
       - name: db-data
         emptyDir: {}
@@ -494,16 +727,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
-  name: ts-security-mongo
+  name: ts-order-other-mysql
 spec:
   selector:
     matchLabels:
-      app: ts-security-mongo
+      app: ts-order-other-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-security-mongo
+        app: ts-order-other-mysql
     spec:
       affinity:
         nodeAffinity:
@@ -515,18 +748,42 @@ spec:
                 values:
                 - node1
       containers:
-      - name: ts-security-mongo
-        image: mongo
-        imagePullPolicy: Always
+      - name: ts-order-other-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-order-other-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
-            memory: 100Mi
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
         volumeMounts:
         - name: db-data
-          mountPath: /data/db
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
       volumes:
       - name: db-data
         emptyDir: {}
@@ -535,16 +792,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
-  name: ts-inside-payment-mongo
+  name: ts-payment-mysql
 spec:
   selector:
     matchLabels:
-      app: ts-inside-payment-mongo
+      app: ts-payment-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-inside-payment-mongo
+        app: ts-payment-mysql
     spec:
       affinity:
         nodeAffinity:
@@ -556,18 +813,42 @@ spec:
                 values:
                 - node1
       containers:
-      - name: ts-inside-payment-mongo
-        image: mongo
-        imagePullPolicy: Always
+      - name: ts-payment-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-payment-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
-            memory: 100Mi
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
         volumeMounts:
         - name: db-data
-          mountPath: /data/db
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
       volumes:
       - name: db-data
         emptyDir: {}
@@ -576,16 +857,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
-  name: ts-payment-mongo
+  name: ts-price-mysql
 spec:
   selector:
     matchLabels:
-      app: ts-payment-mongo
+      app: ts-price-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-payment-mongo
+        app: ts-price-mysql
     spec:
       affinity:
         nodeAffinity:
@@ -597,18 +878,42 @@ spec:
                 values:
                 - node1
       containers:
-      - name: ts-payment-mongo
-        image: mongo
-        imagePullPolicy: Always
+      - name: ts-price-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-price-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
-            memory: 100Mi
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
         volumeMounts:
         - name: db-data
-          mountPath: /data/db
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
       volumes:
       - name: db-data
         emptyDir: {}
@@ -617,16 +922,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
-  name: ts-assurance-mongo
+  name: ts-route-mysql
 spec:
   selector:
     matchLabels:
-      app: ts-assurance-mongo
+      app: ts-route-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-assurance-mongo
+        app: ts-route-mysql
     spec:
       affinity:
         nodeAffinity:
@@ -638,18 +943,697 @@ spec:
                 values:
                 - node1
       containers:
-      - name: ts-assurance-mongo
-        image: mongo
-        imagePullPolicy: Always
+      - name: ts-route-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-route-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
-            memory: 100Mi
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
         volumeMounts:
         - name: db-data
-          mountPath: /data/db
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: db-data
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
+  name: ts-security-mysql
+spec:
+  selector:
+    matchLabels:
+      app: ts-security-mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-security-mysql
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
+      containers:
+      - name: ts-security-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-security-mysql
+        ports:
+        - containerPort: 3306
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: db-data
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
+  name: ts-station-mysql
+spec:
+  selector:
+    matchLabels:
+      app: ts-station-mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-station-mysql
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
+      containers:
+      - name: ts-station-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-station-mysql
+        ports:
+        - containerPort: 3306
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: db-data
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
+  name: ts-station-food-mysql
+spec:
+  selector:
+    matchLabels:
+      app: ts-station-food-mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-station-food-mysql
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
+      containers:
+      - name: ts-station-food-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-station-food-mysql
+        ports:
+        - containerPort: 3306
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: db-data
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
+  name: ts-train-mysql
+spec:
+  selector:
+    matchLabels:
+      app: ts-train-mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-train-mysql
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
+      containers:
+      - name: ts-train-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-train-mysql
+        ports:
+        - containerPort: 3306
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: db-data
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
+  name: ts-train-food-mysql
+spec:
+  selector:
+    matchLabels:
+      app: ts-train-food-mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-train-food-mysql
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
+      containers:
+      - name: ts-train-food-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-train-food-mysql
+        ports:
+        - containerPort: 3306
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: db-data
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
+  name: ts-travel-mysql
+spec:
+  selector:
+    matchLabels:
+      app: ts-travel-mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-travel-mysql
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
+      containers:
+      - name: ts-travel-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-travel-mysql
+        ports:
+        - containerPort: 3306
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: db-data
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
+  name: ts-travel2-mysql
+spec:
+  selector:
+    matchLabels:
+      app: ts-travel2-mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-travel2-mysql
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
+      containers:
+      - name: ts-travel2-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-travel2-mysql
+        ports:
+        - containerPort: 3306
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: db-data
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
+  name: ts-wait-order-mysql
+spec:
+  selector:
+    matchLabels:
+      app: ts-wait-order-mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-wait-order-mysql
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
+      containers:
+      - name: ts-wait-order-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-wait-order-mysql
+        ports:
+        - containerPort: 3306
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: db-data
+        emptyDir: {}
+
+# ============================================================================
+# MongoDB Deployments
+# ============================================================================
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
+  name: ts-auth-mysql
+spec:
+  selector:
+    matchLabels:
+      app: ts-auth-mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-auth-mysql
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
+      containers:
+      - name: ts-auth-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-auth-mysql
+        ports:
+        - containerPort: 3306
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: db-data
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
+  name: ts-user-mysql
+spec:
+  selector:
+    matchLabels:
+      app: ts-user-mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-user-mysql
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
+      containers:
+      - name: ts-user-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-user-mysql
+        ports:
+        - containerPort: 3306
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
       volumes:
       - name: db-data
         emptyDir: {}
@@ -699,50 +1683,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
-  name: ts-voucher-mysql
-spec:
-  selector:
-    matchLabels:
-      app: ts-voucher-mysql
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: ts-voucher-mysql
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: role
-                operator: In
-                values:
-                - node4
-      containers:
-      - name: ts-voucher-mysql
-        image: mysql:5.6.35
-        imagePullPolicy: Always
-        env:
-        - name: MYSQL_ROOT_PASSWORD
-          value: root
-        ports:
-        - containerPort: 3306
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
-        volumeMounts:
-        - name: db-data
-          mountPath: /var/lib/mysql
-      volumes:
-      - name: db-data
-        emptyDir: {}
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: store
   name: ts-food-map-mongo
 spec:
   selector:
@@ -779,21 +1719,26 @@ spec:
       volumes:
       - name: db-data
         emptyDir: {}
+
+# ============================================================================
+# Special Services
+# ============================================================================
+
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
-  name: ts-consign-mongo
+  name: ts-voucher-mysql
 spec:
   selector:
     matchLabels:
-      app: ts-consign-mongo
+      app: ts-voucher-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-consign-mongo
+        app: ts-voucher-mysql
     spec:
       affinity:
         nodeAffinity:
@@ -803,102 +1748,25 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node4
       containers:
-      - name: ts-consign-mongo
-        image: mongo
+      - name: ts-voucher-mysql
+        image: mysql:5.6.35
         imagePullPolicy: Always
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: Abcd1234#
+        - name: MYSQL_DATABASE
+          value: ts-voucher-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
         volumeMounts:
         - name: db-data
-          mountPath: /data/db
-      volumes:
-      - name: db-data
-        emptyDir: {}
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: store
-  name: ts-consign-price-mongo
-spec:
-  selector:
-    matchLabels:
-      app: ts-consign-price-mongo
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: ts-consign-price-mongo
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: role
-                operator: In
-                values:
-                - node1
-      containers:
-      - name: ts-consign-price-mongo
-        image: mongo
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 27017
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
-        volumeMounts:
-        - name: db-data
-          mountPath: /data/db
-      volumes:
-      - name: db-data
-        emptyDir: {}
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: store
-  name: ts-food-mongo
-spec:
-  selector:
-    matchLabels:
-      app: ts-food-mongo
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: ts-food-mongo
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: role
-                operator: In
-                values:
-                - node1
-      containers:
-      - name: ts-food-mongo
-        image: mongo
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 27017
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
-        volumeMounts:
-        - name: db-data
-          mountPath: /data/db
+          mountPath: /var/lib/mysql
       volumes:
       - name: db-data
         emptyDir: {}
@@ -907,177 +1775,297 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: store
-  name: ts-user-mongo
+  name: ts-voucher-mysql
 spec:
   ports:
-  - port: 27017
+  - port: 3306
   selector:
-    app: ts-user-mongo
+    app: ts-voucher-mysql
+
+# ============================================================================
+# MySQL Services
+# ============================================================================
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: store
-  name: ts-auth-mongo
+  name: ts-assurance-mysql
 spec:
   ports:
-  - port: 27017
+  - port: 3306
   selector:
-    app: ts-auth-mongo
+    app: ts-assurance-mysql
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: store
-  name: ts-route-mongo
+  name: ts-config-mysql
 spec:
   ports:
-  - port: 27017
+  - port: 3306
   selector:
-    app: ts-route-mongo
+    app: ts-config-mysql
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: store
-  name: ts-contacts-mongo
+  name: ts-consign-mysql
 spec:
   ports:
-  - port: 27017
+  - port: 3306
   selector:
-    app: ts-contacts-mongo
+    app: ts-consign-mysql
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: store
-  name: ts-order-mongo
+  name: ts-consign-price-mysql
 spec:
   ports:
-  - port: 27017
+  - port: 3306
   selector:
-    app: ts-order-mongo
+    app: ts-consign-price-mysql
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: store
-  name: ts-order-other-mongo
+  name: ts-contacts-mysql
 spec:
   ports:
-  - port: 27017
+  - port: 3306
   selector:
-    app: ts-order-other-mongo
+    app: ts-contacts-mysql
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: store
-  name: ts-config-mongo
+  name: ts-delivery-mysql
 spec:
   ports:
-  - port: 27017
+  - port: 3306
   selector:
-    app: ts-config-mongo
+    app: ts-delivery-mysql
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: store
-  name: ts-station-mongo
+  name: ts-food-mysql
 spec:
   ports:
-  - port: 27017
+  - port: 3306
   selector:
-    app: ts-station-mongo
+    app: ts-food-mysql
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: store
-  name: ts-train-mongo
+  name: ts-food-delivery-mysql
 spec:
   ports:
-  - port: 27017
+  - port: 3306
   selector:
-    app: ts-train-mongo
+    app: ts-food-delivery-mysql
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: store
-  name: ts-travel-mongo
+  name: ts-inside-payment-mysql
 spec:
   ports:
-  - port: 27017
+  - port: 3306
   selector:
-    app: ts-travel-mongo
+    app: ts-inside-payment-mysql
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: store
-  name: ts-travel2-mongo
+  name: ts-notification-mysql
 spec:
   ports:
-  - port: 27017
+  - port: 3306
   selector:
-    app: ts-travel2-mongo
+    app: ts-notification-mysql
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: store
-  name: ts-price-mongo
+  name: ts-order-mysql
 spec:
   ports:
-  - port: 27017
+  - port: 3306
   selector:
-    app: ts-price-mongo
+    app: ts-order-mysql
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: store
-  name: ts-security-mongo
+  name: ts-order-other-mysql
 spec:
   ports:
-  - port: 27017
+  - port: 3306
   selector:
-    app: ts-security-mongo
+    app: ts-order-other-mysql
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: store
-  name: ts-inside-payment-mongo
+  name: ts-payment-mysql
 spec:
   ports:
-  - port: 27017
+  - port: 3306
   selector:
-    app: ts-inside-payment-mongo
+    app: ts-payment-mysql
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: store
-  name: ts-payment-mongo
+  name: ts-price-mysql
 spec:
   ports:
-  - port: 27017
+  - port: 3306
   selector:
-    app: ts-payment-mongo
+    app: ts-price-mysql
 ---
 apiVersion: v1
 kind: Service
 metadata:
   namespace: store
-  name: ts-assurance-mongo
+  name: ts-route-mysql
 spec:
   ports:
-  - port: 27017
+  - port: 3306
   selector:
-    app: ts-assurance-mongo
+    app: ts-route-mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-security-mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: ts-security-mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-station-mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: ts-station-mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-station-food-mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: ts-station-food-mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-train-mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: ts-train-mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-train-food-mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: ts-train-food-mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-travel-mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: ts-travel-mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-travel2-mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: ts-travel2-mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-wait-order-mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: ts-wait-order-mysql
+
+# ============================================================================
+# MongoDB Services
+# ============================================================================
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-auth-mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: ts-auth-mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-user-mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: ts-user-mysql
 ---
 apiVersion: v1
 kind: Service
@@ -1094,53 +2082,9 @@ apiVersion: v1
 kind: Service
 metadata:
   namespace: store
-  name: ts-voucher-mysql
-spec:
-  ports:
-  - port: 3306
-  selector:
-    app: ts-voucher-mysql
----
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: store
   name: ts-food-map-mongo
 spec:
   ports:
   - port: 27017
   selector:
     app: ts-food-map-mongo
----
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: store
-  name: ts-consign-mongo
-spec:
-  ports:
-  - port: 27017
-  selector:
-    app: ts-consign-mongo
----
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: store
-  name: ts-consign-price-mongo
-spec:
-  ports:
-  - port: 27017
-  selector:
-    app: ts-consign-price-mongo
----
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: store
-  name: ts-food-mongo
-spec:
-  ports:
-  - port: 27017
-  selector:
-    app: ts-food-mongo
