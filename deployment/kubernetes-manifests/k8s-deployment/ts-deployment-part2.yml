@@ -1074,6 +1074,16 @@ spec:
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
           value: "false"
+        - name: AUTH_MYSQL_HOST
+          value: "ts-auth-mysql"
+        - name: AUTH_MYSQL_PORT
+          value: "3306"
+        - name: AUTH_MYSQL_DATABASE
+          value: "ts-auth-mysql"
+        - name: AUTH_MYSQL_USER
+          value: "root"
+        - name: AUTH_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 12340
         resources:
@@ -1952,6 +1962,16 @@ spec:
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
           value: "false"
+        - name: USER_MYSQL_HOST
+          value: "ts-user-mysql"
+        - name: USER_MYSQL_PORT
+          value: "3306"
+        - name: USER_MYSQL_DATABASE
+          value: "ts-user-mysql"
+        - name: USER_MYSQL_USER
+          value: "root"
+        - name: USER_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 12342
         resources:
@@ -2563,7 +2583,7 @@ spec:
                 - node3
       containers:
       - name: ts-avatar-service
-        image: newrelic/train-ticket:ts-avatar-service-0.1.0
+        image: newrelic/train-ticket:ts-avatar-service-0.0.4
         imagePullPolicy: Always
         env:
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
@@ -3496,3 +3516,90 @@ spec:
     port: 17525
   selector:
     app: ts-wait-order-service
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
+  name: ts-gateway-service
+spec:
+  selector:
+    matchLabels:
+      app: ts-gateway-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-gateway-service
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node2
+      containers:
+      - name: ts-gateway-service
+        image: newrelic/train-ticket:ts-gateway-service-0.0.4
+        imagePullPolicy: Always
+        env:
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
+          value: "nacos.store.svc.cluster.local:8848"
+        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
+          value: "false"
+        - name: SPRING_CLOUD_NACOS_CONFIG_ENABLED
+          value: "false"
+        - name: SERVER_PORT
+          value: "18888"
+        - name: JAVA_OPTS
+          value: "-Xms256m -Xmx768m"
+        ports:
+        - containerPort: 18888
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+        startupProbe:
+          httpGet:
+            path: /actuator/health
+            port: 18888
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 18888
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 18888
+          initialDelaySeconds: 180
+          periodSeconds: 20
+          timeoutSeconds: 5
+          failureThreshold: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-gateway-service
+spec:
+  ports:
+  - name: http
+    port: 18888
+  selector:
+    app: ts-gateway-service
+

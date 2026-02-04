@@ -201,7 +201,13 @@ spec:
     nodePort: 30848
   - port: 7848
     targetPort: 7848
-    name: rpc
+    name: old-rpc
+  - port: 9848
+    targetPort: 9848
+    name: client-rpc
+  - port: 9849
+    targetPort: 9849
+    name: raft-rpc
   selector:
     app: nacos
 
