@@ -2534,6 +2534,16 @@ spec:
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
           value: "false"
+        - name: VOUCHER_MYSQL_HOST
+          value: "ts-voucher-mysql"
+        - name: VOUCHER_MYSQL_PORT
+          value: "3306"
+        - name: VOUCHER_MYSQL_USER
+          value: "root"
+        - name: VOUCHER_MYSQL_PASSWORD
+          value: "Abcd1234#"
+        - name: VOUCHER_MYSQL_DATABASE
+          value: "ts-voucher-mysql"
         ports:
         - containerPort: 16101
         resources:

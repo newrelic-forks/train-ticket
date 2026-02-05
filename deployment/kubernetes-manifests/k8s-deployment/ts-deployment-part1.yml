@@ -1755,7 +1755,9 @@ spec:
         imagePullPolicy: Always
         env:
         - name: MYSQL_ROOT_PASSWORD
-          value: root
+          value: Abcd1234#
+        - name: MYSQL_DATABASE
+          value: ts-voucher-mysql
         ports:
         - containerPort: 3306
         resources:
