@@ -1,14 +1,18 @@
 /**
  * Created by dingding on 2017/10/13.
  */
-var HOST=process.env.TICKET_OFFICE_MYSQL_HOST
-var PORT=process.env.TICKET_OFFICE_MYSQL_PORT
-var USER=process.env.TICKET_OFFICE_MYSQL_USER
-var PASSWORD=process.env.TICKET_OFFICE_MYSQL_PASSWORD
-var DATABASE=process.env.TICKET_OFFICE_MYSQL_DATABASE
+var HOST=process.env.TICKET_OFFICE_MYSQL_HOST || 'localhost'
+var PORT=process.env.TICKET_OFFICE_MYSQL_PORT || 3306
+var USER=process.env.TICKET_OFFICE_MYSQL_USER || 'root'
+var PASSWORD=process.env.TICKET_OFFICE_MYSQL_PASSWORD || 'root'
+var DATABASE=process.env.TICKET_OFFICE_MYSQL_DATABASE || 'test'
+
+console.log("MySQL Config - Host:", HOST, "Port:", PORT, "Database:", DATABASE, "User:", USER);
+
 var DB_CONN_STR = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE;
 var MysqlClient = require('mysql').createConnection({
     host: HOST,
+    port: parseInt(PORT),
     user: USER,
     password: PASSWORD,
     database: DATABASE
@@ -23,11 +27,12 @@ var initData = function(callback){
     MysqlClient.query(sql, function (err, result) {
         if (err) throw err;
         console.log("Table created");
+
+        // init data - only after table is created
+        insertEntry('Jinqiao Road ticket sales outlets', 'Shanghai', 'Shanghai', 'Pudong New Area', 'Jinqiao Road 1320, Shanghai, Pudong New Area', '08:00-18:00', 1);
+
         callback(result);
     });
-
-    // init data
-    insertEntry('Jinqiao Road ticket sales outlets', 'Shanghai', 'Shanghai', 'Pudong New Area', 'Jinqiao Road 1320, Shanghai, Pudong New Area', '08:00-18:00', 1);
 
 };
 
@@ -96,6 +101,10 @@ var insertEntry = function(name, city, province, region, address, workTime, wind
 
 exports.initMysql = function(callback){
     MysqlClient.connect(function(err){
+        if (err) {
+            console.error("MySQL connection failed:", err);
+            throw err;
+        }
         console.log("initMysql连接上数据库啦！");
         initData(function(result){
             callback(result);
