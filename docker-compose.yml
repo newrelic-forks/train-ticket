@@ -384,8 +384,13 @@ services:
         networks:
           - my-network
 
-  ts-ticket-office-mongo:
-    image: mongo
+  ts-ticket-office-mysql:
+    image: mysql:5.7
+    expose:
+      - "3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ts-ticket-office-mysql
     networks:
       - my-network
 
@@ -595,6 +600,63 @@ services:
 
   ts-train-food-mongo:
     image: mongo
+    networks:
+      - my-network
+
+  ts-delivery-service:
+    build: ts-delivery-service
+    image: ${IMG_REPO}:ts-delivery-service-${IMG_TAG}
+    restart: always
+    ports:
+      - 18808:18808
+    networks:
+      - my-network
+
+  ts-delivery-mysql:
+    image: mysql:5.7
+    expose:
+      - "3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ts-delivery-mysql
+    networks:
+      - my-network
+
+  ts-station-food-service:
+    build: ts-station-food-service
+    image: ${IMG_REPO}:ts-station-food-service-${IMG_TAG}
+    restart: always
+    ports:
+      - 18855:18855
+    networks:
+      - my-network
+
+  ts-station-food-mysql:
+    image: mysql:5.7
+    expose:
+      - "3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ts-station-food-mysql
+    networks:
+      - my-network
+
+  ts-wait-order-service:
+    build: ts-wait-order-service
+    image: ${IMG_REPO}:ts-wait-order-service-${IMG_TAG}
+    restart: always
+    ports:
+      - 17525:17525
+    networks:
+      - my-network
+
+  ts-wait-order-mysql:
+    image: mysql:5.7
+    expose:
+      - "3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ts-wait-order-mysql
     networks:
       - my-network
 
