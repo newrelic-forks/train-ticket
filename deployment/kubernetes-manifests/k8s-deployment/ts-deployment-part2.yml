@@ -844,65 +844,6 @@ spec:
           periodSeconds: 10
           timeoutSeconds: 5
           failureThreshold: 3
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: store
-  name: ts-food-map-service
-spec:
-  selector:
-    matchLabels:
-      app: ts-food-map-service
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: ts-food-map-service
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: role
-                operator: In
-                values:
-                - node3
-      containers:
-      - name: ts-food-map-service
-        image: newrelic/train-ticket:ts-food-map-service-0.0.4
-        imagePullPolicy: Always
-        env:
-        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
-          value: "nacos.store.svc.cluster.local:8848"
-        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
-          value: "nacos.store.svc.cluster.local:8848"
-        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
-          value: "false"
-        ports:
-        - containerPort: 18855
-        resources:
-          requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
-            cpu: 200m
-            memory: 500Mi
-        startupProbe:
-          tcpSocket:
-            port: 18855
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
-        readinessProbe:
-          tcpSocket:
-            port: 18855
-          initialDelaySeconds: 120
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 3
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -2098,6 +2039,16 @@ spec:
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
           value: "false"
+        - name: TICKET_OFFICE_MYSQL_HOST
+          value: "ts-ticket-office-mysql"
+        - name: TICKET_OFFICE_MYSQL_PORT
+          value: "3306"
+        - name: TICKET_OFFICE_MYSQL_DATABASE
+          value: "ts-ticket-office-mysql"
+        - name: TICKET_OFFICE_MYSQL_USER
+          value: "root"
+        - name: TICKET_OFFICE_MYSQL_PASSWORD
+          value: "root"
         ports:
         - containerPort: 16108
         resources:
@@ -2116,64 +2067,6 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 16108
-          initialDelaySeconds: 120
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 3
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: store
-  name: ts-ticketinfo-service
-spec:
-  selector:
-    matchLabels:
-      app: ts-ticketinfo-service
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: ts-ticketinfo-service
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: role
-                operator: In
-                values:
-                - node2
-      containers:
-      - name: ts-ticketinfo-service
-        image: newrelic/train-ticket:ts-ticketinfo-service-0.0.4
-        imagePullPolicy: Always
-        env:
-        - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
-          value: "nacos.store.svc.cluster.local:8848"
-        - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
-          value: "nacos.store.svc.cluster.local:8848"
-        - name: SPRING_CLOUD_NACOS_DISCOVERY_FAIL_FAST
-          value: "false"
-        ports:
-        - containerPort: 15681
-        resources:
-          requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
-            cpu: 200m
-            memory: 500Mi
-        startupProbe:
-          tcpSocket:
-            port: 15681
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
-        readinessProbe:
-          tcpSocket:
-            port: 15681
           initialDelaySeconds: 120
           periodSeconds: 10
           timeoutSeconds: 5
@@ -2780,19 +2673,6 @@ spec:
     port: 12386
   selector:
     app: ts-execute-service
----
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: store
-  name: ts-food-map-service
-spec:
-  ports:
-  - name: http
-    port: 18855
-  selector:
-    app: ts-food-map-service
----
 apiVersion: v1
 kind: Service
 metadata:
@@ -3021,19 +2901,6 @@ spec:
     port: 16108
   selector:
     app: ts-ticket-office-service
----
-apiVersion: v1
-kind: Service
-metadata:
-  namespace: store
-  name: ts-ticketinfo-service
-spec:
-  ports:
-  - name: http
-    port: 15681
-  selector:
-    app: ts-ticketinfo-service
----
 apiVersion: v1
 kind: Service
 metadata:

@@ -1182,6 +1182,71 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: store
+  name: ts-ticket-office-mysql
+spec:
+  selector:
+    matchLabels:
+      app: ts-ticket-office-mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-ticket-office-mysql
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: role
+                operator: In
+                values:
+                - node1
+      containers:
+      - name: ts-ticket-office-mysql
+        image: mysql:5.7
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_DATABASE
+          value: ts-ticket-office-mysql
+        ports:
+        - containerPort: 3306
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 200m
+            memory: 512Mi
+        volumeMounts:
+        - name: db-data
+          mountPath: /var/lib/mysql
+        livenessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - mysqladmin ping -h localhost -proot
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: db-data
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: store
   name: ts-train-mysql
 spec:
   selector:
@@ -1984,6 +2049,17 @@ spec:
   - port: 3306
   selector:
     app: ts-station-food-mysql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: store
+  name: ts-ticket-office-mysql
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: ts-ticket-office-mysql
 ---
 apiVersion: v1
 kind: Service
