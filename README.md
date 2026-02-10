@@ -16,83 +16,144 @@ You can get more details at [Wiki Pages](https://github.com/FudanSELab/train-tic
 ![architecture](./image/2.png)
 
 ## Quick Start
-We provide k8s deployment to quickly deploy our application:  [Using Kubernetes](#Using-Kubernetes).
 
-### Using Kubernetes
-Here is the steps to deploy the Train Ticket onto any existing Kubernetes cluster.
-
-#### Presequisite
-* An existing Kubernetes cluster
-* Helm supported, you can see https://helm.sh/docs/helm/helm_install/ for helm install
-* PVC supported, you can see https://openebs.io/docs/2.12.x/user-guides/installation for localPV support.
-
-#### 1. Clone the Repository
-```bash
-git clone --depth=1 https://github.com/FudanSELab/train-ticket.git 
-cd train-ticket/
-```
-
-#### 2. Deploy the application
-### For Quick Start
-```bash
-make deploy
+Create Four ubuntu EC2 instances (t2.xlarge) in AWS
+Connect the instances using security groups
+Allow all traffic on 172.31.0.0/16 (Source) between instances.
+Allow tcp port 22 (ssh) and 80 (http) on 0.0.0.0/0 (Source) to all instances.
+Install MicroK8s and other tools on all the Instances
 
 ```
-
-Note: if you want specify namespace, set Namespace paramter:
-
-```bash
-make deploy Namespace=yournamespace
+sudo apt update
+sudo apt install git
+sudo apt install gh
+sudo apt install snapd -y
+sudo snap install microk8s --classic
 ```
 
-### Deploy Mysql Clusters For Each Services
-
-```bash
-make deploy DeployArgs="--independent-db"
+Check the status of MicroK8s and ensure it’s running:
+```
+microk8s status --wait-ready
 ```
 
-### With Moinitorig
-```bash
-make deploy DeployArgs="--with-monitoring"
+Enable Ingress
+```
+ microk8s enable ingress
 ```
 
-### With Distributed Tracing
-```bash
-make deploy DeployArgs="--with-tracing"
+Add user to the MicroK8s group for easier access on all instances.
+```
+sudo usermod -a -G microk8s $USER
+sudo chown -f -R $USER ~/.kube
 ```
 
-### Deploy All 
-```bash
-make deploy DeployArgs="--all"
+Logout and login back in to apply group changes.
+
+Cluster Setup
+
+Generate kubectl config on master node
+```
+microk8s config > ~/.kube/microk8s-config
 ```
 
-### Customise Deployment
-You can freely combine parameters for custom deployment， for example, deploy with monitoring and tracing:
-
-```bash
-make deploy DeployArgs="--with-tracing --with-monitoring"
-```
-
-### Reset Deployment
+Setting shell profile on master node
 
 ```
-make reset-deploy
-# if you specify namespace when deploy, set namespace as well when reset
-# make reset-deploy Namespace=yournamespace
+export KUBECONFIG=$HOME/.kube/microk8s-config
+export KUBECONFIG=/home/ubuntu/.kube/microk8s-config
+echo "export KUBECONFIG=$HOME/.kube/microk8s-config" >> ~/.bashrc
+source ~/.bashrc
+echo $KUBECONFIG
 ```
 
-#### 3. Run `kubectl get pods` to see pods are in a ready state
+On the master node (node1), run:
+```
+microk8s add-node
+```
 
-#### 4. Visit the Train Ticket web page at [http://[Node-IP]:32677](http://[Node-IP]:32677).
+On the first worker node (node2) get the output from the previous command and join node2 to master (node1)
+```
+microk8s join 172.31.0.0:25000/<X>/<Y> --worker
+```
 
+On the master node (node1), run this again:
+```
+microk8s add-node
+```
 
-## Build From Source
-In the above, We use pre-built images to quickly deploy the application.
+On the second worker node (node3) get the output from the previous command and join node3 to master (node1)
+```
+microk8s join 172.31.0.0:25000/<X>/<Y> --worker
+```
 
-If you want to build the application from source, you can refer to [the Installation Guide](https://github.com/FudanSELab/train-ticket/wiki/Installation-Guide).
+On the master node (node1), run this again:
+```
+microk8s add-node
+```
 
-## Test scripts
-Use scripts to test train-ticket: [https://github.com/FudanSELab/train-ticket-auto-query](https://github.com/FudanSELab/train-ticket-auto-query)
+On the third worker node (node4) get the output from the previous command and join node4 to master (node1)
+```
+microk8s join 172.31.0.0:25000/<X>/<Y> --worker
+```
+
+Ensure there are 4 nodes
+
+microk8s kubectl get nodes -o wide
+
+Add HashiCorp GPG key and install Terraform
+```
+sudo apt update
+sudo apt install -y gnupg software-properties-common
+wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update
+sudo apt install terraform
+terraform version
+```
+
+Give role to the master and worker nodes
+```
+microk8s kubectl label node <ip-ip-address> role=node1
+microk8s kubectl label node <ip-ip-address> role=node2
+microk8s kubectl label node <ip-ip-address> role=node3
+microk8s kubectl label node <ip-ip-address> role=node4
+```
+
+Clone train-ticket respository from master node in the cluster. Set if you are using a particular branch.
+```
+gh auth login
+gh repo clone newrelic-forks/train-ticket -- --branch <branch>
+cd train-ticket
+```
+
+Create namespace:
+```
+microk8s kubectl create namespace store
+```
+
+Run the configure script. It will ask for INGEST LICENSE KEY, USER KEY, ACCOUNT ID and REGION.
+```
+./configure
+``` 
+
+After successfully running the configure script, check the pods and services status.
+```
+microk8s kubectl -n store get pods -o wide
+microk8s kubectl -n store get service -o wide
+```
+
+Verify Ingress Setup
+```
+microk8s kubectl -n store get ingress
+```
+
+You should see an output similar to this:
+```
+NAME               CLASS    HOSTS   ADDRESS     PORTS   AGE
+all-ingress        public   *       127.0.0.1   80      7m12s
+```
+
+Now, you should be able to access the website at http://<public-ip>/ from anywhere on the internet using any public IP assigned to any AWS EC2 instance that was provisioned.
 
 ## Screenshot
 ![screenshot](./image/main_interface.png)

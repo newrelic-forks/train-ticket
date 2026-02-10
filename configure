@@ -1,0 +1,248 @@
+#!/usr/bin/env python3
+
+import readline
+import os
+import sys
+import requests
+import time
+
+base_dir = os.getcwd()
+conf_file = f".conf.env"
+cluster_name = "store-kubecluster"
+cluster_nr_namespace = "newrelic"
+cluster_app_namespace = "store"
+
+# Formatting
+bold = "\033[1m"
+unbold = "\033[0m"
+
+
+def load_env(filename):
+    if os.path.exists(filename):
+        with open(filename, "r") as f:
+            for line in f:
+                if line.startswith("NEW_RELIC_LICENSE_KEY"):
+                    os.environ["NEW_RELIC_LICENSE_KEY"] = line.split("=")[1].strip()
+                elif line.startswith("NEW_RELIC_API_KEY"):
+                    os.environ["NEW_RELIC_API_KEY"] = line.split("=")[1].strip()
+                elif line.startswith("NEW_RELIC_BROWSER_KEY"):
+                    os.environ["NEW_RELIC_BROWSER_KEY"] = line.split("=")[1].strip()
+                elif line.startswith("NEW_RELIC_ACCOUNT_ID"):
+                    os.environ["NEW_RELIC_ACCOUNT_ID"] = line.split("=")[1].strip()
+                elif line.startswith("NEW_RELIC_REGION"):
+                    os.environ["NEW_RELIC_REGION"] = line.split("=")[1].strip()
+
+# Check if .conf.env exists and is valid
+if os.path.exists(conf_file):
+    load_env(conf_file)
+    licensekey = os.getenv("NEW_RELIC_LICENSE_KEY")
+    accountid = os.getenv("NEW_RELIC_ACCOUNT_ID")
+    apikey = os.getenv("NEW_RELIC_API_KEY")
+    region = os.getenv("NEW_RELIC_REGION")
+    browserkey = os.getenv("NEW_RELIC_BROWSER_KEY")
+
+    if licensekey and accountid and apikey and region and browserkey:
+        print(f"\n{bold}Using existing .conf.env file. Skipping user interaction...{unbold}")
+        header = False
+    else:
+        print(f"\n{bold}The .conf.env file is missing required variables. Proceeding with user interaction...{unbold}")
+        header = True
+else:
+    header = True
+
+# User interaction to gather required information
+if header:
+    licensekey = False
+    accountid = False
+    apikey = False
+    region = False
+    browserkey = False
+
+    print("\nPlease enter the following information to help us configure your Train-Ticket environment...\n")
+
+    while licensekey is False:
+        licensekey = input(f"New Relic {bold}INGEST - LICENSE{unbold} key (should end with \"NRAL\"): ").strip()
+        if licensekey.endswith("NRAL"):
+            break
+        licensekey = False
+        print("Invalid, please try again")
+    while apikey is False:
+        apikey = input(f"New Relic {bold}USER{unbold} key (should start with \"NRAK-\"): ").strip()
+        if apikey.startswith("NRAK-"):
+            break
+        apikey = False
+        print("Invalid, please try again")
+    while accountid is False:
+        accountid = input(f"New Relic {bold}ACCOUNT ID{unbold}: ").strip()
+        if accountid.isdigit():
+            break
+        accountid = False
+        print("Invalid, please try again")
+    while region is False:
+        region = input(f"New Relic {bold}REGION{unbold} (US or EU): ").strip().upper()
+        if region == "US" or region == "EU":
+            break
+        region = False
+        print("Invalid, please try again")
+    while browserkey is False:
+        browserkey = input(f"New Relic {bold}BROWSER{unbold} key: ").strip()
+        if browserkey.startswith("NRBR-"):
+            break
+        browserkey = False
+        print("Invalid, please try again")
+
+    print("\nDoes the following information look correct?\n")
+    print(f"New Relic INGEST - LICENSE key: {bold}{licensekey}{unbold}")
+    print(f"            New Relic USER key: {bold}{apikey}{unbold}")
+    print(f"          New Relic ACCOUNT ID: {bold}{accountid}{unbold}")
+    print(f"              New Relic REGION: {bold}{region}{unbold}")
+    print(f"         New Relic BROWSER key: {bold}{browserkey}{unbold}")
+    print("\n")
+    confirm = False
+    while confirm is False:
+        confirm = input(f"Enter {bold}yes{unbold} to confirm and continue setup, or {bold}no{unbold} to re-enter: ").strip().lower()
+        if confirm == "yes" or confirm == "no" or confirm == "y" or confirm == "n":
+            break
+        print("Invalid response, please try again")
+        confirm = False
+    if confirm == "no" or confirm == "n":
+        sys.exit("Exiting setup...")
+
+    # Write the gathered information to .conf.env
+    with open(conf_file, "w") as f:
+        f.write(f"NEW_RELIC_LICENSE_KEY={licensekey}\n")
+        f.write(f"NEW_RELIC_API_KEY={apikey}\n")
+        f.write(f"NEW_RELIC_ACCOUNT_ID={accountid}\n")
+        f.write(f"NEW_RELIC_REGION={region}\n")
+        f.write(f"NEW_RELIC_BROWSER_KEY={browserkey}\n")
+    print(f"\n{bold}Starting New Relic setup for Train-Ticket...{unbold}")
+
+# Reload environment variables
+load_env(conf_file)
+
+# Download and install New Relic CLI
+if not os.path.exists(f"{base_dir}/status_nr_cli_done"):
+    print("\nDownloading New Relic CLI")
+    install_cli_url = "https://download.newrelic.com/install/newrelic-cli/scripts/install.sh"
+    response = requests.get(install_cli_url)
+    with open("install.sh", "wb") as f:
+        f.write(response.content)
+    os.chmod("install.sh", 0o755)
+    result = os.system("./install.sh")
+    if result == 0:
+        print("Installation of New Relic CLI successful")
+        open(f"{base_dir}/status_nr_cli_done", "w").close()
+    else:
+        print("Installation of New Relic CLI failed")
+        print("Please investigate the issue and re-run this process")
+        sys.exit(1)
+
+# Install New Relic Kubernetes integration
+if not os.path.exists(f"{base_dir}/status_nr_k8s_done"):
+    print("\nInstalling New Relic Kubernetes integration")
+    result = os.system(
+        f"KSM_IMAGE_VERSION='v2.13.0' && "
+        f"microk8s.helm repo add newrelic https://helm-charts.newrelic.com && "
+        f"microk8s.helm repo update && microk8s.kubectl create namespace {cluster_nr_namespace} ; "
+        f"microk8s.helm upgrade --install newrelic-bundle newrelic/nri-bundle "
+        f"--set global.licenseKey={os.environ['NEW_RELIC_LICENSE_KEY']} "
+        f"--set global.cluster={cluster_name} "
+        f"--namespace={cluster_nr_namespace} "
+        f"--set newrelic-infrastructure.privileged=true "
+        f"--set global.lowDataMode=true "
+        f"--set kube-state-metrics.image.tag=${{KSM_IMAGE_VERSION}} "
+        f"--set kube-state-metrics.enabled=true "
+        f"--set kubeEvents.enabled=true "
+        f"--set newrelic-prometheus-agent.enabled=true "
+        f"--set newrelic-prometheus-agent.lowDataMode=true "
+        f"--set newrelic-prometheus-agent.config.kubernetes.integrations_filter.enabled=false "
+        f"--set logging.enabled=true "
+        f"--set newrelic-logging.lowDataMode=true "
+    )
+    if result == 0:
+        print("Installation of New Relic Kubernetes integration successful")
+        open(f"{base_dir}/status_nr_k8s_done", "w").close()
+    else:
+        print("Installation of New Relic Kubernetes integration failed")
+        print("Please investigate the issue and re-run this process")
+        sys.exit(1)
+
+# Deploy microservices to Kubernetes
+if not os.path.exists(f"{base_dir}/status_microservices_deployed"):
+    print("\nDeploying Train-Ticket microservices to Kubernetes cluster")
+    os.chdir(base_dir)
+    result = os.system("./deploy")
+    if result == 0:
+        print("Deployment of microservices successful")
+        open(f"{base_dir}/status_microservices_deployed", "w").close()
+    else:
+        print("Deployment of microservices failed")
+        print("Please investigate the issue and re-run this process")
+        os.chdir(base_dir)
+        sys.exit(1)
+
+# Wait for ts-ui-dashboard microservice to be ready
+print("\nWaiting up to 300 seconds for ts-ui-dashboard microservice to be ready")
+# Sleep for a while so ts-ui-dashboard can start spinning up
+time.sleep(60)
+result = os.system(f"microk8s.kubectl -n {cluster_app_namespace} wait --for=condition=ready pod -l app=ts-ui-dashboard --timeout=300s")
+if result == 0:
+    print("ts-ui-dashboard microservice is ready")
+else:
+    print("ts-ui-dashboard microservice failed to become ready")
+    print("Please investigate the issue and re-run this process")
+    sys.exit(1)
+
+os.environ["TF_VAR_NEW_RELIC_REGION"] = os.environ["NEW_RELIC_REGION"]
+os.environ["TF_VAR_NEW_RELIC_ACCOUNT_ID"] = os.environ["NEW_RELIC_ACCOUNT_ID"]
+os.environ["TF_VAR_NEW_RELIC_API_KEY"] = os.environ["NEW_RELIC_API_KEY"]
+
+# Setup New Relic Key Transactions
+if not os.path.exists(f"{base_dir}/status_nr_key_transactions_done"):
+    print("\nSetting up New Relic Key Transactions")
+    os.chdir(base_dir)
+    result = os.system("python3 KeyTransactions.py")
+    if result == 0:
+        print("Key Transactions setup successful")
+        open(f"{base_dir}/status_nr_key_transactions_done", "w").close()
+    else:
+        print("Key Transactions setup failed")
+        print("Please investigate the issue and re-run this process")
+        os.chdir(base_dir)
+        sys.exit(1)
+
+# Setup New Relic with Terraform
+if not os.path.exists(f"{base_dir}/status_nr_terraform_init_done"):
+    print("\nSetting up New Relic Workloads, SLOs and Alerts with Terraform")
+    os.chdir(f"{base_dir}/terraform/config")
+    result = os.system("terraform init")
+    if result == 0:
+        print("Terraform init successful")
+        open(f"{base_dir}/status_nr_terraform_init_done", "w").close()
+    else:
+        print("Terraform init failed")
+        print("Please investigate the issue and re-run this process")
+        os.chdir(base_dir)
+        sys.exit(1)
+
+if not os.path.exists(f"{base_dir}/status_nr_terraform_apply_done"):
+    os.chdir(f"{base_dir}/terraform/config")
+    result = os.system("terraform apply -auto-approve")
+    if result == 0:
+        print("Terraform apply successful")
+        open(f"{base_dir}/status_nr_terraform_apply_done", "w").close()
+    else:
+        print("Terraform apply failed")
+        print("Please investigate the issue and re-run this process")
+        os.chdir(base_dir)
+        sys.exit(1)
+
+# Touch file to indicate that setup has been completed
+open(f"{base_dir}/setupcomplete", "w").close()
+
+print(f"\n{bold}New Relic setup for Train-Ticket completed successfully...{unbold}")
+print(f"\n{bold}Access your Train-Ticket application at: http://<public-ip>/{unbold}")
+print(f"\n{bold}Check your New Relic account for Train-Ticket monitoring data{unbold}")
+
+# Back to base dir
+os.chdir(base_dir)
