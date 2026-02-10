@@ -198,18 +198,18 @@ os.environ["TF_VAR_NEW_RELIC_ACCOUNT_ID"] = os.environ["NEW_RELIC_ACCOUNT_ID"]
 os.environ["TF_VAR_NEW_RELIC_API_KEY"] = os.environ["NEW_RELIC_API_KEY"]
 
 # Setup New Relic Key Transactions
-if not os.path.exists(f"{base_dir}/status_nr_key_transactions_done"):
-    print("\nSetting up New Relic Key Transactions")
-    os.chdir(base_dir)
-    result = os.system("python3 KeyTransactions.py")
-    if result == 0:
-        print("Key Transactions setup successful")
-        open(f"{base_dir}/status_nr_key_transactions_done", "w").close()
-    else:
-        print("Key Transactions setup failed")
-        print("Please investigate the issue and re-run this process")
-        os.chdir(base_dir)
-        sys.exit(1)
+#if not os.path.exists(f"{base_dir}/status_nr_key_transactions_done"):
+#   print("\nSetting up New Relic Key Transactions")
+#    os.chdir(base_dir)
+#    result = os.system("python3 KeyTransactions.py")
+#    if result == 0:
+#        print("Key Transactions setup successful")
+#        open(f"{base_dir}/status_nr_key_transactions_done", "w").close()
+#    else:
+#        print("Key Transactions setup failed")
+#        print("Please investigate the issue and re-run this process")
+#        os.chdir(base_dir)
+#        sys.exit(1)
 
 # Setup New Relic with Terraform
 if not os.path.exists(f"{base_dir}/status_nr_terraform_init_done"):
