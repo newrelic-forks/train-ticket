@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+
+NAMESPACE=store
+MANIFESTS="${MANIFESTS:-deployment/kubernetes-manifests/k8s-deployment}"
+
+# Create namespace if it does not exist
+microk8s kubectl get namespaces $NAMESPACE > /dev/null 2>&1
+if [ $? -eq 1 ]; then
+  echo Creating namespace $NAMESPACE
+  microk8s kubectl create namespace $NAMESPACE
+fi
+
+# Create browser key if it does not exist
+microk8s kubectl -n $NAMESPACE get secrets newrelic-browser-key > /dev/null 2>&1
+if [ $? -eq 1 ]; then
+  if [ -z "$NEW_RELIC_BROWSER_KEY" ]; then
+    echo NEW_RELIC_BROWSER_KEY is not set
+    exit 1
+  fi
+  echo Creating NEW_RELIC_BROWSER_KEY secret
+  microk8s kubectl -n $NAMESPACE create secret generic newrelic-browser-key --from-literal=new-relic-browser-key=$NEW_RELIC_BROWSER_KEY
+fi
+
+# Create new relic license key if it does not exist
+microk8s kubectl -n $NAMESPACE get secrets newrelic-key > /dev/null 2>&1
+if [ $? -eq 1 ]; then
+  if [ -z "$NEW_RELIC_LICENSE_KEY" ]; then
+    echo NEW_RELIC_LICENSE_KEY is not set
+    exit 1
+  fi
+  echo Creating NEW_RELIC_LICENSE_KEY secret
+  microk8s kubectl -n $NAMESPACE create secret generic newrelic-key --from-literal=new-relic-license-key=$NEW_RELIC_LICENSE_KEY
+fi
+
+echo "=========================================="
+echo "Step 1: Deploying NACOS service registry"
+echo "=========================================="
+microk8s kubectl -n $NAMESPACE apply -f $MANIFESTS/nacos-deployment.yml
+
+# Wait for NACOS to be ready
+echo "Waiting for NACOS to be ready (this may take 2-3 minutes)..."
+sleep 60
+microk8s kubectl -n $NAMESPACE wait --for=condition=ready pod -l app=nacos --timeout=300s
+if [ $? -eq 0 ]; then
+  echo "NACOS is ready!"
+else
+  echo "WARNING: NACOS may not be fully ready, but continuing..."
+fi
+echo ""
+sleep 30
+
+echo "=========================================="
+echo "Step 2: Deploying Ingress"
+echo "=========================================="
+microk8s kubectl apply -f $MANIFESTS/ingress.yaml
+
+# Wait for ingress controller to be ready
+echo "Waiting for Ingress to be configured..."
+sleep 30
+echo "Ingress deployed!"
+echo ""
+
+echo "=========================================="
+echo "Step 3: Deploying Train-Ticket Databases (Part 1)"
+echo "=========================================="
+microk8s kubectl -n $NAMESPACE apply -f $MANIFESTS/ts-deployment-part1.yml
+echo "Waiting for databases to initialize..."
+sleep 45
+echo ""
+
+echo "=========================================="
+echo "Step 4: Deploying Train-Ticket Services (Part 2)"
+echo "=========================================="
+microk8s kubectl -n $NAMESPACE apply -f $MANIFESTS/ts-deployment-part2.yml
+echo "Waiting for services to start..."
+sleep 45
+echo ""
+
+echo "=========================================="
+echo "Step 5: Deploying Train-Ticket Services (Part 3)"
+echo "=========================================="
+microk8s kubectl -n $NAMESPACE apply -f $MANIFESTS/ts-deployment-part3.yml
+echo "Waiting for final services to start..."
+sleep 30
+echo ""
+
+echo "=========================================="
+echo "Train-Ticket Deployment Complete!"
+echo "=========================================="
+echo ""
+echo "Checking pod status in namespace: $NAMESPACE"
+echo ""
+microk8s kubectl -n $NAMESPACE get pods
+echo ""
+echo "To check service status, run:"
+echo "  microk8s kubectl -n $NAMESPACE get svc"
+echo ""
+echo "To access the application, use: http://<public-ip>/"
+echo ""
+echo "Note: It may take several minutes for all pods to reach Running state."
+echo "      You can monitor progress with: microk8s kubectl -n $NAMESPACE get pods -w"
