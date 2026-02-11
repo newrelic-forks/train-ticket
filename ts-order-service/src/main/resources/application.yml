@@ -23,3 +23,27 @@ spring:
 
 swagger:
   controllerPackage: order.controller
+
+# New Relic Configuration
+newrelic:
+  config:
+    license_key: ${NEW_RELIC_LICENSE_KEY:}
+    app_name: ${NEW_RELIC_APP_NAME:ts-order-service}
+    environment: ${NEW_RELIC_ENVIRONMENT:development}
+
+# Management endpoints for New Relic monitoring
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      newrelic:
+        enabled: true
+        api-key: ${NEW_RELIC_LICENSE_KEY:}
+        account-id: ${NEW_RELIC_ACCOUNT_ID:}
+        uri: https://metric-api.newrelic.com/metric/v1
