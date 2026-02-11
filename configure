@@ -91,12 +91,6 @@ if header:
         browserkey = False
         print("Invalid, please try again")
 
-    print("\nDoes the following information look correct?\n")
-    print(f"New Relic INGEST - LICENSE key: {bold}{licensekey}{unbold}")
-    print(f"            New Relic USER key: {bold}{apikey}{unbold}")
-    print(f"          New Relic ACCOUNT ID: {bold}{accountid}{unbold}")
-    print(f"              New Relic REGION: {bold}{region}{unbold}")
-    print(f"         New Relic BROWSER key: {bold}{browserkey}{unbold}")
     print("\n")
     confirm = False
     while confirm is False:
