@@ -171,7 +171,11 @@ if not os.path.exists(f"{base_dir}/status_nr_k8s_done"):
 if not os.path.exists(f"{base_dir}/status_microservices_deployed"):
     print("\nDeploying Train-Ticket microservices to Kubernetes cluster")
     os.chdir(base_dir)
-    result = os.system("./deploy")
+
+    # Export environment variables for deploy script to use
+    deploy_cmd = f"NEW_RELIC_LICENSE_KEY={os.environ['NEW_RELIC_LICENSE_KEY']} NEW_RELIC_BROWSER_KEY={os.environ['NEW_RELIC_BROWSER_KEY']} ./deploy"
+    result = os.system(deploy_cmd)
+
     if result == 0:
         print("Deployment of microservices successful")
         open(f"{base_dir}/status_microservices_deployed", "w").close()
@@ -193,10 +197,6 @@ else:
     print("Please investigate the issue and re-run this process")
     sys.exit(1)
 
-os.environ["TF_VAR_NEW_RELIC_REGION"] = os.environ["NEW_RELIC_REGION"]
-os.environ["TF_VAR_NEW_RELIC_ACCOUNT_ID"] = os.environ["NEW_RELIC_ACCOUNT_ID"]
-os.environ["TF_VAR_NEW_RELIC_API_KEY"] = os.environ["NEW_RELIC_API_KEY"]
-
 # Setup New Relic Key Transactions
 #if not os.path.exists(f"{base_dir}/status_nr_key_transactions_done"):
 #   print("\nSetting up New Relic Key Transactions")
@@ -210,32 +210,6 @@ os.environ["TF_VAR_NEW_RELIC_API_KEY"] = os.environ["NEW_RELIC_API_KEY"]
 #        print("Please investigate the issue and re-run this process")
 #        os.chdir(base_dir)
 #        sys.exit(1)
-
-# Setup New Relic with Terraform
-if not os.path.exists(f"{base_dir}/status_nr_terraform_init_done"):
-    print("\nSetting up New Relic Workloads, SLOs and Alerts with Terraform")
-    os.chdir(f"{base_dir}/terraform/config")
-    result = os.system("terraform init")
-    if result == 0:
-        print("Terraform init successful")
-        open(f"{base_dir}/status_nr_terraform_init_done", "w").close()
-    else:
-        print("Terraform init failed")
-        print("Please investigate the issue and re-run this process")
-        os.chdir(base_dir)
-        sys.exit(1)
-
-if not os.path.exists(f"{base_dir}/status_nr_terraform_apply_done"):
-    os.chdir(f"{base_dir}/terraform/config")
-    result = os.system("terraform apply -auto-approve")
-    if result == 0:
-        print("Terraform apply successful")
-        open(f"{base_dir}/status_nr_terraform_apply_done", "w").close()
-    else:
-        print("Terraform apply failed")
-        print("Please investigate the issue and re-run this process")
-        os.chdir(base_dir)
-        sys.exit(1)
 
 # Touch file to indicate that setup has been completed
 open(f"{base_dir}/setupcomplete", "w").close()
