@@ -2,6 +2,9 @@ FROM eclipse-temurin:8-jre-focal
 
 RUN /bin/cp /usr/share/zoneinfo/America/New_York /etc/localtime && echo 'America/New_York' >/etc/timezone
 
+# Install unzip for New Relic agent download
+RUN apt-get update && apt-get install -y unzip && rm -rf /var/lib/apt/lists/*
+
 # Download New Relic Java Agent
 RUN mkdir -p /app/newrelic && \
     curl -O https://download.newrelic.com/newrelic/java-agent/newrelic-agent/current/newrelic-java.zip && \
