@@ -53,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    @Trace(operationName = "getSoldTickets")
+    @Trace(metricName = "getSoldTickets")
     public Response getSoldTickets(Seat seatRequest, HttpHeaders headers) {
         ArrayList<Order> list = orderRepository.findByTravelDateAndTrainNumber(seatRequest.getTravelDate(),
                 seatRequest.getTrainNumber());
@@ -74,7 +74,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Trace(operationName = "findOrderById")
+    @Trace(metricName = "findOrderById")
     public Response findOrderById(String id, HttpHeaders headers) {
         Optional<Order> op = orderRepository.findById(id);
         if (!op.isPresent()) {
@@ -88,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Trace(operationName = "createOrder")
+    @Trace(metricName = "createOrder")
     public Response create(Order order, HttpHeaders headers) {
         OrderServiceImpl.LOGGER.info("[create][Create Order][Ready to Create Order]");
         ArrayList<Order> accountOrders = orderRepository.findByAccountId(order.getAccountId());
@@ -100,12 +100,12 @@ public class OrderServiceImpl implements OrderService {
             order=orderRepository.save(order);
 
             // Add New Relic custom attributes and metrics
-            NewRelic.addCustomAttribute("orderId", order.getId());
-            NewRelic.addCustomAttribute("orderPrice", order.getPrice());
-            NewRelic.addCustomAttribute("trainNumber", order.getTrainNumber());
-            NewRelic.addCustomAttribute("orderStatus", order.getStatus());
-            NewRelic.recordMetric("Custom/Orders/Created", 1);
-            NewRelic.recordMetric("Custom/Orders/TotalValue", order.getPrice());
+            NewRelic.addCustomParameter("orderId", order.getId());
+            NewRelic.addCustomParameter("orderPrice", order.getPrice());
+            NewRelic.addCustomParameter("trainNumber", order.getTrainNumber());
+            NewRelic.addCustomParameter("orderStatus", order.getStatus());
+            NewRelic.recordMetric("Custom/Orders/Created", 1.0f);
+            NewRelic.recordMetric("Custom/Orders/TotalValue", Float.parseFloat(order.getPrice()));
 
             OrderServiceImpl.LOGGER.info("[create][Order Create Success][Order Price][OrderId:{} , Price: {}]",order.getId(),order.getPrice());
             return new Response<>(1, success, order);
@@ -354,7 +354,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Trace(operationName = "payOrder")
+    @Trace(metricName = "payOrder")
     public Response payOrder(String orderId, HttpHeaders headers) {
         Optional<Order> op = orderRepository.findById(orderId);
         if (!op.isPresent()) {
