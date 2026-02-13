@@ -46,7 +46,35 @@
 			<groupId>jakarta.validation</groupId>
 			<artifactId>jakarta.validation-api</artifactId>
 		</dependency>
-	</dependencies>
+	        <!-- New Relic Java Agent -->
+        <dependency>
+            <groupId>com.newrelic.agent.java</groupId>
+            <artifactId>newrelic-agent</artifactId>
+            <version>8.17.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.newrelic.agent.java</groupId>
+            <artifactId>newrelic-api</artifactId>
+            <version>8.17.0</version>
+        </dependency>
+        <!-- Spring Boot Actuator for metrics -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!-- Micrometer New Relic registry -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-new-relic</artifactId>
+        </dependency>
+        <!-- New Relic Logback extension for log forwarding -->
+        <dependency>
+            <groupId>com.newrelic.logging</groupId>
+            <artifactId>logback</artifactId>
+            <version>2.3</version>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
