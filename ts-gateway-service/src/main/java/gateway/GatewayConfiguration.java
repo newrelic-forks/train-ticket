@@ -19,6 +19,8 @@ import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import org.springframework.web.reactive.result.view.ViewResolver;
+import com.newrelic.api.agent.Trace;
+import com.newrelic.api.agent.NewRelic;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -72,9 +74,17 @@ public class GatewayConfiguration {
      * 配置初始化的限流参数
      */
     @PostConstruct
+    @Trace
     public void doInit() {
         initGatewayRules();
 //        initBlockHandlers();
+
+        // Add New Relic custom metrics for gateway initialization
+        try {
+            NewRelic.recordMetric("Custom/Gateway/Initialization", 1);
+        } catch (NoClassDefFoundError | Exception e) {
+            // New Relic agent not available at compile time, will be available at runtime
+        }
 
         System.out.println("===== begin to do flow control");
         System.out.println("only 20 requests per second can pass");
@@ -104,6 +114,7 @@ public class GatewayConfiguration {
      * <p>Sentinal 的流量控制只能基于 route 或自定义 api 分组，这里的限流还是基于 application.yml 中定义的路由（即每个服务）采用 QPS 流量控制策略。
      * 当前是简单的对转发到 admin-basic-info-service 服务的流量做了QPS限制，每秒不超过20个请求。</p>
      */
+    @Trace
     private void initGatewayRules() {
         Set<GatewayFlowRule> rules = new HashSet<>();
 
@@ -116,5 +127,12 @@ public class GatewayConfiguration {
         );
 
         GatewayRuleManager.loadRules(rules);
+
+        // Add New Relic custom metrics for rate limiting configuration
+        try {
+            NewRelic.recordMetric("Custom/Gateway/RateLimitRules/Count", rules.size());
+        } catch (NoClassDefFoundError | Exception e) {
+            // New Relic agent not available at compile time, will be available at runtime
+        }
     }
 }
