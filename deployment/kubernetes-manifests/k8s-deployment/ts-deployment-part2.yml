@@ -1267,6 +1267,11 @@ spec:
         image: newrelic/train-ticket:ts-order-service-0.0.4
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
