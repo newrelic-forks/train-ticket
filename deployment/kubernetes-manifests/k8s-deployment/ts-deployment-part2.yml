@@ -87,11 +87,11 @@ spec:
         - containerPort: 18767
         resources:
           requests:
-            cpu: 50m
-            memory: 100Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 18767
@@ -152,11 +152,11 @@ spec:
         - containerPort: 16112
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 16112
@@ -217,11 +217,11 @@ spec:
         - containerPort: 16113
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 16113
@@ -282,11 +282,11 @@ spec:
         - containerPort: 16114
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 16114
@@ -347,11 +347,11 @@ spec:
         - containerPort: 16115
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 16115
@@ -422,11 +422,11 @@ spec:
         - containerPort: 18888
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 18888
@@ -487,11 +487,11 @@ spec:
         - containerPort: 15680
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 15680
@@ -552,11 +552,11 @@ spec:
         - containerPort: 18885
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 18885
@@ -627,11 +627,11 @@ spec:
         - containerPort: 15679
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 15679
@@ -702,11 +702,11 @@ spec:
         - containerPort: 16110
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 16110
@@ -777,11 +777,11 @@ spec:
         - containerPort: 16111
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 16111
@@ -852,11 +852,11 @@ spec:
         - containerPort: 12347
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 12347
@@ -917,11 +917,11 @@ spec:
         - containerPort: 12386
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 12386
@@ -992,11 +992,11 @@ spec:
         - containerPort: 18856
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 18856
@@ -1067,11 +1067,11 @@ spec:
         - containerPort: 18673
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 18673
@@ -1142,11 +1142,11 @@ spec:
         - containerPort: 12340
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 12340
@@ -1200,11 +1200,11 @@ spec:
         - containerPort: 12862
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 12862
@@ -1271,11 +1271,11 @@ spec:
         - containerPort: 17853
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 17853
@@ -1346,11 +1346,11 @@ spec:
         - containerPort: 12032
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 12032
@@ -1421,11 +1421,11 @@ spec:
         - containerPort: 12031
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 12031
@@ -1496,11 +1496,11 @@ spec:
         - containerPort: 19001
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 19001
@@ -1561,11 +1561,11 @@ spec:
         - containerPort: 14569
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 14569
@@ -1626,11 +1626,11 @@ spec:
         - containerPort: 14568
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 14568
@@ -1701,11 +1701,11 @@ spec:
         - containerPort: 16579
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 16579
@@ -1766,11 +1766,11 @@ spec:
         - containerPort: 18886
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 18886
@@ -1831,11 +1831,11 @@ spec:
         - containerPort: 14578
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 14578
@@ -1906,11 +1906,11 @@ spec:
         - containerPort: 11178
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 11178
@@ -1971,11 +1971,11 @@ spec:
         - containerPort: 18898
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 18898
@@ -2046,11 +2046,11 @@ spec:
         - containerPort: 11188
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 11188
@@ -2121,11 +2121,11 @@ spec:
         - containerPort: 12342
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 12342
@@ -2196,11 +2196,11 @@ spec:
         - containerPort: 12345
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 12345
@@ -2264,11 +2264,11 @@ spec:
         - containerPort: 16108
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 16108
@@ -2339,11 +2339,11 @@ spec:
         - containerPort: 14567
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 14567
@@ -2414,11 +2414,11 @@ spec:
         - containerPort: 16346
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 16346
@@ -2479,11 +2479,11 @@ spec:
         - containerPort: 14322
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 14322
@@ -2554,11 +2554,11 @@ spec:
         - containerPort: 12346
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 12346
@@ -2619,11 +2619,11 @@ spec:
         - containerPort: 15678
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 15678
@@ -2687,11 +2687,11 @@ spec:
         - containerPort: 16101
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 16101
@@ -2745,11 +2745,11 @@ spec:
         - containerPort: 17001
         resources:
           requests:
-            cpu: 50m
-            memory: 200Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 17001
@@ -3294,11 +3294,11 @@ spec:
         - containerPort: 18808
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 18808
@@ -3369,11 +3369,11 @@ spec:
         - containerPort: 18957
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 18957
@@ -3444,11 +3444,11 @@ spec:
         - containerPort: 18855
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 18855
@@ -3519,11 +3519,11 @@ spec:
         - containerPort: 19999
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 19999
@@ -3594,11 +3594,11 @@ spec:
         - containerPort: 17525
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 200m
-            memory: 500Mi
+            cpu: 500m
+            memory: 768Mi
         startupProbe:
           tcpSocket:
             port: 17525
