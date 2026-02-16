@@ -131,7 +131,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-admin-order-service
         image: newrelic/train-ticket:ts-admin-order-service-0.0.5
@@ -332,7 +332,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-admin-user-service
         image: newrelic/train-ticket:ts-admin-user-service-0.0.5
@@ -543,7 +543,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-cancel-service
         image: newrelic/train-ticket:ts-cancel-service-0.0.5
@@ -764,7 +764,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-consign-service
         image: newrelic/train-ticket:ts-consign-service-0.0.5
@@ -1139,7 +1139,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-auth-service
         image: newrelic/train-ticket:ts-auth-service-0.0.5
@@ -1349,7 +1349,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-order-other-service
         image: newrelic/train-ticket:ts-order-other-service-0.0.5
@@ -1580,7 +1580,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-preserve-other-service
         image: newrelic/train-ticket:ts-preserve-other-service-0.0.5
@@ -1791,7 +1791,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-rebook-service
         image: newrelic/train-ticket:ts-rebook-service-0.0.5
@@ -2002,7 +2002,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-seat-service
         image: newrelic/train-ticket:ts-seat-service-0.0.5
@@ -2223,7 +2223,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-station-service
         image: newrelic/train-ticket:ts-station-service-0.0.5
@@ -3339,7 +3339,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-delivery-service
         image: newrelic/train-ticket:ts-delivery-service-0.0.5
