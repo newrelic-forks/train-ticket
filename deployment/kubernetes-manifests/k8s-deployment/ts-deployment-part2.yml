@@ -87,10 +87,12 @@ spec:
         - containerPort: 18767
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -152,10 +154,12 @@ spec:
         - containerPort: 16112
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -217,10 +221,12 @@ spec:
         - containerPort: 16113
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -282,10 +288,12 @@ spec:
         - containerPort: 16114
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -347,10 +355,12 @@ spec:
         - containerPort: 16115
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -422,10 +432,12 @@ spec:
         - containerPort: 18888
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -487,10 +499,12 @@ spec:
         - containerPort: 15680
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -552,10 +566,12 @@ spec:
         - containerPort: 18885
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -627,10 +643,12 @@ spec:
         - containerPort: 15679
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -702,10 +720,12 @@ spec:
         - containerPort: 16110
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -777,10 +797,12 @@ spec:
         - containerPort: 16111
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -852,10 +874,12 @@ spec:
         - containerPort: 12347
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -917,10 +941,12 @@ spec:
         - containerPort: 12386
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -992,10 +1018,12 @@ spec:
         - containerPort: 18856
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -1067,10 +1095,12 @@ spec:
         - containerPort: 18673
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -1142,10 +1172,12 @@ spec:
         - containerPort: 12340
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -1200,10 +1232,12 @@ spec:
         - containerPort: 12862
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -1271,10 +1305,12 @@ spec:
         - containerPort: 17853
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -1346,10 +1382,12 @@ spec:
         - containerPort: 12032
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -1421,10 +1459,12 @@ spec:
         - containerPort: 12031
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -1496,10 +1536,12 @@ spec:
         - containerPort: 19001
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -1561,10 +1603,12 @@ spec:
         - containerPort: 14569
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -1626,10 +1670,12 @@ spec:
         - containerPort: 14568
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -1701,10 +1747,12 @@ spec:
         - containerPort: 16579
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -1766,10 +1814,12 @@ spec:
         - containerPort: 18886
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -1831,10 +1881,12 @@ spec:
         - containerPort: 14578
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -1906,10 +1958,12 @@ spec:
         - containerPort: 11178
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -1971,10 +2025,12 @@ spec:
         - containerPort: 18898
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -2046,10 +2102,12 @@ spec:
         - containerPort: 11188
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -2121,10 +2179,12 @@ spec:
         - containerPort: 12342
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -2196,10 +2256,12 @@ spec:
         - containerPort: 12345
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -2264,10 +2326,12 @@ spec:
         - containerPort: 16108
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -2339,10 +2403,12 @@ spec:
         - containerPort: 14567
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -2414,10 +2480,12 @@ spec:
         - containerPort: 16346
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -2479,10 +2547,12 @@ spec:
         - containerPort: 14322
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -2554,10 +2624,12 @@ spec:
         - containerPort: 12346
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -2619,10 +2691,12 @@ spec:
         - containerPort: 15678
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -2687,10 +2761,12 @@ spec:
         - containerPort: 16101
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -2745,10 +2821,12 @@ spec:
         - containerPort: 17001
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -3294,10 +3372,12 @@ spec:
         - containerPort: 18808
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -3369,10 +3449,12 @@ spec:
         - containerPort: 18957
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -3444,10 +3526,12 @@ spec:
         - containerPort: 18855
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -3519,10 +3603,12 @@ spec:
         - containerPort: 19999
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -3594,10 +3680,12 @@ spec:
         - containerPort: 17525
         resources:
           requests:
-            cpu: 100m
-            memory: 256Mi
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
+            memory: 384Mi
           limits:
-            cpu: 300m
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -3729,7 +3817,8 @@ spec:
         - containerPort: 18888
         resources:
           requests:
-            cpu: 100m
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
             memory: 512Mi
           limits:
             cpu: 1000m
