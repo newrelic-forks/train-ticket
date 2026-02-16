@@ -95,9 +95,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 18767
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18767
@@ -160,9 +160,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 16112
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16112
@@ -225,9 +225,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 16113
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16113
@@ -290,9 +290,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 16114
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16114
@@ -355,9 +355,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 16115
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16115
@@ -430,9 +430,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 18888
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18888
@@ -495,9 +495,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 15680
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 15680
@@ -560,9 +560,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 18885
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18885
@@ -635,9 +635,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 15679
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 15679
@@ -710,9 +710,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 16110
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16110
@@ -785,9 +785,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 16111
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16111
@@ -860,9 +860,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 12347
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12347
@@ -925,9 +925,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 12386
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12386
@@ -1000,9 +1000,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 18856
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18856
@@ -1075,9 +1075,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 18673
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18673
@@ -1150,9 +1150,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 12340
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12340
@@ -1208,9 +1208,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 12862
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12862
@@ -1279,9 +1279,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 17853
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 17853
@@ -1354,9 +1354,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 12032
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12032
@@ -1429,9 +1429,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 12031
-          initialDelaySeconds: 90
+          initialDelaySeconds: 120
           failureThreshold: 60
-          periodSeconds: 5
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12031
@@ -1504,9 +1504,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 19001
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 19001
@@ -1569,9 +1569,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 14569
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 14569
@@ -1634,9 +1634,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 14568
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 14568
@@ -1709,9 +1709,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 16579
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16579
@@ -1774,9 +1774,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 18886
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18886
@@ -1839,9 +1839,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 14578
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 14578
@@ -1914,9 +1914,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 11178
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 11178
@@ -1979,9 +1979,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 18898
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18898
@@ -2054,9 +2054,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 11188
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 11188
@@ -2129,9 +2129,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 12342
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12342
@@ -2204,9 +2204,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 12345
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12345
@@ -2272,9 +2272,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 16108
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16108
@@ -2347,9 +2347,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 14567
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 14567
@@ -2422,9 +2422,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 16346
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16346
@@ -2487,9 +2487,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 14322
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 14322
@@ -2562,9 +2562,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 12346
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12346
@@ -2627,9 +2627,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 15678
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 15678
@@ -2695,9 +2695,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 16101
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16101
@@ -2753,9 +2753,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 17001
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 17001
@@ -3302,9 +3302,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 18808
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18808
@@ -3377,9 +3377,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 18957
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18957
@@ -3452,9 +3452,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 18855
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18855
@@ -3527,9 +3527,9 @@ spec:
         startupProbe:
           tcpSocket:
             port: 19999
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 19999
@@ -3594,11 +3594,11 @@ spec:
         - containerPort: 17525
         resources:
           requests:
-            cpu: 200m
-            memory: 512Mi
+            cpu: 100m
+            memory: 256Mi
           limits:
-            cpu: 1000m
-            memory: 1Gi
+            cpu: 300m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 17525
