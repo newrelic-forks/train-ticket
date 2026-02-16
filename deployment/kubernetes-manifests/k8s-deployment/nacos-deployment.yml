@@ -62,7 +62,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: mysql
         image: mysql:5.7
@@ -241,7 +241,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       initContainers:
       # Initialize Nacos database schema in MySQL
       - name: init-mysql

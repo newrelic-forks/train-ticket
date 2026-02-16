@@ -31,7 +31,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-assurance-mysql
         image: mysql:5.7
@@ -96,7 +96,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-config-mysql
         image: mysql:5.7
@@ -161,7 +161,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-consign-mysql
         image: mysql:5.7
@@ -226,7 +226,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-consign-price-mysql
         image: mysql:5.7
@@ -291,7 +291,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-contacts-mysql
         image: mysql:5.7
@@ -356,7 +356,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-delivery-mysql
         image: mysql:5.7
@@ -421,7 +421,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-food-mysql
         image: mysql:5.7
@@ -486,7 +486,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-food-delivery-mysql
         image: mysql:5.7
@@ -551,7 +551,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-inside-payment-mysql
         image: mysql:5.7
@@ -616,7 +616,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-notification-mysql
         image: mysql:5.7
@@ -681,7 +681,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-order-mysql
         image: mysql:5.7
@@ -746,7 +746,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-order-other-mysql
         image: mysql:5.7
@@ -811,7 +811,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-payment-mysql
         image: mysql:5.7
@@ -876,7 +876,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-price-mysql
         image: mysql:5.7
@@ -941,7 +941,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-route-mysql
         image: mysql:5.7
@@ -1006,7 +1006,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-security-mysql
         image: mysql:5.7
@@ -1071,7 +1071,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-station-mysql
         image: mysql:5.7
@@ -1136,7 +1136,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-station-food-mysql
         image: mysql:5.7
@@ -1201,7 +1201,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-ticket-office-mysql
         image: mysql:5.7
@@ -1266,7 +1266,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-train-mysql
         image: mysql:5.7
@@ -1331,7 +1331,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-train-food-mysql
         image: mysql:5.7
@@ -1396,7 +1396,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-travel-mysql
         image: mysql:5.7
@@ -1461,7 +1461,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-travel2-mysql
         image: mysql:5.7
@@ -1526,7 +1526,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-wait-order-mysql
         image: mysql:5.7
@@ -1596,7 +1596,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-auth-mysql
         image: mysql:5.7
@@ -1661,7 +1661,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-user-mysql
         image: mysql:5.7
@@ -1726,7 +1726,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-ticket-office-mongo
         image: mongo
@@ -1767,7 +1767,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node1
+                - node5
       containers:
       - name: ts-food-map-mongo
         image: mongo
