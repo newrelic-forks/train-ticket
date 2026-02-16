@@ -3602,16 +3602,16 @@ spec:
         startupProbe:
           tcpSocket:
             port: 17525
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 17525
-          initialDelaySeconds: 120
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 3
+          initialDelaySeconds: 180
+          periodSeconds: 15
+          timeoutSeconds: 10
+          failureThreshold: 5
 ---
 # =============================================================================
 # Services
