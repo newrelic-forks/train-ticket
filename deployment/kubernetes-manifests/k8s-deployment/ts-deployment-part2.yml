@@ -1034,7 +1034,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node2
+                - node6
       containers:
       - name: ts-inside-payment-service
         image: newrelic/train-ticket:ts-inside-payment-service-0.0.5
@@ -1388,7 +1388,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node4
+                - node6
       containers:
       - name: ts-order-service
         image: newrelic/train-ticket:ts-order-service-0.0.5
@@ -1463,7 +1463,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node2
+                - node6
       containers:
       - name: ts-payment-service
         image: newrelic/train-ticket:ts-payment-service-0.0.5
@@ -2088,7 +2088,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node2
+                - node6
       containers:
       - name: ts-user-service
         image: newrelic/train-ticket:ts-user-service-0.0.5
@@ -3700,7 +3700,7 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node2
+                - node6
       containers:
       - name: ts-gateway-service
         image: newrelic/train-ticket:ts-gateway-service-0.0.5
