@@ -1,3 +1,5 @@
+import newrelic.agent
+
 from flask import Flask, request, jsonify
 import numpy as np
 import urllib
@@ -11,6 +13,9 @@ from face_detect import check
 
 app = Flask(__name__)
 
+# Initialize New Relic
+newrelic.agent.initialize()
+
 # TODO:
 # ~~1. 获取图片~~
 #  ~2. 检测图片是否ok
@@ -23,6 +28,7 @@ receive_path = r"./received/"
 
 
 @app.route('/api/v1/avatar', methods=["POST"])
+@newrelic.agent.function_trace()
 def hello():
     # receive file
     data = request.get_data().decode('utf-8')

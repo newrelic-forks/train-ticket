@@ -10,6 +10,7 @@ RUN pip install cryptography
 RUN pip install --no-cache-dir -r requirements.txt
 
 ADD ./server.py /app/
-CMD [ "python", "server.py" ]
+ADD ./newrelic.ini /app/
+CMD [ "newrelic-admin", "run-program", "python", "server.py" ]
 
 EXPOSE 16101

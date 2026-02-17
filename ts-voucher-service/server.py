@@ -1,4 +1,6 @@
 #coding:utf-8
+import newrelic.agent
+
 import tornado.ioloop
 import tornado.web
 import json
@@ -7,10 +9,14 @@ import pymysql
 import urllib
 import urllib.request
 
+# Initialize New Relic
+newrelic.agent.initialize()
+
 mysql_config = {}
 
 class GetVoucherHandler(tornado.web.RequestHandler):
 
+    @newrelic.agent.function_trace()
     def post(self, *args, **kwargs):
         #Analyze the data transferred: order id and model indicator (0 stands for ordinary, 1 stands for bullet trains and high-speed trains)
         data = json.loads(self.request.body)
@@ -43,6 +49,7 @@ class GetVoucherHandler(tornado.web.RequestHandler):
         else:
             self.write(queryVoucher)
 
+    @newrelic.agent.function_trace()
     def queryOrderByIdAndType(self,orderId,type):
         # Because nacos-sdk-python does not support nacos 2.x yet, we still use environment variables
         # to set order-service url.
@@ -65,6 +72,7 @@ class GetVoucherHandler(tornado.web.RequestHandler):
         response = urllib.request.urlopen(req)# Send page request
         return json.loads(response.read())# Gets the page information returned by the server
 
+    @newrelic.agent.function_trace()
     def fetchVoucherByOrderId(self,orderId):
         #Check the voucher for reimbursement for orderId from the voucher table
         global mysql_config

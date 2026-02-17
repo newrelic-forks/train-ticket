@@ -27,6 +27,8 @@ def load_env(filename):
                     os.environ["NEW_RELIC_API_KEY"] = line.split("=")[1].strip()
                 elif line.startswith("NEW_RELIC_BROWSER_KEY"):
                     os.environ["NEW_RELIC_BROWSER_KEY"] = line.split("=")[1].strip()
+                elif line.startswith("NEW_RELIC_BROWSER_APP_ID"):
+                    os.environ["NEW_RELIC_BROWSER_APP_ID"] = line.split("=")[1].strip()
                 elif line.startswith("NEW_RELIC_ACCOUNT_ID"):
                     os.environ["NEW_RELIC_ACCOUNT_ID"] = line.split("=")[1].strip()
                 elif line.startswith("NEW_RELIC_REGION"):
@@ -40,8 +42,9 @@ if os.path.exists(conf_file):
     apikey = os.getenv("NEW_RELIC_API_KEY")
     region = os.getenv("NEW_RELIC_REGION")
     browserkey = os.getenv("NEW_RELIC_BROWSER_KEY")
+    browserappid = os.getenv("NEW_RELIC_BROWSER_APP_ID")
 
-    if licensekey and accountid and apikey and region and browserkey:
+    if licensekey and accountid and apikey and region and browserkey and browserappid:
         print(f"\n{bold}Using existing .conf.env file. Skipping user interaction...{unbold}")
         header = False
     else:
@@ -57,6 +60,7 @@ if header:
     apikey = False
     region = False
     browserkey = False
+    browserappid = False
 
     print("\nPlease enter the following information to help us configure your Train-Ticket environment...\n")
 
@@ -90,6 +94,12 @@ if header:
             break
         browserkey = False
         print("Invalid, please try again")
+    while browserappid is False:
+        browserappid = input(f"New Relic {bold}BROWSER APP ID{unbold}: ").strip()
+        if browserappid.isdigit():
+            break
+        browserappid = False
+        print("Invalid, please try again")
 
     print("\n")
     confirm = False
@@ -109,6 +119,7 @@ if header:
         f.write(f"NEW_RELIC_ACCOUNT_ID={accountid}\n")
         f.write(f"NEW_RELIC_REGION={region}\n")
         f.write(f"NEW_RELIC_BROWSER_KEY={browserkey}\n")
+        f.write(f"NEW_RELIC_BROWSER_APP_ID={browserappid}\n")
     print(f"\n{bold}Starting New Relic setup for Train-Ticket...{unbold}")
 
 # Reload environment variables
@@ -167,7 +178,7 @@ if not os.path.exists(f"{base_dir}/status_microservices_deployed"):
     os.chdir(base_dir)
 
     # Export environment variables for deploy script to use
-    deploy_cmd = f"NEW_RELIC_LICENSE_KEY={os.environ['NEW_RELIC_LICENSE_KEY']} NEW_RELIC_BROWSER_KEY={os.environ['NEW_RELIC_BROWSER_KEY']} ./deploy"
+    deploy_cmd = f"NEW_RELIC_LICENSE_KEY={os.environ['NEW_RELIC_LICENSE_KEY']} NEW_RELIC_BROWSER_KEY={os.environ['NEW_RELIC_BROWSER_KEY']} NEW_RELIC_BROWSER_APP_ID={os.environ['NEW_RELIC_BROWSER_APP_ID']} ./deploy"
     result = os.system(deploy_cmd)
 
     if result == 0:

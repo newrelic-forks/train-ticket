@@ -15,6 +15,7 @@
     "mongo": "^0.1.0",
     "morgan": "~1.9.0",
     "mysql": "^2.18.1",
-    "serve-favicon": "~2.4.5"
+    "serve-favicon": "~2.4.5",
+    "newrelic": "^11.7.0"
   }
 }

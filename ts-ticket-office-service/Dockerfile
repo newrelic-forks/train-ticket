@@ -12,6 +12,7 @@ ADD ./public /app/public
 
 ADD ./bin /app/bin
 ADD ./app.js /app/
+ADD ./newrelic.js /app/
 CMD [ "npm", "start" ]
 
 EXPOSE 16108
