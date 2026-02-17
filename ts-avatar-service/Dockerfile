@@ -17,6 +17,6 @@ RUN pip install --upgrade pip setuptools wheel
 
 RUN pip install -r requirements.txt
 
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:17001", "app:app"]
+CMD ["newrelic-admin", "run-program", "gunicorn", "-w", "4", "-b", "0.0.0.0:17001", "app:app"]
 
 EXPOSE 17001

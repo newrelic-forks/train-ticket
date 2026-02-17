@@ -1222,6 +1222,11 @@ spec:
         image: newrelic/train-ticket:ts-news-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -2306,6 +2311,11 @@ spec:
         image: newrelic/train-ticket:ts-ticket-office-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -2741,6 +2751,11 @@ spec:
         image: newrelic/train-ticket:ts-voucher-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -2811,6 +2826,11 @@ spec:
         image: newrelic/train-ticket:ts-avatar-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR

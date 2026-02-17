@@ -1,7 +1,10 @@
 package main
 
 import (
+	"os"
+	"log"
 	"github.com/hoisie/web"
+	"github.com/newrelic/go-agent/v3/newrelic"
 	//"labix.org/v2/mgo"
 	//"labix.org/v2/mgo/bson"
 	//"fmt"
@@ -40,6 +43,16 @@ type News struct {
 }
 
 func hello(val string) string {
+	// Start New Relic transaction if app is initialized
+	if app != nil {
+		txn := app.StartTransaction("GET /news")
+		defer txn.End()
+
+		// Add custom attributes
+		txn.AddAttribute("service", "ts-news-service")
+		txn.AddAttribute("endpoint", "/news")
+	}
+
 	var str = []byte(`[
                        {"Title": "News Service Complete", "Content": "Congratulations:Your News Service Complete"},
                        {"Title": "Total Ticket System Complete", "Content": "Just a total test"}
@@ -47,7 +60,25 @@ func hello(val string) string {
 	return string(str)
 }
 
+var app *newrelic.Application
+
 func main() {
+	// Initialize New Relic
+	var err error
+	app, err = newrelic.NewApplication(
+		newrelic.ConfigAppName("ts-news-service"),
+		newrelic.ConfigLicense(os.Getenv("NEW_RELIC_LICENSE_KEY")),
+		newrelic.ConfigDistributedTracerEnabled(true),
+		newrelic.ConfigLogger(newrelic.NewLogger(os.Stdout)),
+	)
+	if err != nil {
+		log.Printf("Failed to initialize New Relic: %v", err)
+		// Continue without New Relic if initialization fails
+	} else {
+		log.Println("New Relic agent initialized successfully")
+	}
+
 	web.Get("/(.*)", hello)
+	log.Println("Starting ts-news-service on :12862")
 	web.Run("0.0.0.0:12862")
 }
