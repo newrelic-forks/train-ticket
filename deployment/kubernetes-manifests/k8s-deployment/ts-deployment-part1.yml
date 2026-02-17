@@ -6,7 +6,24 @@
 # ============================================================================
 # MySQL Deployments
 # ============================================================================
-
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: newrelic-mysql-config
+  namespace: store
+data:
+  mysql-config.yml: |
+    integrations:
+      - name: nri-mysql
+        config:
+          hostname: localhost
+          port: 3306
+          username: root
+          password: root
+          remote_monitoring: true
+          metrics: true
+          inventory: true
+          events: true
 ---
 apiVersion: apps/v1
 kind: Deployment

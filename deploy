@@ -22,7 +22,7 @@ if [ $? -eq 1 ]; then
     exit 1
   fi
   echo Creating NEW_RELIC_BROWSER_KEY secret
-  microk8s kubectl -n $NAMESPACE create secret generic newrelic-browser-key --from-literal=new-relic-browser-key=$NEW_RELIC_BROWSER_KEY --from-literal=new-relic-browser-app-id=$NEW_RELIC_BROWSER_APP_ID
+  microk8s kubectl -n $NAMESPACE create secret generic newrelic-browser-key --from-literal=new-relic-browser-key=$NEW_RELIC_BROWSER_KEY
 fi
 
 # Create new relic license key if it does not exist
