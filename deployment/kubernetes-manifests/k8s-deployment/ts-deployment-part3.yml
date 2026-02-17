@@ -33,10 +33,7 @@ spec:
               name: newrelic-browser-key
               key: new-relic-browser-key
         - name: NEW_RELIC_BROWSER_APP_ID
-          valueFrom:
-            secretKeyRef:
-              name: newrelic-browser-key
-              key: new-relic-browser-app-id
+          value: "601623010"
         - name: NEW_RELIC_ACCOUNT_ID
           value: "1"
         - name: NEW_RELIC_BROWSER_ENABLED
