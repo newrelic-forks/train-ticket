@@ -67,7 +67,7 @@ spec:
                 - node2
       containers:
       - name: ts-admin-basic-info-service
-        image: newrelic/train-ticket:ts-admin-basic-info-service-0.0.5
+        image: newrelic/train-ticket:ts-admin-basic-info-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -134,7 +134,7 @@ spec:
                 - node7
       containers:
       - name: ts-admin-order-service
-        image: newrelic/train-ticket:ts-admin-order-service-0.0.5
+        image: newrelic/train-ticket:ts-admin-order-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -201,7 +201,7 @@ spec:
                 - node4
       containers:
       - name: ts-admin-route-service
-        image: newrelic/train-ticket:ts-admin-route-service-0.0.5
+        image: newrelic/train-ticket:ts-admin-route-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -268,7 +268,7 @@ spec:
                 - node2
       containers:
       - name: ts-admin-travel-service
-        image: newrelic/train-ticket:ts-admin-travel-service-0.0.5
+        image: newrelic/train-ticket:ts-admin-travel-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -335,7 +335,7 @@ spec:
                 - node7
       containers:
       - name: ts-admin-user-service
-        image: newrelic/train-ticket:ts-admin-user-service-0.0.5
+        image: newrelic/train-ticket:ts-admin-user-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -402,7 +402,7 @@ spec:
                 - node4
       containers:
       - name: ts-assurance-service
-        image: newrelic/train-ticket:ts-assurance-service-0.0.5
+        image: newrelic/train-ticket:ts-assurance-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -479,7 +479,7 @@ spec:
                 - node2
       containers:
       - name: ts-basic-service
-        image: newrelic/train-ticket:ts-basic-service-0.0.5
+        image: newrelic/train-ticket:ts-basic-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -546,7 +546,7 @@ spec:
                 - node7
       containers:
       - name: ts-cancel-service
-        image: newrelic/train-ticket:ts-cancel-service-0.0.5
+        image: newrelic/train-ticket:ts-cancel-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -613,7 +613,7 @@ spec:
                 - node4
       containers:
       - name: ts-config-service
-        image: newrelic/train-ticket:ts-config-service-0.0.5
+        image: newrelic/train-ticket:ts-config-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -690,7 +690,7 @@ spec:
                 - node2
       containers:
       - name: ts-consign-price-service
-        image: newrelic/train-ticket:ts-consign-price-service-0.0.5
+        image: newrelic/train-ticket:ts-consign-price-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -767,7 +767,7 @@ spec:
                 - node7
       containers:
       - name: ts-consign-service
-        image: newrelic/train-ticket:ts-consign-service-0.0.5
+        image: newrelic/train-ticket:ts-consign-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -844,7 +844,7 @@ spec:
                 - node4
       containers:
       - name: ts-contacts-service
-        image: newrelic/train-ticket:ts-contacts-service-0.0.5
+        image: newrelic/train-ticket:ts-contacts-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -921,7 +921,7 @@ spec:
                 - node2
       containers:
       - name: ts-execute-service
-        image: newrelic/train-ticket:ts-execute-service-0.0.5
+        image: newrelic/train-ticket:ts-execute-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -988,7 +988,7 @@ spec:
                 - node4
       containers:
       - name: ts-food-service
-        image: newrelic/train-ticket:ts-food-service-0.0.5
+        image: newrelic/train-ticket:ts-food-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -1065,7 +1065,7 @@ spec:
                 - node6
       containers:
       - name: ts-inside-payment-service
-        image: newrelic/train-ticket:ts-inside-payment-service-0.0.5
+        image: newrelic/train-ticket:ts-inside-payment-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -1142,7 +1142,7 @@ spec:
                 - node7
       containers:
       - name: ts-auth-service
-        image: newrelic/train-ticket:ts-auth-service-0.0.5
+        image: newrelic/train-ticket:ts-auth-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -1219,7 +1219,7 @@ spec:
                 - node4
       containers:
       - name: ts-news-service
-        image: newrelic/train-ticket:ts-news-service-0.0.5
+        image: newrelic/train-ticket:ts-news-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -1284,7 +1284,7 @@ spec:
                 - node2
       containers:
       - name: ts-notification-service
-        image: newrelic/train-ticket:ts-notification-service-0.0.5
+        image: newrelic/train-ticket:ts-notification-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -1357,7 +1357,7 @@ spec:
                 - node7
       containers:
       - name: ts-order-other-service
-        image: newrelic/train-ticket:ts-order-other-service-0.0.5
+        image: newrelic/train-ticket:ts-order-other-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -1434,7 +1434,7 @@ spec:
                 - node6
       containers:
       - name: ts-order-service
-        image: newrelic/train-ticket:ts-order-service-0.0.5
+        image: newrelic/train-ticket:ts-order-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -1511,7 +1511,7 @@ spec:
                 - node6
       containers:
       - name: ts-payment-service
-        image: newrelic/train-ticket:ts-payment-service-0.0.5
+        image: newrelic/train-ticket:ts-payment-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -1588,7 +1588,7 @@ spec:
                 - node7
       containers:
       - name: ts-preserve-other-service
-        image: newrelic/train-ticket:ts-preserve-other-service-0.0.5
+        image: newrelic/train-ticket:ts-preserve-other-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -1655,7 +1655,7 @@ spec:
                 - node4
       containers:
       - name: ts-preserve-service
-        image: newrelic/train-ticket:ts-preserve-service-0.0.5
+        image: newrelic/train-ticket:ts-preserve-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -1722,7 +1722,7 @@ spec:
                 - node2
       containers:
       - name: ts-price-service
-        image: newrelic/train-ticket:ts-price-service-0.0.5
+        image: newrelic/train-ticket:ts-price-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -1799,7 +1799,7 @@ spec:
                 - node7
       containers:
       - name: ts-rebook-service
-        image: newrelic/train-ticket:ts-rebook-service-0.0.5
+        image: newrelic/train-ticket:ts-rebook-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -1866,7 +1866,7 @@ spec:
                 - node4
       containers:
       - name: ts-route-plan-service
-        image: newrelic/train-ticket:ts-route-plan-service-0.0.5
+        image: newrelic/train-ticket:ts-route-plan-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -1933,7 +1933,7 @@ spec:
                 - node2
       containers:
       - name: ts-route-service
-        image: newrelic/train-ticket:ts-route-service-0.0.5
+        image: newrelic/train-ticket:ts-route-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -2010,7 +2010,7 @@ spec:
                 - node7
       containers:
       - name: ts-seat-service
-        image: newrelic/train-ticket:ts-seat-service-0.0.5
+        image: newrelic/train-ticket:ts-seat-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -2077,7 +2077,7 @@ spec:
                 - node4
       containers:
       - name: ts-security-service
-        image: newrelic/train-ticket:ts-security-service-0.0.5
+        image: newrelic/train-ticket:ts-security-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -2154,7 +2154,7 @@ spec:
                 - node6
       containers:
       - name: ts-user-service
-        image: newrelic/train-ticket:ts-user-service-0.0.5
+        image: newrelic/train-ticket:ts-user-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -2231,7 +2231,7 @@ spec:
                 - node7
       containers:
       - name: ts-station-service
-        image: newrelic/train-ticket:ts-station-service-0.0.5
+        image: newrelic/train-ticket:ts-station-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -2308,7 +2308,7 @@ spec:
                 - node4
       containers:
       - name: ts-ticket-office-service
-        image: newrelic/train-ticket:ts-ticket-office-service-0.0.5
+        image: newrelic/train-ticket:ts-ticket-office-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -2383,7 +2383,7 @@ spec:
                 - node3
       containers:
       - name: ts-train-service
-        image: newrelic/train-ticket:ts-train-service-0.0.5
+        image: newrelic/train-ticket:ts-train-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -2460,7 +2460,7 @@ spec:
                 - node4
       containers:
       - name: ts-travel2-service
-        image: newrelic/train-ticket:ts-travel2-service-0.0.5
+        image: newrelic/train-ticket:ts-travel2-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -2537,7 +2537,7 @@ spec:
                 - node2
       containers:
       - name: ts-travel-plan-service
-        image: newrelic/train-ticket:ts-travel-plan-service-0.0.5
+        image: newrelic/train-ticket:ts-travel-plan-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -2604,7 +2604,7 @@ spec:
                 - node3
       containers:
       - name: ts-travel-service
-        image: newrelic/train-ticket:ts-travel-service-0.0.5
+        image: newrelic/train-ticket:ts-travel-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -2681,7 +2681,7 @@ spec:
                 - node4
       containers:
       - name: ts-verification-code-service
-        image: newrelic/train-ticket:ts-verification-code-service-0.0.5
+        image: newrelic/train-ticket:ts-verification-code-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -2748,7 +2748,7 @@ spec:
                 - node2
       containers:
       - name: ts-voucher-service
-        image: newrelic/train-ticket:ts-voucher-service-0.0.5
+        image: newrelic/train-ticket:ts-voucher-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -2823,7 +2823,7 @@ spec:
                 - node3
       containers:
       - name: ts-avatar-service
-        image: newrelic/train-ticket:ts-avatar-service-0.0.5
+        image: newrelic/train-ticket:ts-avatar-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -3362,7 +3362,7 @@ spec:
                 - node7
       containers:
       - name: ts-delivery-service
-        image: newrelic/train-ticket:ts-delivery-service-0.0.5
+        image: newrelic/train-ticket:ts-delivery-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -3439,7 +3439,7 @@ spec:
                 - node3
       containers:
       - name: ts-food-delivery-service
-        image: newrelic/train-ticket:ts-food-delivery-service-0.0.5
+        image: newrelic/train-ticket:ts-food-delivery-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -3516,7 +3516,7 @@ spec:
                 - node3
       containers:
       - name: ts-station-food-service
-        image: newrelic/train-ticket:ts-station-food-service-0.0.5
+        image: newrelic/train-ticket:ts-station-food-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -3593,7 +3593,7 @@ spec:
                 - node3
       containers:
       - name: ts-train-food-service
-        image: newrelic/train-ticket:ts-train-food-service-0.0.5
+        image: newrelic/train-ticket:ts-train-food-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -3670,7 +3670,7 @@ spec:
                 - node3
       containers:
       - name: ts-wait-order-service
-        image: newrelic/train-ticket:ts-wait-order-service-0.0.5
+        image: newrelic/train-ticket:ts-wait-order-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
@@ -3811,7 +3811,7 @@ spec:
                 - node6
       containers:
       - name: ts-gateway-service
-        image: newrelic/train-ticket:ts-gateway-service-0.0.5
+        image: newrelic/train-ticket:ts-gateway-service-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_LICENSE_KEY
