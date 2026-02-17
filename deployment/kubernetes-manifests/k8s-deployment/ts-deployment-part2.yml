@@ -67,9 +67,16 @@ spec:
                 - node2
       containers:
       - name: ts-admin-basic-info-service
-        image: newrelic/train-ticket:ts-admin-basic-info-service-0.0.4
+        image: newrelic/train-ticket:ts-admin-basic-info-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -80,17 +87,19 @@ spec:
         - containerPort: 18767
         resources:
           requests:
-            cpu: 50m
-            memory: 100Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 18767
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18767
@@ -122,12 +131,19 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-admin-order-service
-        image: newrelic/train-ticket:ts-admin-order-service-0.0.4
+        image: newrelic/train-ticket:ts-admin-order-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -138,17 +154,19 @@ spec:
         - containerPort: 16112
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 16112
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16112
@@ -183,9 +201,16 @@ spec:
                 - node4
       containers:
       - name: ts-admin-route-service
-        image: newrelic/train-ticket:ts-admin-route-service-0.0.4
+        image: newrelic/train-ticket:ts-admin-route-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -196,17 +221,19 @@ spec:
         - containerPort: 16113
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 16113
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16113
@@ -241,9 +268,16 @@ spec:
                 - node2
       containers:
       - name: ts-admin-travel-service
-        image: newrelic/train-ticket:ts-admin-travel-service-0.0.4
+        image: newrelic/train-ticket:ts-admin-travel-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -254,17 +288,19 @@ spec:
         - containerPort: 16114
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 16114
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16114
@@ -296,12 +332,19 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-admin-user-service
-        image: newrelic/train-ticket:ts-admin-user-service-0.0.4
+        image: newrelic/train-ticket:ts-admin-user-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -312,17 +355,19 @@ spec:
         - containerPort: 16115
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 16115
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16115
@@ -357,9 +402,16 @@ spec:
                 - node4
       containers:
       - name: ts-assurance-service
-        image: newrelic/train-ticket:ts-assurance-service-0.0.4
+        image: newrelic/train-ticket:ts-assurance-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -380,17 +432,19 @@ spec:
         - containerPort: 18888
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 18888
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18888
@@ -425,9 +479,16 @@ spec:
                 - node2
       containers:
       - name: ts-basic-service
-        image: newrelic/train-ticket:ts-basic-service-0.0.4
+        image: newrelic/train-ticket:ts-basic-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -438,17 +499,19 @@ spec:
         - containerPort: 15680
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 15680
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 15680
@@ -480,12 +543,19 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-cancel-service
-        image: newrelic/train-ticket:ts-cancel-service-0.0.4
+        image: newrelic/train-ticket:ts-cancel-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -496,17 +566,19 @@ spec:
         - containerPort: 18885
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 18885
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18885
@@ -541,9 +613,16 @@ spec:
                 - node4
       containers:
       - name: ts-config-service
-        image: newrelic/train-ticket:ts-config-service-0.0.4
+        image: newrelic/train-ticket:ts-config-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -564,17 +643,19 @@ spec:
         - containerPort: 15679
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 15679
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 15679
@@ -609,9 +690,16 @@ spec:
                 - node2
       containers:
       - name: ts-consign-price-service
-        image: newrelic/train-ticket:ts-consign-price-service-0.0.4
+        image: newrelic/train-ticket:ts-consign-price-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -632,17 +720,19 @@ spec:
         - containerPort: 16110
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 16110
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16110
@@ -674,12 +764,19 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-consign-service
-        image: newrelic/train-ticket:ts-consign-service-0.0.4
+        image: newrelic/train-ticket:ts-consign-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -700,17 +797,19 @@ spec:
         - containerPort: 16111
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 16111
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16111
@@ -745,9 +844,16 @@ spec:
                 - node4
       containers:
       - name: ts-contacts-service
-        image: newrelic/train-ticket:ts-contacts-service-0.0.4
+        image: newrelic/train-ticket:ts-contacts-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -768,17 +874,19 @@ spec:
         - containerPort: 12347
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 12347
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12347
@@ -813,9 +921,16 @@ spec:
                 - node2
       containers:
       - name: ts-execute-service
-        image: newrelic/train-ticket:ts-execute-service-0.0.4
+        image: newrelic/train-ticket:ts-execute-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -826,17 +941,19 @@ spec:
         - containerPort: 12386
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 12386
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12386
@@ -844,6 +961,7 @@ spec:
           periodSeconds: 10
           timeoutSeconds: 5
           failureThreshold: 3
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -870,9 +988,16 @@ spec:
                 - node4
       containers:
       - name: ts-food-service
-        image: newrelic/train-ticket:ts-food-service-0.0.4
+        image: newrelic/train-ticket:ts-food-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -893,17 +1018,19 @@ spec:
         - containerPort: 18856
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 18856
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18856
@@ -935,12 +1062,19 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node2
+                - node6
       containers:
       - name: ts-inside-payment-service
-        image: newrelic/train-ticket:ts-inside-payment-service-0.0.4
+        image: newrelic/train-ticket:ts-inside-payment-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -961,17 +1095,19 @@ spec:
         - containerPort: 18673
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 18673
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18673
@@ -1003,12 +1139,19 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-auth-service
-        image: newrelic/train-ticket:ts-auth-service-0.0.4
+        image: newrelic/train-ticket:ts-auth-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -1029,17 +1172,19 @@ spec:
         - containerPort: 12340
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 12340
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12340
@@ -1074,7 +1219,7 @@ spec:
                 - node4
       containers:
       - name: ts-news-service
-        image: newrelic/train-ticket:ts-news-service-0.0.4
+        image: newrelic/train-ticket:ts-news-service-0.0.5
         imagePullPolicy: Always
         env:
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
@@ -1087,17 +1232,19 @@ spec:
         - containerPort: 12862
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 12862
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12862
@@ -1132,9 +1279,16 @@ spec:
                 - node2
       containers:
       - name: ts-notification-service
-        image: newrelic/train-ticket:ts-notification-service-0.0.4
+        image: newrelic/train-ticket:ts-notification-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -1151,17 +1305,19 @@ spec:
         - containerPort: 17853
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 17853
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 17853
@@ -1193,12 +1349,19 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-order-other-service
-        image: newrelic/train-ticket:ts-order-other-service-0.0.4
+        image: newrelic/train-ticket:ts-order-other-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -1219,17 +1382,19 @@ spec:
         - containerPort: 12032
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 12032
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12032
@@ -1261,12 +1426,19 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node4
+                - node6
       containers:
       - name: ts-order-service
-        image: newrelic/train-ticket:ts-order-service-0.0.4
+        image: newrelic/train-ticket:ts-order-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -1287,17 +1459,19 @@ spec:
         - containerPort: 12031
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 12031
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12031
@@ -1329,12 +1503,19 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node2
+                - node6
       containers:
       - name: ts-payment-service
-        image: newrelic/train-ticket:ts-payment-service-0.0.4
+        image: newrelic/train-ticket:ts-payment-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -1355,17 +1536,19 @@ spec:
         - containerPort: 19001
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 19001
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 19001
@@ -1397,12 +1580,19 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-preserve-other-service
-        image: newrelic/train-ticket:ts-preserve-other-service-0.0.4
+        image: newrelic/train-ticket:ts-preserve-other-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -1413,17 +1603,19 @@ spec:
         - containerPort: 14569
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 14569
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 14569
@@ -1458,9 +1650,16 @@ spec:
                 - node4
       containers:
       - name: ts-preserve-service
-        image: newrelic/train-ticket:ts-preserve-service-0.0.4
+        image: newrelic/train-ticket:ts-preserve-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -1471,17 +1670,19 @@ spec:
         - containerPort: 14568
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 14568
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 14568
@@ -1516,9 +1717,16 @@ spec:
                 - node2
       containers:
       - name: ts-price-service
-        image: newrelic/train-ticket:ts-price-service-0.0.4
+        image: newrelic/train-ticket:ts-price-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -1539,17 +1747,19 @@ spec:
         - containerPort: 16579
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 16579
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16579
@@ -1581,12 +1791,19 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-rebook-service
-        image: newrelic/train-ticket:ts-rebook-service-0.0.4
+        image: newrelic/train-ticket:ts-rebook-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -1597,17 +1814,19 @@ spec:
         - containerPort: 18886
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 18886
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18886
@@ -1642,9 +1861,16 @@ spec:
                 - node4
       containers:
       - name: ts-route-plan-service
-        image: newrelic/train-ticket:ts-route-plan-service-0.0.4
+        image: newrelic/train-ticket:ts-route-plan-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -1655,17 +1881,19 @@ spec:
         - containerPort: 14578
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 14578
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 14578
@@ -1700,9 +1928,16 @@ spec:
                 - node2
       containers:
       - name: ts-route-service
-        image: newrelic/train-ticket:ts-route-service-0.0.4
+        image: newrelic/train-ticket:ts-route-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -1723,17 +1958,19 @@ spec:
         - containerPort: 11178
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 11178
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 11178
@@ -1765,12 +2002,19 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-seat-service
-        image: newrelic/train-ticket:ts-seat-service-0.0.4
+        image: newrelic/train-ticket:ts-seat-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -1781,17 +2025,19 @@ spec:
         - containerPort: 18898
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 18898
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18898
@@ -1826,9 +2072,16 @@ spec:
                 - node4
       containers:
       - name: ts-security-service
-        image: newrelic/train-ticket:ts-security-service-0.0.4
+        image: newrelic/train-ticket:ts-security-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -1849,17 +2102,19 @@ spec:
         - containerPort: 11188
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 11188
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 11188
@@ -1891,12 +2146,19 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node2
+                - node6
       containers:
       - name: ts-user-service
-        image: newrelic/train-ticket:ts-user-service-0.0.4
+        image: newrelic/train-ticket:ts-user-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -1917,17 +2179,19 @@ spec:
         - containerPort: 12342
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 12342
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12342
@@ -1959,12 +2223,19 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-station-service
-        image: newrelic/train-ticket:ts-station-service-0.0.4
+        image: newrelic/train-ticket:ts-station-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -1985,17 +2256,19 @@ spec:
         - containerPort: 12345
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 12345
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12345
@@ -2030,7 +2303,7 @@ spec:
                 - node4
       containers:
       - name: ts-ticket-office-service
-        image: newrelic/train-ticket:ts-ticket-office-service-0.0.4
+        image: newrelic/train-ticket:ts-ticket-office-service-0.0.5
         imagePullPolicy: Always
         env:
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
@@ -2053,17 +2326,19 @@ spec:
         - containerPort: 16108
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 16108
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16108
@@ -2098,9 +2373,16 @@ spec:
                 - node3
       containers:
       - name: ts-train-service
-        image: newrelic/train-ticket:ts-train-service-0.0.4
+        image: newrelic/train-ticket:ts-train-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -2121,17 +2403,19 @@ spec:
         - containerPort: 14567
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 14567
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 14567
@@ -2166,9 +2450,16 @@ spec:
                 - node4
       containers:
       - name: ts-travel2-service
-        image: newrelic/train-ticket:ts-travel2-service-0.0.4
+        image: newrelic/train-ticket:ts-travel2-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -2189,17 +2480,19 @@ spec:
         - containerPort: 16346
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 16346
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16346
@@ -2234,9 +2527,16 @@ spec:
                 - node2
       containers:
       - name: ts-travel-plan-service
-        image: newrelic/train-ticket:ts-travel-plan-service-0.0.4
+        image: newrelic/train-ticket:ts-travel-plan-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -2247,17 +2547,19 @@ spec:
         - containerPort: 14322
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 14322
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 14322
@@ -2292,9 +2594,16 @@ spec:
                 - node3
       containers:
       - name: ts-travel-service
-        image: newrelic/train-ticket:ts-travel-service-0.0.4
+        image: newrelic/train-ticket:ts-travel-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -2315,17 +2624,19 @@ spec:
         - containerPort: 12346
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 12346
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 12346
@@ -2360,9 +2671,16 @@ spec:
                 - node4
       containers:
       - name: ts-verification-code-service
-        image: newrelic/train-ticket:ts-verification-code-service-0.0.4
+        image: newrelic/train-ticket:ts-verification-code-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -2373,17 +2691,19 @@ spec:
         - containerPort: 15678
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 15678
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 15678
@@ -2418,7 +2738,7 @@ spec:
                 - node2
       containers:
       - name: ts-voucher-service
-        image: newrelic/train-ticket:ts-voucher-service-0.0.4
+        image: newrelic/train-ticket:ts-voucher-service-0.0.5
         imagePullPolicy: Always
         env:
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
@@ -2441,17 +2761,19 @@ spec:
         - containerPort: 16101
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 16101
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 16101
@@ -2486,7 +2808,7 @@ spec:
                 - node3
       containers:
       - name: ts-avatar-service
-        image: newrelic/train-ticket:ts-avatar-service-0.0.4
+        image: newrelic/train-ticket:ts-avatar-service-0.0.5
         imagePullPolicy: Always
         env:
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
@@ -2499,17 +2821,19 @@ spec:
         - containerPort: 17001
         resources:
           requests:
-            cpu: 50m
-            memory: 200Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 17001
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 17001
@@ -2673,6 +2997,7 @@ spec:
     port: 12386
   selector:
     app: ts-execute-service
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -2901,6 +3226,7 @@ spec:
     port: 16108
   selector:
     app: ts-ticket-office-service
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -3013,12 +3339,19 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node3
+                - node7
       containers:
       - name: ts-delivery-service
-        image: newrelic/train-ticket:ts-delivery-service-0.0.4
+        image: newrelic/train-ticket:ts-delivery-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -3039,17 +3372,19 @@ spec:
         - containerPort: 18808
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 18808
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18808
@@ -3084,9 +3419,16 @@ spec:
                 - node3
       containers:
       - name: ts-food-delivery-service
-        image: newrelic/train-ticket:ts-food-delivery-service-0.0.4
+        image: newrelic/train-ticket:ts-food-delivery-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -3107,17 +3449,19 @@ spec:
         - containerPort: 18957
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 18957
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18957
@@ -3152,9 +3496,16 @@ spec:
                 - node3
       containers:
       - name: ts-station-food-service
-        image: newrelic/train-ticket:ts-station-food-service-0.0.4
+        image: newrelic/train-ticket:ts-station-food-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -3175,17 +3526,19 @@ spec:
         - containerPort: 18855
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 18855
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 18855
@@ -3220,9 +3573,16 @@ spec:
                 - node3
       containers:
       - name: ts-train-food-service
-        image: newrelic/train-ticket:ts-train-food-service-0.0.4
+        image: newrelic/train-ticket:ts-train-food-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -3243,17 +3603,19 @@ spec:
         - containerPort: 19999
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 19999
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 19999
@@ -3288,9 +3650,16 @@ spec:
                 - node3
       containers:
       - name: ts-wait-order-service
-        image: newrelic/train-ticket:ts-wait-order-service-0.0.4
+        image: newrelic/train-ticket:ts-wait-order-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -3311,24 +3680,26 @@ spec:
         - containerPort: 17525
         resources:
           requests:
-            cpu: 50m
-            memory: 160Mi
-          limits:
+            # Low enough to allow scheduling on smaller nodes
             cpu: 200m
-            memory: 500Mi
+            memory: 384Mi
+          limits:
+            # High enough to allow the JVM to "burst" during startup
+            cpu: 750m
+            memory: 512Mi
         startupProbe:
           tcpSocket:
             port: 17525
-          initialDelaySeconds: 90
-          failureThreshold: 40
-          periodSeconds: 5
+          initialDelaySeconds: 120
+          failureThreshold: 60
+          periodSeconds: 10
         readinessProbe:
           tcpSocket:
             port: 17525
-          initialDelaySeconds: 120
-          periodSeconds: 10
-          timeoutSeconds: 5
-          failureThreshold: 3
+          initialDelaySeconds: 180
+          periodSeconds: 15
+          timeoutSeconds: 10
+          failureThreshold: 5
 ---
 # =============================================================================
 # Services
@@ -3417,12 +3788,19 @@ spec:
               - key: role
                 operator: In
                 values:
-                - node2
+                - node6
       containers:
       - name: ts-gateway-service
-        image: newrelic/train-ticket:ts-gateway-service-0.0.4
+        image: newrelic/train-ticket:ts-gateway-service-0.0.5
         imagePullPolicy: Always
         env:
+        - name: NEW_RELIC_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MANAGEMENT_METRICS_EXPORT_NEWRELIC_ENABLED
+          value: "false"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -3439,7 +3817,8 @@ spec:
         - containerPort: 18888
         resources:
           requests:
-            cpu: 100m
+            # Low enough to allow scheduling on smaller nodes
+            cpu: 200m
             memory: 512Mi
           limits:
             cpu: 1000m
