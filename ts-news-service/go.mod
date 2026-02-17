@@ -3,7 +3,7 @@ module ts-news-service
 go 1.19
 
 require (
-	github.com/hoisie/web v0.0.0-20170926095937-1b1762cbf274
+	github.com/hoisie/web latest
 	github.com/newrelic/go-agent/v3 v3.29.0
 )
 

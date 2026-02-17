@@ -8,6 +8,10 @@ WORKDIR /app
 
 # Copy go mod files
 COPY go.mod go.sum* ./
+
+# Clean and update go modules to fix any invalid versions
+RUN go clean -modcache
+RUN go mod tidy
 RUN go mod download
 
 # Copy source code
