@@ -1,5 +1,8 @@
 FROM golang:1.19-alpine AS builder
 
+# Install git (required for go mod download)
+RUN apk add --no-cache git
+
 RUN mkdir -p /app
 WORKDIR /app
 
