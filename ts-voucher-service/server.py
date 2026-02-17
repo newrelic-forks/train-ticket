@@ -1,6 +1,5 @@
 #coding:utf-8
 import newrelic.agent
-
 import tornado.ioloop
 import tornado.web
 import json
@@ -8,9 +7,6 @@ import os
 import pymysql
 import urllib
 import urllib.request
-
-# Initialize New Relic
-newrelic.agent.initialize()
 
 mysql_config = {}
 

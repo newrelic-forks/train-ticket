@@ -37,6 +37,8 @@ spec:
             secretKeyRef:
               name: newrelic-browser-key
               key: new-relic-browser-app-id
+        - name: NEW_RELIC_ACCOUNT_ID
+          value: "1"
         - name: NEW_RELIC_BROWSER_ENABLED
           value: "true"
         ports:

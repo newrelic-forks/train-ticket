@@ -4,7 +4,6 @@ from flask import Flask, request, jsonify
 import numpy as np
 import urllib
 import cv2
-import os
 import json
 import base64
 import traceback
@@ -12,9 +11,6 @@ import traceback
 from face_detect import check
 
 app = Flask(__name__)
-
-# Initialize New Relic
-newrelic.agent.initialize()
 
 # TODO:
 # ~~1. 获取图片~~
