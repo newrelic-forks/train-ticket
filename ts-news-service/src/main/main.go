@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 	"log"
-	"github.com/hoisie/web"
+	"net/http"
 	"github.com/newrelic/go-agent/v3/newrelic"
 	//"labix.org/v2/mgo"
 	//"labix.org/v2/mgo/bson"
@@ -42,22 +42,29 @@ type News struct {
 	Content string `bson:"Content"`
 }
 
-func hello(val string) string {
+func hello(w http.ResponseWriter, r *http.Request) {
 	// Start New Relic transaction if app is initialized
+	var txn *newrelic.Transaction
 	if app != nil {
-		txn := app.StartTransaction("GET /news")
+		txn = app.StartTransaction("GET /news")
 		defer txn.End()
 
 		// Add custom attributes
 		txn.AddAttribute("service", "ts-news-service")
 		txn.AddAttribute("endpoint", "/news")
+
+		// Wrap the response writer for New Relic
+		w = txn.SetWebResponse(w)
+		txn.SetWebRequestHTTP(r)
 	}
 
 	var str = []byte(`[
                        {"Title": "News Service Complete", "Content": "Congratulations:Your News Service Complete"},
                        {"Title": "Total Ticket System Complete", "Content": "Just a total test"}
                     ]`)
-	return string(str)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(str)
 }
 
 var app *newrelic.Application
@@ -78,7 +85,9 @@ func main() {
 		log.Println("New Relic agent initialized successfully")
 	}
 
-	web.Get("/(.*)", hello)
+	// Set up HTTP routes - handle all paths
+	http.HandleFunc("/", hello)
+
 	log.Println("Starting ts-news-service on :12862")
-	web.Run("0.0.0.0:12862")
+	log.Fatal(http.ListenAndServe("0.0.0.0:12862", nil))
 }
