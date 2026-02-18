@@ -1,4 +1,5 @@
 import newrelic.agent
+newrelic.agent.initialize('newrelic.ini')
 
 from flask import Flask, request, jsonify
 import numpy as np

@@ -1,5 +1,6 @@
 #coding:utf-8
 import newrelic.agent
+newrelic.agent.initialize('newrelic.ini')
 import tornado.ioloop
 import tornado.web
 import json
