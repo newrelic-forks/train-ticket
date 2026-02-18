@@ -85,6 +85,21 @@ sleep 30
 echo ""
 
 echo "=========================================="
+echo "Step 6: Deploying Load Generator"
+echo "=========================================="
+echo "Waiting for all microservices to be ready before starting load generation..."
+echo "This ensures all 46 services are up and can handle traffic properly."
+sleep 120  # Wait 2 minutes for all services to stabilize
+
+echo "Deploying load generator..."
+microk8s kubectl -n $NAMESPACE apply -f $MANIFESTS/loadgenerator.yaml
+echo ""
+echo "Load generator deployed! It will wait for UI dashboard to be fully ready before starting traffic."
+echo "Note: The init container will verify ts-ui-dashboard accessibility before generating load."
+sleep 15
+echo ""
+
+echo "=========================================="
 echo "Train-Ticket Deployment Complete!"
 echo "=========================================="
 echo ""

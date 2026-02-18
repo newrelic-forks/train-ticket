@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-loadgenerator
+spec:
+  selector:
+    matchLabels:
+      app: ts-loadgenerator
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-loadgenerator
+    spec:
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 5
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      initContainers:
+      - command:
+        - /bin/sh
+        - -exc
+        - |
+          echo "Init container checking API Gateway: ${FRONTEND_ADDR}..."
+          # Check gateway connectivity - accept 404 since root path has no handler
+          if wget --spider --timeout=10 http://${FRONTEND_ADDR} 2>&1 | grep -qE "(HTTP|connected)"; then
+              echo "API Gateway is reachable!"
+              exit 0
+          else
+              echo "Error: Could not reach API Gateway"
+              exit 1
+          fi
+        name: frontend-check
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - all
+          privileged: false
+          readOnlyRootFilesystem: true
+        image: busybox:latest
+        env:
+        - name: FRONTEND_ADDR
+          value: "ts-gateway-service:18888"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: role
+                    operator: In
+                    values:
+                      - node4
+      containers:
+      - name: ts-loadgenerator
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - all
+          privileged: false
+          readOnlyRootFilesystem: true
+        image: newrelic/train-ticket:ts-loadgenerator-0.0.6
+        env:
+        - name: FRONTEND_ADDR
+          value: "ts-gateway-service:18888"
+        - name: USERS
+          value: "5"
+        - name: SPAWN_RATE
+          value: "1"
+        - name: RUN_TIME
+          value: "1h"
+        resources:
+          requests:
+            cpu: 300m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-loadgenerator
+spec:
+  type: ClusterIP
+  selector:
+    app: ts-loadgenerator
+  ports:
+  - name: http
+    port: 8089
+    targetPort: 8089
