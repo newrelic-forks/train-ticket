@@ -1,7 +1,10 @@
 package main
 
 import (
-	"github.com/hoisie/web"
+	"os"
+	"log"
+	"net/http"
+	"github.com/newrelic/go-agent/v3/newrelic"
 	//"labix.org/v2/mgo"
 	//"labix.org/v2/mgo/bson"
 	//"fmt"
@@ -39,15 +42,52 @@ type News struct {
 	Content string `bson:"Content"`
 }
 
-func hello(val string) string {
+func hello(w http.ResponseWriter, r *http.Request) {
+	// Start New Relic transaction if app is initialized
+	var txn *newrelic.Transaction
+	if app != nil {
+		txn = app.StartTransaction("GET /news")
+		defer txn.End()
+
+		// Add custom attributes
+		txn.AddAttribute("service", "ts-news-service")
+		txn.AddAttribute("endpoint", "/news")
+
+		// Wrap the response writer for New Relic
+		w = txn.SetWebResponse(w)
+		txn.SetWebRequestHTTP(r)
+	}
+
 	var str = []byte(`[
                        {"Title": "News Service Complete", "Content": "Congratulations:Your News Service Complete"},
                        {"Title": "Total Ticket System Complete", "Content": "Just a total test"}
                     ]`)
-	return string(str)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(str)
 }
 
+var app *newrelic.Application
+
 func main() {
-	web.Get("/(.*)", hello)
-	web.Run("0.0.0.0:12862")
+	// Initialize New Relic
+	var err error
+	app, err = newrelic.NewApplication(
+		newrelic.ConfigAppName("ts-news-service"),
+		newrelic.ConfigLicense(os.Getenv("NEW_RELIC_LICENSE_KEY")),
+		newrelic.ConfigDistributedTracerEnabled(true),
+		newrelic.ConfigLogger(newrelic.NewLogger(os.Stdout)),
+	)
+	if err != nil {
+		log.Printf("Failed to initialize New Relic: %v", err)
+		// Continue without New Relic if initialization fails
+	} else {
+		log.Println("New Relic agent initialized successfully")
+	}
+
+	// Set up HTTP routes - handle all paths
+	http.HandleFunc("/", hello)
+
+	log.Println("Starting ts-news-service on :12862")
+	log.Fatal(http.ListenAndServe("0.0.0.0:12862", nil))
 }

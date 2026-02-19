@@ -17,6 +17,10 @@ if [ $? -eq 1 ]; then
     echo NEW_RELIC_BROWSER_KEY is not set
     exit 1
   fi
+  if [ -z "$NEW_RELIC_BROWSER_APP_ID" ]; then
+    echo NEW_RELIC_BROWSER_APP_ID is not set
+    exit 1
+  fi
   echo Creating NEW_RELIC_BROWSER_KEY secret
   microk8s kubectl -n $NAMESPACE create secret generic newrelic-browser-key --from-literal=new-relic-browser-key=$NEW_RELIC_BROWSER_KEY
 fi

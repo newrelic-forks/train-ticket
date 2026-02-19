@@ -1,8 +1,9 @@
+import newrelic.agent
+
 from flask import Flask, request, jsonify
 import numpy as np
 import urllib
 import cv2
-import os
 import json
 import base64
 import traceback
@@ -23,6 +24,7 @@ receive_path = r"./received/"
 
 
 @app.route('/api/v1/avatar', methods=["POST"])
+@newrelic.agent.function_trace()
 def hello():
     # receive file
     data = request.get_data().decode('utf-8')
