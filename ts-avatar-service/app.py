@@ -12,6 +12,9 @@ from face_detect import check
 
 app = Flask(__name__)
 
+# Add WSGI wrapper for web transaction instrumentation
+app.wsgi_app = newrelic.agent.WSGIApplicationWrapper(app.wsgi_app)
+
 # TODO:
 # ~~1. 获取图片~~
 #  ~2. 检测图片是否ok

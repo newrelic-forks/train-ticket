@@ -12,7 +12,7 @@ mysql_config = {}
 
 class GetVoucherHandler(tornado.web.RequestHandler):
 
-    @newrelic.agent.function_trace()
+    @newrelic.agent.web_transaction(name='Custom/getVoucher')
     def post(self, *args, **kwargs):
         #Analyze the data transferred: order id and model indicator (0 stands for ordinary, 1 stands for bullet trains and high-speed trains)
         data = json.loads(self.request.body)
