@@ -69,9 +69,70 @@ spec:
             - mysqladmin ping -h localhost -proot
           initialDelaySeconds: 10
           periodSeconds: 5
+      - name: newrelic-mysql-integration
+        image: newrelic/nri-mysql:latest
+        env:
+        - name: NRIA_LICENSE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: newrelic-key
+              key: new-relic-license-key
+        - name: MYSQL_HOST
+          value: "localhost"
+        - name: MYSQL_PORT
+          value: "3306"
+        - name: MYSQL_USERNAME
+          value: "root"
+        - name: MYSQL_PASSWORD
+          value: "root"
+        - name: MYSQL_DATABASE
+          value: "ts-assurance-mysql"
+        - name: CLUSTER_NAME
+          value: "train-ticket-cluster"
+        - name: ENTITY_NAME
+          value: "ts-assurance-mysql"
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            cpu: 50m
+            memory: 128Mi
+        volumeMounts:
+        - name: mysql-config
+          mountPath: /etc/newrelic-infra/integrations.d/mysql-config.yml
+          subPath: mysql-config.yml
+          readOnly: true
       volumes:
       - name: db-data
         emptyDir: {}
+      - name: mysql-config
+        configMap:
+          name: mysql-newrelic-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: store
+  name: mysql-newrelic-config
+data:
+  mysql-config.yml: |
+    integrations:
+      - name: nri-mysql
+        env:
+          HOSTNAME: localhost
+          PORT: 3306
+          USERNAME: root
+          PASSWORD: root
+          REMOTE_MONITORING: true
+          EXTENDED_METRICS: true
+          EXTENDED_INNODB_METRICS: true
+          EXTENDED_MY_ISAM_METRICS: true
+        interval: 30s
+        labels:
+          env: production
+          cluster: train-ticket
+        inventory_source: config/mysql
 ---
 apiVersion: apps/v1
 kind: Deployment
