@@ -1,6 +1,5 @@
 #coding:utf-8
 import newrelic.agent
-
 import tornado.ioloop
 import tornado.web
 import json
@@ -8,9 +7,6 @@ import os
 import pymysql
 import urllib
 import urllib.request
-
-# Initialize New Relic
-newrelic.agent.initialize()
 
 mysql_config = {}
 
@@ -28,7 +24,12 @@ class GetVoucherHandler(tornado.web.RequestHandler):
         if(queryVoucher == None):
             #Request the order details based on the order id
             orderResult = self.queryOrderByIdAndType(orderId,type)
-            order = orderResult['data']
+            # Check if the response is valid and contains data
+            if orderResult is None or 'data' not in orderResult or not orderResult['data']:
+                self.set_status(404)
+                self.write({"error": "Order not found"})
+                return
+            order = orderResult['data'][0]  # Get the first order from the data array
 
             # jsonStr = json.dumps(orderResult)
             # self.write(jsonStr)
@@ -69,8 +70,12 @@ class GetVoucherHandler(tornado.web.RequestHandler):
             url=order_url + '/api/v1/orderservice/order/'+orderId
         header_dict = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko',"Content-Type": "application/json"}
         req = urllib.request.Request(url=url,headers=header_dict)# Generate the full data for the page request
-        response = urllib.request.urlopen(req)# Send page request
-        return json.loads(response.read())# Gets the page information returned by the server
+        try:
+            response = urllib.request.urlopen(req)# Send page request
+            return json.loads(response.read())# Gets the page information returned by the server
+        except Exception as e:
+            print(f"Error fetching order from {url}: {e}")
+            return None
 
     @newrelic.agent.function_trace()
     def fetchVoucherByOrderId(self,orderId):

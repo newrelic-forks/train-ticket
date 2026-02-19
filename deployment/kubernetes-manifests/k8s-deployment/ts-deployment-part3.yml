@@ -24,7 +24,7 @@ spec:
                 - node4
       containers:
       - name: ts-ui-dashboard
-        image: newrelic/train-ticket:ts-ui-dashboard-0.0.5
+        image: newrelic/train-ticket:ts-ui-dashboard-0.0.6
         imagePullPolicy: Always
         env:
         - name: NEW_RELIC_BROWSER_LICENSE_KEY
@@ -33,10 +33,9 @@ spec:
               name: newrelic-browser-key
               key: new-relic-browser-key
         - name: NEW_RELIC_BROWSER_APP_ID
-          valueFrom:
-            secretKeyRef:
-              name: newrelic-browser-key
-              key: new-relic-browser-app-id
+          value: "601623010"
+        - name: NEW_RELIC_ACCOUNT_ID
+          value: "1"
         - name: NEW_RELIC_BROWSER_ENABLED
           value: "true"
         ports:

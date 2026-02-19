@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-set -eu
+set -eux
 
 echo
-echo "Please input you repo password of $1"
+echo "Start Pushing images, Repo: $1, Tag: $2"
 echo
-docker login --username="$1"
-
-echo
-echo "Start pushing image"
-echo
-docker images | grep "$1/ts" | awk 'BEGIN{OFS=":"}{print $1,$2}' | xargs -I {} docker push {}
+for dir in ts-*; do
+    if [[ -d $dir ]]; then
+        if [[ -n $(ls "$dir" | grep -i Dockerfile) ]]; then
+            docker push "$1":"${dir}"-"$2"
+        fi
+    fi
+done
