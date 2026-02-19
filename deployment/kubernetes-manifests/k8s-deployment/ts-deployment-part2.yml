@@ -2758,8 +2758,12 @@ spec:
               key: new-relic-license-key
         - name: NEW_RELIC_APP_NAME
           value: "ts-voucher-service"
-        - name: NEW_RELIC_CONFIG_FILE
-          value: "/app/newrelic.ini"
+        - name: NEW_RELIC_LOG
+          value: "stderr"
+        - name: NEW_RELIC_LOG_LEVEL
+          value: "debug"
+        - name: NEW_RELIC_DISTRIBUTED_TRACING_ENABLED
+          value: "true"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
@@ -2837,8 +2841,12 @@ spec:
               key: new-relic-license-key
         - name: NEW_RELIC_APP_NAME
           value: "ts-avatar-service"
-        - name: NEW_RELIC_CONFIG_FILE
-          value: "/app/newrelic.ini"
+        - name: NEW_RELIC_LOG
+          value: "stderr"
+        - name: NEW_RELIC_LOG_LEVEL
+          value: "debug"
+        - name: NEW_RELIC_DISTRIBUTED_TRACING_ENABLED
+          value: "true"
         - name: SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR
           value: "nacos.store.svc.cluster.local:8848"
         - name: SPRING_CLOUD_NACOS_CONFIG_SERVER_ADDR
