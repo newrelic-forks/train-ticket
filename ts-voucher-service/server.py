@@ -24,12 +24,7 @@ class GetVoucherHandler(tornado.web.RequestHandler):
         if(queryVoucher == None):
             #Request the order details based on the order id
             orderResult = self.queryOrderByIdAndType(orderId,type)
-            # Check if the response is valid and contains data
-            if orderResult is None or 'data' not in orderResult or not orderResult['data']:
-                self.set_status(404)
-                self.write({"error": "Order not found"})
-                return
-            order = orderResult['data'][0]  # Get the first order from the data array
+            order = orderResult['data']
 
             # jsonStr = json.dumps(orderResult)
             # self.write(jsonStr)
