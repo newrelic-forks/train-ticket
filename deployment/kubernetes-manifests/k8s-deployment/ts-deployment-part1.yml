@@ -6,24 +6,7 @@
 # ============================================================================
 # MySQL Deployments
 # ============================================================================
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: newrelic-mysql-config
-  namespace: store
-data:
-  mysql-config.yml: |
-    integrations:
-      - name: nri-mysql
-        config:
-          hostname: localhost
-          port: 3306
-          username: root
-          password: root
-          remote_monitoring: true
-          metrics: true
-          inventory: true
-          events: true
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -86,49 +69,8 @@ spec:
             - mysqladmin ping -h localhost -proot
           initialDelaySeconds: 10
           periodSeconds: 5
-      - name: newrelic-mysql-integration
-        image: newrelic/infrastructure:latest
-        env:
-        - name: NRIA_LICENSE_KEY
-          valueFrom:
-            secretKeyRef:
-              name: newrelic-key
-              key: new-relic-license-key
-        - name: NRIA_VERBOSE
-          value: "1"
-        - name: NRIA_MYSQL_HOSTNAME
-          value: "localhost"
-        - name: NRIA_MYSQL_PORT
-          value: "3306"
-        - name: NRIA_MYSQL_USERNAME
-          value: "root"
-        - name: NRIA_MYSQL_PASSWORD
-          value: "root"
-        - name: NRIA_MYSQL_DATABASE
-          value: "ts-assurance-mysql"
-        volumeMounts:
-        - name: newrelic-mysql-config
-          mountPath: /etc/newrelic-infra/integrations.d/
-        - name: var-db-newrelic-infra-integrations
-          mountPath: /var/db/newrelic-infra/integrations
-        - name: var-db-newrelic-infra-integrations-state
-          mountPath: /var/db/newrelic-infra/integrations-state
-        resources:
-          requests:
-            cpu: 10m
-            memory: 32Mi
-          limits:
-            cpu: 50m
-            memory: 128Mi
       volumes:
       - name: db-data
-        emptyDir: {}
-      - name: newrelic-mysql-config
-        configMap:
-          name: newrelic-mysql-config
-      - name: var-db-newrelic-infra-integrations
-        emptyDir: {}
-      - name: var-db-newrelic-infra-integrations-state
         emptyDir: {}
 ---
 apiVersion: apps/v1
