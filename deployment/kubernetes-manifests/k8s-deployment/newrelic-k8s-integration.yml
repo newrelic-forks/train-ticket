@@ -134,6 +134,10 @@ spec:
         - name: nri-mysql-config
           mountPath: /etc/newrelic-infra/integrations.d/
           readOnly: true
+        - name: var-db-newrelic-infra
+          mountPath: /var/db/newrelic-infra
+        - name: tmp
+          mountPath: /tmp
         resources:
           requests:
             memory: 300Mi
@@ -160,6 +164,10 @@ spec:
       - name: nri-mysql-config
         configMap:
           name: nri-mysql-config
+      - name: var-db-newrelic-infra
+        emptyDir: {}
+      - name: tmp
+        emptyDir: {}
       tolerations:
       - operator: "Exists"
         effect: "NoSchedule"
