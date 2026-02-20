@@ -84,7 +84,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: newrelic-infrastructure
-        image: newrelic/infrastructure-k8s:2.13.43-unprivileged
+        image: newrelic/infrastructure-k8s:3.2.40
         securityContext:
           allowPrivilegeEscalation: false
           readOnlyRootFilesystem: true
