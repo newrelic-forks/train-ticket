@@ -36,6 +36,17 @@ if [ $? -eq 1 ]; then
   microk8s kubectl -n $NAMESPACE create secret generic newrelic-key --from-literal=new-relic-license-key=$NEW_RELIC_LICENSE_KEY
 fi
 
+# Create new relic license key in newrelic namespace if it does not exist
+microk8s kubectl -n newrelic get secrets newrelic-key > /dev/null 2>&1
+if [ $? -eq 1 ]; then
+  if [ -z "$NEW_RELIC_LICENSE_KEY" ]; then
+    echo NEW_RELIC_LICENSE_KEY is not set
+    exit 1
+  fi
+  echo Creating NEW_RELIC_LICENSE_KEY secret in newrelic namespace
+  microk8s kubectl -n newrelic create secret generic newrelic-key --from-literal=new-relic-license-key=$NEW_RELIC_LICENSE_KEY
+fi
+
 echo "=========================================="
 echo "Step 1: Deploying NACOS service registry"
 echo "=========================================="
