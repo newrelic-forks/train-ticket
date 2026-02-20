@@ -69,35 +69,6 @@ spec:
             - mysqladmin ping -h localhost -proot
           initialDelaySeconds: 10
           periodSeconds: 5
-      - name: newrelic-mysql-integration
-        image: newrelic/nri-mysql:2.9.0
-        env:
-        - name: NRIA_LICENSE_KEY
-          valueFrom:
-            secretKeyRef:
-              name: newrelic-key
-              key: new-relic-license-key
-        - name: MYSQL_HOSTNAME
-          value: "localhost"
-        - name: MYSQL_PORT
-          value: "3306"
-        - name: MYSQL_USERNAME
-          value: "root"
-        - name: MYSQL_PASSWORD
-          value: "root"
-        - name: MYSQL_DATABASE
-          value: "ts-assurance-mysql"
-        - name: METRICS
-          value: "true"
-        - name: INVENTORY
-          value: "true"
-        resources:
-          requests:
-            cpu: 10m
-            memory: 32Mi
-          limits:
-            cpu: 50m
-            memory: 64Mi
       volumes:
       - name: db-data
         emptyDir: {}
