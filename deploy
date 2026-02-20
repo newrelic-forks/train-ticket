@@ -36,16 +36,7 @@ if [ $? -eq 1 ]; then
   microk8s kubectl -n $NAMESPACE create secret generic newrelic-key --from-literal=new-relic-license-key=$NEW_RELIC_LICENSE_KEY
 fi
 
-# Create new relic license key in newrelic namespace if it does not exist
-microk8s kubectl -n newrelic get secrets newrelic-key > /dev/null 2>&1
-if [ $? -eq 1 ]; then
-  if [ -z "$NEW_RELIC_LICENSE_KEY" ]; then
-    echo NEW_RELIC_LICENSE_KEY is not set
-    exit 1
-  fi
-  echo Creating NEW_RELIC_LICENSE_KEY secret in newrelic namespace
-  microk8s kubectl -n newrelic create secret generic newrelic-key --from-literal=new-relic-license-key=$NEW_RELIC_LICENSE_KEY
-fi
+# New Relic integration will use the existing secret in the store namespace
 
 echo "=========================================="
 echo "Step 1: Deploying NACOS service registry"
@@ -106,11 +97,11 @@ microk8s kubectl apply -f $MANIFESTS/newrelic-k8s-integration.yml
 
 # Verify the DaemonSet is running
 echo "Verifying New Relic DaemonSet deployment..."
-microk8s kubectl get daemonset -n newrelic
+microk8s kubectl get daemonset -n $NAMESPACE
 
 # Check that MySQL instances are being discovered
 echo "Checking New Relic infrastructure logs..."
-microk8s kubectl logs -n newrelic -l name=newrelic-infrastructure --tail=10
+microk8s kubectl logs -n $NAMESPACE -l name=newrelic-infrastructure --tail=10
 echo ""
 
 echo "=========================================="

@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: newrelic
+  name: store
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  namespace: newrelic
+  namespace: store
   name: newrelic
 automountServiceAccountToken: true
 ---
@@ -56,12 +56,12 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: newrelic
-  namespace: newrelic
+  namespace: store
 ---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  namespace: newrelic
+  namespace: store
   name: newrelic-infrastructure
   labels:
     app: newrelic-infrastructure
@@ -178,7 +178,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nri-mysql-config
-  namespace: newrelic
+  namespace: store
 data:
   nri-mysql-config.yml: |
     integrations:
