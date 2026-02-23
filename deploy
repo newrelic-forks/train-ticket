@@ -36,8 +36,6 @@ if [ $? -eq 1 ]; then
   microk8s kubectl -n $NAMESPACE create secret generic newrelic-key --from-literal=new-relic-license-key=$NEW_RELIC_LICENSE_KEY
 fi
 
-# New Relic integration will use the existing secret in the store namespace
-
 echo "=========================================="
 echo "Step 1: Deploying NACOS service registry"
 echo "=========================================="
@@ -90,22 +88,8 @@ echo "Waiting for final services to start..."
 sleep 30
 echo ""
 
-# echo "=========================================="
-# echo "Step 6: Deploying New Relic Kubernetes Integration"
-# echo "=========================================="
-# microk8s kubectl apply -f $MANIFESTS/newrelic-k8s-integration.yml
-
-# # Verify the DaemonSet is running
-# echo "Verifying New Relic DaemonSet deployment..."
-# microk8s kubectl get daemonset -n $NAMESPACE
-
-# # Check that MySQL instances are being discovered
-# echo "Checking New Relic infrastructure logs..."
-# microk8s kubectl logs -n $NAMESPACE -l name=newrelic-infrastructure --tail=10
-# echo ""
-
 echo "=========================================="
-echo "Step 7: Deploying Load Generator"
+echo "Step 6: Deploying Load Generator"
 echo "=========================================="
 echo "Waiting for all microservices to be ready before starting load generation..."
 echo "This ensures all 46 services are up and can handle traffic properly."
