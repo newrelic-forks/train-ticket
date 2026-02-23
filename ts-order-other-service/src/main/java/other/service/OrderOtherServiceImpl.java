@@ -95,7 +95,15 @@ public class OrderOtherServiceImpl implements OrderOtherService {
             OrderOtherServiceImpl.LOGGER.error("[create][Order Create Fail][Order already exists][OrderId: {}]", order.getId());
             return new Response<>(0, "Order already exist", order);
         } else {
-            order.setId(UUID.randomUUID().toString());
+            // Fix: Only generate new UUID if order ID is not already set by caller
+            if (order.getId() == null || order.getId().trim().isEmpty()) {
+                String newOrderId = UUID.randomUUID().toString();
+                order.setId(newOrderId);
+                OrderOtherServiceImpl.LOGGER.info("[create][Generated new order ID: {}]", newOrderId);
+            } else {
+                OrderOtherServiceImpl.LOGGER.info("[create][Using provided order ID: {}]", order.getId());
+            }
+
             order=orderOtherRepository.save(order);
             OrderOtherServiceImpl.LOGGER.info("[create][Order Create Success][OrderId:{},Price: {}]",order.getId(),order.getPrice());
             return new Response<>(1, success, order);
@@ -435,7 +443,15 @@ public class OrderOtherServiceImpl implements OrderOtherService {
             OrderOtherServiceImpl.LOGGER.error("[addNewOrder][Admin Add Order Fail][Order already exists][OrderId: {}]",order.getId());
             return new Response<>(0, "Order already exist", null);
         } else {
-            order.setId(UUID.randomUUID().toString());
+            // Fix: Only generate new UUID if order ID is not already set by caller
+            if (order.getId() == null || order.getId().trim().isEmpty()) {
+                String newOrderId = UUID.randomUUID().toString();
+                order.setId(newOrderId);
+                OrderOtherServiceImpl.LOGGER.info("[addNewOrder][Generated new order ID: {}]", newOrderId);
+            } else {
+                OrderOtherServiceImpl.LOGGER.info("[addNewOrder][Using provided order ID: {}]", order.getId());
+            }
+
             orderOtherRepository.save(order);
             OrderOtherServiceImpl.LOGGER.info("[addNewOrder][Admin Add Order Success][OrderId:{} , Price:{}]",order.getId(),order.getPrice());
             return new Response<>(1, success, order);
