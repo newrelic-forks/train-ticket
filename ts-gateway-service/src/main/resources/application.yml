@@ -54,7 +54,7 @@ spring:
             - Path=/api/v1/users/**
 
         - id: avatar
-          uri: lb://${AVATAR_SERVICE_HOST:ts-avatar-service}
+          uri: http://ts-avatar-service.store.svc.cluster.local:17001
           predicates:
             - Path=/api/v1/avatar/**
 
@@ -207,3 +207,8 @@ spring:
           uri: lb://${VERIFICATION_CODE_SERVICE_HOST:ts-verification-code-service}
           predicates:
             - Path=/api/v1/verifycode/**
+
+        - id: voucher
+          uri: http://ts-voucher-service.store.svc.cluster.local:16101
+          predicates:
+            - Path=/getVoucher

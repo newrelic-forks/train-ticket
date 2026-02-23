@@ -1,3 +1,4 @@
 cryptography
 tornado
 pymysql
+newrelic>=8.10.0

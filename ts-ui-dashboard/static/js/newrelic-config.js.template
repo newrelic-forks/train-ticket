@@ -1,0 +1,10 @@
+/**
+ * New Relic Browser Configuration Template
+ * This file will be processed at build/runtime to inject actual values
+ */
+
+window.NEW_RELIC_CONFIG = {
+    browserLicenseKey: "${NEW_RELIC_BROWSER_LICENSE_KEY}",
+    browserApplicationID: "${NEW_RELIC_BROWSER_APP_ID}",
+    enabled: "${NEW_RELIC_BROWSER_ENABLED}" === "true"
+};
