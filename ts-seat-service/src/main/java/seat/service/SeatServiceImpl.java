@@ -169,21 +169,36 @@ public class SeatServiceImpl implements SeatService {
 
         //Counting the seats remaining in certain sections
         List<String> stationList = seatRequest.getStations();
+
+        // Validate station list is not null or empty
+        if (stationList == null || stationList.isEmpty()) {
+            SeatServiceImpl.LOGGER.error("[getLeftTicketOfInterval][Station list is null or empty]");
+            return new Response<>(0, "Station list is invalid", null);
+        }
+
         int seatTotalNum = seatRequest.getTotalNum();
         int solidTicketSize = 0;
         if (leftTicketInfo != null) {
             String startStation = seatRequest.getStartStation();
             Set<Ticket> soldTickets = leftTicketInfo.getSoldTickets();
-            solidTicketSize = soldTickets.size();
-            //To find out if tickets already sold are available
-            for (Ticket soldTicket : soldTickets) {
-                String soldTicketDestStation = soldTicket.getDestStation();
-                //Tickets can be allocated if the sold ticket's end station before the start station of the request
-                if (stationList.indexOf(soldTicketDestStation) < stationList.indexOf(startStation)) {
-                    SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval][Ticket available or sold][The previous distributed seat number is usable][{}]", soldTicket.getSeatNo());
-                    numOfLeftTicket++;
+
+            // Add null check for soldTickets to prevent NullPointerException
+            if (soldTickets != null && !soldTickets.isEmpty()) {
+                solidTicketSize = soldTickets.size();
+                //To find out if tickets already sold are available
+                for (Ticket soldTicket : soldTickets) {
+                    String soldTicketDestStation = soldTicket.getDestStation();
+                    //Tickets can be allocated if the sold ticket's end station before the start station of the request
+                    if (stationList.indexOf(soldTicketDestStation) < stationList.indexOf(startStation)) {
+                        SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval][Ticket available or sold][The previous distributed seat number is usable][{}]", soldTicket.getSeatNo());
+                        numOfLeftTicket++;
+                    }
                 }
+            } else {
+                SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval][No sold tickets found for this train - all seats available]");
             }
+        } else {
+            SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval][No ticket info returned from order service - assuming all seats available]");
         }
         //Count the unsold tickets
 

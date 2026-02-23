@@ -96,7 +96,16 @@ public class OrderServiceImpl implements OrderService {
             OrderServiceImpl.LOGGER.error("[create][Order Create Fail][Order already exists][OrderId: {}]", order.getId());
             return new Response<>(0, "Order already exist", null);
         } else {
-            order.setId(UUID.randomUUID().toString());
+            // Fix: Only generate new UUID if order ID is not already set by caller
+            // This prevents breaking the ID chain between preserve service and payment service
+            if (order.getId() == null || order.getId().trim().isEmpty()) {
+                String newOrderId = UUID.randomUUID().toString();
+                order.setId(newOrderId);
+                OrderServiceImpl.LOGGER.info("[create][Generated new order ID: {}]", newOrderId);
+            } else {
+                OrderServiceImpl.LOGGER.info("[create][Using provided order ID: {}]", order.getId());
+            }
+
             order=orderRepository.save(order);
 
             // Add New Relic custom attributes and metrics
