@@ -175,15 +175,20 @@ class UserBehavior(TaskSet):
     def view_orders(self):
         """View user's orders"""
         if hasattr(self, 'token'):
-            self.client.post("/api/v1/orderservice/order/refresh",
-                json={
-                    "loginId": self.user_data['username'],
-                    "enableStateQuery": False,
-                    "enableTravelDateQuery": False,
-                    "enableBoughtDateQuery": False
-                },
-                headers={"Authorization": f"Bearer {self.token}"},
-                name="View Orders")
+            try:
+                self.client.post("/api/v1/orderservice/order/refresh",
+                    json={
+                        "loginId": self.user_data['username'],
+                        "enableStateQuery": False,
+                        "enableTravelDateQuery": False,
+                        "enableBoughtDateQuery": False
+                    },
+                    headers={"Authorization": f"Bearer {self.token}"},
+                    timeout=10,  # 10 second timeout to prevent long waits
+                    name="View Orders")
+            except Exception as e:
+                # Log timeout or connection errors but don't crash
+                pass
 
     @task(2)
     @tag('browse', 'config')
@@ -209,43 +214,64 @@ class UserBehavior(TaskSet):
         if not hasattr(self, 'token'):
             return
 
-        # Step 1: Search for tickets (if not already searched)
-        if not self.last_route:
-            start_station = random.choice(stations)
-            end_station = random.choice([s for s in stations if s != start_station])
-            self.last_route = {
-                "startingPlace": start_station,
-                "endPlace": end_station,
-                "departureTime": "2024-12-25"
-            }
+        # Step 1: Always search for tickets to ensure fresh data
+        start_station = random.choice(stations)
+        end_station = random.choice([s for s in stations if s != start_station])
+        self.last_route = {
+            "startingPlace": start_station,
+            "endPlace": end_station,
+            "departureTime": "2024-12-25"
+        }
 
-            search_response = self.client.post("/api/v1/travelservice/trips/left",
-                json=self.last_route,
-                name="Booking Journey: Search")
+        search_response = self.client.post("/api/v1/travelservice/trips/left",
+            json=self.last_route,
+            name="Booking Journey: Search")
 
-            if search_response.status_code == 200:
-                try:
-                    data = search_response.json()
-                    if data.get('status') == 1 and data.get('data'):
-                        trips = data.get('data', [])
-                        if trips:
-                            self.last_search_results = trips
-                            self.last_trip_id = trips[0].get('tripId')
-                except:
-                    return
+        # Parse search results to get trip ID
+        trip_id = None
+        if search_response.status_code == 200:
+            try:
+                data = search_response.json()
+                if data.get('status') == 1 and data.get('data'):
+                    trips = data.get('data', [])
+                    if trips and len(trips) > 0:
+                        self.last_search_results = trips
+                        # Handle both dict and direct access patterns
+                        first_trip = trips[0]
+                        if isinstance(first_trip, dict):
+                            trip_id = first_trip.get('tripId')
+                        else:
+                            # If trips is a list of strings or other types, log it
+                            print(f"[DEBUG] Booking Journey - Unexpected trip format: {type(first_trip)}")
 
-        if not self.last_trip_id:
+                        if trip_id:
+                            self.last_trip_id = trip_id
+                            print(f"[DEBUG] Booking Journey - Found trip_id: {trip_id}")
+                        else:
+                            print(f"[DEBUG] Booking Journey - No tripId in first trip: {first_trip}")
+                    else:
+                        print(f"[DEBUG] Booking Journey - No trips in search results")
+                else:
+                    print(f"[DEBUG] Booking Journey - Search failed: status={data.get('status')}")
+            except Exception as e:
+                print(f"[DEBUG] Booking Journey - Parse error: {e}, data type: {type(data)}")
+
+        # Exit if no valid trip found
+        if not trip_id:
+            print(f"[DEBUG] Booking Journey - No trip_id found, skipping booking journey")
             return
 
         # Step 2: Check seat availability (data correlated from search)
+        # Note: stations field is REQUIRED by seat service (validated as not null/empty)
         seat_response = self.client.post("/api/v1/seatservice/seats/left_tickets",
             json={
-                "trainNumber": self.last_trip_id,
+                "trainNumber": trip_id,
                 "startStation": self.last_route.get("startingPlace", "shanghai"),
                 "destStation": self.last_route.get("endPlace", "beijing"),
                 "travelDate": "2024-12-25 00:00:00",
                 "seatType": random.choice(seat_types),
-                "totalNum": 100
+                "totalNum": 100,
+                "stations": [self.last_route.get("startingPlace", "shanghai"), self.last_route.get("endPlace", "beijing")]
             },
             name="Booking Journey: Check Seats")
 
@@ -254,7 +280,7 @@ class UserBehavior(TaskSet):
             json={
                 "accountId": self.user_data['username'],
                 "contactsId": "contact_" + str(random.randint(1, 100)),
-                "tripId": self.last_trip_id,
+                "tripId": trip_id,
                 "seatType": random.choice(seat_types),
                 "date": "2024-12-25",
                 "from": self.last_route.get("startingPlace"),
@@ -269,14 +295,15 @@ class UserBehavior(TaskSet):
                 data = book_response.json()
                 if data.get('status') == 1 and data.get('data'):
                     order_data = data.get('data', {})
-                    order_id = order_data.get('orderId')
+                    order_id = order_data.get('orderId') or order_data.get('id')
+                    print(f"[DEBUG] Book response - orderId: {order_id}, data keys: {list(order_data.keys()) if isinstance(order_data, dict) else type(order_data)}")
 
                     if order_id:
                         # Step 4: Pay immediately (golden-paths: tight coupling)
                         pay_response = self.client.post("/api/v1/inside_pay_service/inside_payment",
                             json={
                                 "orderId": order_id,
-                                "tripId": self.last_trip_id,
+                                "tripId": trip_id,
                                 "paymentType": random.choice(["alipay", "wechat", "card"])
                             },
                             headers={"Authorization": f"Bearer {self.token}"},

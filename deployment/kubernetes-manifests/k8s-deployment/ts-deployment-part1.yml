@@ -695,11 +695,11 @@ spec:
         - containerPort: 3306
         resources:
           requests:
-            cpu: 50m
-            memory: 256Mi
+            cpu: 250m
+            memory: 384Mi
           limits:
-            cpu: 200m
-            memory: 512Mi
+            cpu: 500m
+            memory: 768Mi
         volumeMounts:
         - name: db-data
           mountPath: /var/lib/mysql
@@ -1610,11 +1610,11 @@ spec:
         - containerPort: 3306
         resources:
           requests:
-            cpu: 50m
-            memory: 256Mi
+            cpu: 250m
+            memory: 384Mi
           limits:
-            cpu: 200m
-            memory: 512Mi
+            cpu: 500m
+            memory: 768Mi
         volumeMounts:
         - name: db-data
           mountPath: /var/lib/mysql
