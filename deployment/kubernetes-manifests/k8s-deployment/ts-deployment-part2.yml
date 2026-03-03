@@ -894,6 +894,13 @@ spec:
           periodSeconds: 10
           timeoutSeconds: 5
           failureThreshold: 3
+        livenessProbe:
+          tcpSocket:
+            port: 12347
+          initialDelaySeconds: 120
+          periodSeconds: 20
+          timeoutSeconds: 5
+          failureThreshold: 3
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -1125,7 +1132,7 @@ spec:
   selector:
     matchLabels:
       app: ts-auth-service
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -1172,12 +1179,12 @@ spec:
         - containerPort: 12340
         resources:
           requests:
-            # Low enough to allow scheduling on smaller nodes
-            cpu: 200m
+            # Increased for BCrypt password hashing performance
+            cpu: 500m
             memory: 384Mi
           limits:
-            # High enough to allow the JVM to "burst" during startup
-            cpu: 750m
+            # Sufficient for BCrypt operations and JVM startup
+            cpu: 1000m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -1190,6 +1197,13 @@ spec:
             port: 12340
           initialDelaySeconds: 120
           periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        livenessProbe:
+          tcpSocket:
+            port: 12340
+          initialDelaySeconds: 120
+          periodSeconds: 20
           timeoutSeconds: 5
           failureThreshold: 3
 ---
@@ -1417,7 +1431,7 @@ spec:
   selector:
     matchLabels:
       app: ts-order-service
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -1464,12 +1478,12 @@ spec:
         - containerPort: 12031
         resources:
           requests:
-            # Low enough to allow scheduling on smaller nodes
-            cpu: 200m
+            # Increased for better order processing performance
+            cpu: 400m
             memory: 384Mi
           limits:
-            # High enough to allow the JVM to "burst" during startup
-            cpu: 750m
+            # Sufficient for order operations and JVM startup
+            cpu: 1000m
             memory: 512Mi
         startupProbe:
           tcpSocket:
@@ -1482,6 +1496,13 @@ spec:
             port: 12031
           initialDelaySeconds: 120
           periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        livenessProbe:
+          tcpSocket:
+            port: 12031
+          initialDelaySeconds: 120
+          periodSeconds: 20
           timeoutSeconds: 5
           failureThreshold: 3
 ---
@@ -2701,11 +2722,11 @@ spec:
         - containerPort: 15678
         resources:
           requests:
-            # Low enough to allow scheduling on smaller nodes
-            cpu: 200m
+            # Increased for better verification code generation performance
+            cpu: 300m
             memory: 384Mi
           limits:
-            # High enough to allow the JVM to "burst" during startup
+            # Sufficient for code generation and JVM startup
             cpu: 750m
             memory: 512Mi
         startupProbe:
@@ -3810,7 +3831,7 @@ spec:
   selector:
     matchLabels:
       app: ts-gateway-service
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -3853,8 +3874,8 @@ spec:
         - containerPort: 18888
         resources:
           requests:
-            # Low enough to allow scheduling on smaller nodes
-            cpu: 200m
+            # Increased for gateway throughput (all traffic flows through here)
+            cpu: 400m
             memory: 512Mi
           limits:
             cpu: 1000m
@@ -3878,7 +3899,7 @@ spec:
           httpGet:
             path: /actuator/health
             port: 18888
-          initialDelaySeconds: 180
+          initialDelaySeconds: 120
           periodSeconds: 20
           timeoutSeconds: 5
           failureThreshold: 3
