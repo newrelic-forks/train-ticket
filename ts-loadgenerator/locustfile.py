@@ -1,415 +1,213 @@
-#!/usr/bin/python
-#
-# Train-Ticket Load Generator
-# Simulates realistic user behavior for the Train-Ticket booking system
-#
-# Based on golden-paths HTTP loadgenerator patterns:
-# - @tag decorators for scenario filtering
-# - Weighted task distribution matching real user behavior
-# - Composite flows with data correlation
-# - Unique user generation per instance
+"""
+Train-Ticket Load Generator - Main Locust Entry Point
+
+Defines three user personas for load testing: External (60%), Logged (35%), and Admin (5%).
+Simulates realistic user behavior with weighted tasks, authentication flows, and human timing.
+"""
 
 import random
-import json
-import uuid
-from locust import HttpUser, TaskSet, between, task, tag
+import time
+from locust import FastHttpUser, TaskSet, task, between, events
+import locust.stats
 
-# Sample data for train ticket booking
-stations = [
-    'shanghai', 'beijing', 'nanjing', 'suzhou', 'taiyuan',
-    'shijiazhuang', 'zhuzhou', 'jinan', 'xuzhou', 'jiaxing'
-]
+import api_user
+import api_admin
+import utils
+import config
+import user_behaviors as ub
 
-# Sample train types
-train_types = ['G', 'D', 'K', 'T', 'Z']
+# Configure Locust to report detailed percentile metrics for tail latency analysis
+locust.stats.PERCENTILES_TO_REPORT = config.PERCENTILES_TO_REPORT
 
-# Sample seat types: 0=None, 1=Business, 2=First, 3=Second
-seat_types = [2, 3]  # Most common: First and Second class
+# Global request counter for optional auto-stop functionality
+count = 0
 
-# Sample user credentials (for testing)
-# Default user for authentication (exists in database)
-DEFAULT_USER = {'username': 'fdse_microservice', 'password': '111111'}
+# Optional CSV logging for detailed request analysis (disabled in K8s for performance)
+test_log = None
+if config.LOG_ALL_REQUESTS:
+    test_log = open('test_log.csv', 'w')
+    test_log.write(f'request_type;name;response_time;error;start_time;url\n')
 
-def generate_unique_user():
-    """Generate unique user ID per instance for realistic load testing"""
-    return {
-        'username': f"user_{uuid.uuid4().hex[:8]}",
-        'password': '111111',
-        'session_id': uuid.uuid4().hex
+# Timer for periodic log buffer flushing
+log_flush_timer = time.time()
+
+
+@events.request.add_listener
+def my_request_handler(request_type, name, response_time, response_length, response,
+                       context, exception, start_time, url, **kwargs):
+    """Global request event handler for optional CSV logging and auto-stop functionality."""
+    global log_flush_timer
+
+    # Optional CSV logging for detailed request analysis
+    if config.LOG_ALL_REQUESTS:
+        test_log.write(f'{request_type};{name};{response_time};{1 if exception else 0};{start_time};{url}\n')
+        t = time.time()
+        # Periodically flush log buffer to prevent data loss
+        if t - log_flush_timer > config.LOG_FLUSH_INTERVAL:
+            log_flush_timer = t
+            test_log.flush()
+
+    # Optional auto-stop functionality for batch testing
+    if config.STOP_ON_REQUEST_COUNT:
+        global count
+        count += 1
+        if count > config.REQUEST_NUMBER_TO_STOP:
+            if test_log:
+                test_log.flush()
+            exit(0)
+
+
+def choice_train_type() -> bool:
+    """Select train type using weighted distribution: 80% high-speed, 20% regular trains."""
+    return random.choices([True, False], weights=[config.HS_PERCENTAGE, config.OTHER_PERCENTAGE], k=1)[0]
+
+
+# ============================================================================
+# EXTERNAL USER (Anonymous browsing - 60%)
+# ============================================================================
+
+class ExternalBehavior(TaskSet):
+    """Anonymous user behavior patterns for browsing, searching, and exploring without authentication."""
+
+    def on_start(self):
+        """Initialize anonymous user session with homepage visit."""
+        ub.browse_home(self)
+
+    # Weighted task distribution for anonymous user behaviors
+    tasks = {
+        ub.search_roundtrip: 10,          # 29% - Primary search activity
+        ub.search_oneway: 10,             # 29% - Primary search activity
+        ub.browse_infrastructure: 5,       # 14% - System exploration (stations, routes)
+        ub.browse_basic_info: 3,          # 9%  - Information gathering
+        ub.get_travel_plan: 3,            # 9%  - Trip planning functionality
+        ub.browse_home: 2,                # 6%  - Return to homepage
+        ub.view_login_page: 2,            # 6%  - Login consideration (conversion funnel)
+        ub.register_with_verification: 1   # 3%  - Account creation (conversion)
     }
 
 
-class UserBehavior(TaskSet):
+class External(FastHttpUser):
+    """Anonymous user class (60% of traffic) for browsing and search without authentication."""
+    wait_time = between(config.TT_USER_MIN, config.TT_USER_MAX)
+    network_timeout = config.NETWORK_TIMEOUT
+    connection_timeout = config.CONNECTION_TIMEOUT
+    weight = config.EXTERNAL_PERCENTAGE
+    tasks = [ExternalBehavior]
 
     def on_start(self):
-        """Called when a simulated user starts"""
-        # Generate unique session data per user instance (golden-paths pattern)
-        self.user_data = DEFAULT_USER  # Use default user for now (valid credentials)
-        self.session_id = uuid.uuid4().hex
+        """Initialize user with train type preference (high-speed or regular)."""
+        self.hs = choice_train_type()
 
-        # Initialize order tracking for payment/cancellation flow
-        self.pending_order_id = None
-        self.completed_order_id = None
-        self.last_trip_id = None
-        self.last_route = None
-        self.last_search_results = []
 
-        # Always login to ensure authenticated endpoints can be tested
-        self.login()
+# ============================================================================
+# LOGGED USER (Authenticated booking - 35%)
+# ============================================================================
 
-    def login(self):
-        """Login to the system"""
-        response = self.client.post("/api/v1/users/login",
-            json={
-                "username": self.user_data['username'],
-                "password": self.user_data['password'],
-                "verificationCode": "1234"
-            },
-            name="Login")
+class LoggedBehavior(TaskSet):
+    """Authenticated user behavior patterns for booking, order management, and business operations."""
 
-        # Store token if login successful
-        if response.status_code == 200:
-            try:
-                result = response.json()
-                if result.get('status') == 1 and result.get('data'):
-                    data = result.get('data', {})
-                    if 'token' in data:
-                        self.token = data['token']
-                        print(f"[DEBUG] Token acquired successfully: {self.token[:30]}...")
-                    else:
-                        print(f"[DEBUG] Login success but no token in response: {str(result)[:200]}")
-                else:
-                    print(f"[DEBUG] Login response status != 1: {result}")
-            except Exception as e:
-                print(f"[DEBUG] Login parse error: {e}, response: {response.text[:200]}")
-        else:
-            print(f"[DEBUG] Login failed with HTTP {response.status_code}")
+    def on_start(self):
+        """Initialization - authentication handled by parent Logged user class."""
+        pass
 
-    # ========================================================================
-    # BROWSE PHASE: 60% of user behavior (golden-paths pattern)
-    # ========================================================================
+    # Weighted task distribution prioritizing business-critical operations
+    tasks = {
+        ub.book_ticket_complete_flow: 15,    # 27% - Core revenue-generating activity
+        ub.search_trips: 10,                 # 18% - Authenticated trip search
+        ub.browse_infrastructure: 8,         # 14% - System exploration with user context
+        ub.manage_orders: 5,                 # 9%  - Order lifecycle management
+        ub.browse_basic_info: 3,             # 5%  - Information viewing
+        ub.collect_and_execute_ticket: 3,    # 5%  - Ticket fulfillment workflow
+        ub.manage_consignment: 3,            # 5%  - Baggage and shipping services
+        ub.manage_user_profile: 2,           # 4%  - Account management
+        ub.rebook_ticket: 2,                 # 4%  - Change management
+        ub.get_travel_plan: 2,               # 4%  - Trip planning with user context
+        ub.get_voucher_for_order: 2,         # 4%  - Promotional features
+        ub.upload_user_avatar: 1             # 2%  - Profile customization
+    }
 
-    @task(30)
-    @tag('browse', 'critical', 'search')
-    def search_tickets(self):
-        """Search for train tickets - most common action"""
-        start_station = random.choice(stations)
-        end_station = random.choice([s for s in stations if s != start_station])
 
-        # Store route for seat availability check
-        self.last_route = {
-            "startingPlace": start_station,
-            "endPlace": end_station,
-            "departureTime": "2024-12-25"
+class Logged(FastHttpUser):
+    """Authenticated user class (35% of traffic) performing booking and order management."""
+    wait_time = between(config.TT_USER_MIN, config.TT_USER_MAX)
+    network_timeout = config.NETWORK_TIMEOUT
+    connection_timeout = config.CONNECTION_TIMEOUT
+    weight = config.LOGGED_PERCENTAGE
+    tasks = [LoggedBehavior]
+
+    def on_start(self):
+        """Authenticate user, establish session with Bearer token, and initialize preferences."""
+        self.hs = choice_train_type()
+        # Authenticate with default test user credentials
+        self.user_id, token = api_user.login(self.client)
+        # Set up authenticated session headers
+        self.headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+            "Accept": "application/json"
         }
+        # Simulate brief system processing delay
+        utils.sleep_automatic()
+        # Load authenticated homepage
+        api_user.home(self.client)
+        # Simulate user reading homepage content
+        utils.sleep_user()
 
-        # Query trips between stations
-        response = self.client.post("/api/v1/travelservice/trips/left",
-            json=self.last_route,
-            name="Search Tickets")
 
-        # Store trip ID and search results for data correlation (golden-paths pattern)
-        if response.status_code == 200:
-            try:
-                data = response.json()
-                if data.get('status') == 1 and data.get('data'):
-                    trips = data.get('data', [])
-                    if trips:
-                        self.last_search_results = trips
-                        self.last_trip_id = trips[0].get('tripId')
-            except:
-                pass
+# ============================================================================
+# ADMIN USER (System administration - 5%)
+# ============================================================================
 
-    @task(15)
-    @tag('browse', 'search')
-    def query_high_speed_tickets(self):
-        """Query high-speed train tickets (G/D trains)"""
-        start_station = random.choice(stations)
-        end_station = random.choice([s for s in stations if s != start_station])
+class AdminBehavior(TaskSet):
+    """Administrative behavior patterns for system management and data administration."""
 
-        self.client.post("/api/v1/travel2service/trips/left",
-            json={
-                "startingPlace": start_station,
-                "endPlace": end_station,
-                "departureTime": "2024-12-25",
-                "trainType": "G"
-            },
-            name="Query High-Speed Tickets")
+    def on_start(self):
+        """Initialization - authentication and data retrieval handled by parent Admin class."""
+        pass
 
-    @task(5)
-    @tag('browse', 'details')
-    def check_station_info(self):
-        """Check if station exists"""
-        station = random.choice(stations)
-        self.client.get(f"/api/v1/stationservice/stations/id/{station}",
-            name="Check Station")
+    # Weighted task distribution for administrative operations
+    tasks = {
+        ub.admin_manage_travels: 10,         # 19% - Route and travel management
+        ub.admin_manage_orders: 10,          # 19% - Order administration
+        ub.admin_manage_pricing: 8,          # 15% - Revenue management
+        ub.admin_manage_contacts: 8,         # 15% - Customer data management
+        ub.admin_browse_infrastructure: 7,   # 13% - System monitoring and exploration
+        ub.admin_manage_system_users: 6,     # 12% - System user administration
+        ub.admin_manage_users: 5,            # 10% - Customer account management
+        ub.admin_delete_travels: 2,          # 4%  - Travel route cleanup (destructive)
+        ub.admin_delete_orders: 2            # 4%  - Order cleanup (destructive, ID >= 2000)
+    }
 
-    @task(5)
-    @tag('browse', 'details')
-    def query_train_info(self):
-        """Query train information - use correlated trip from search"""
-        # Data correlation: query train from last search results (golden-paths pattern)
-        if self.last_trip_id:
-            train_id = self.last_trip_id
-        else:
-            train_id = f"{random.choice(train_types)}{random.randint(1000, 9999)}"
 
-        self.client.get(f"/api/v1/trainservice/trains/{train_id}",
-            name="Query Train Info")
+class Admin(FastHttpUser):
+    """Administrative user class (5% of traffic) for system management and maintenance operations."""
+    wait_time = between(config.TT_USER_MIN, config.TT_USER_MAX)
+    network_timeout = config.NETWORK_TIMEOUT
+    connection_timeout = config.CONNECTION_TIMEOUT
+    weight = config.ADMIN_PERCENTAGE
+    tasks = [AdminBehavior]
 
-    # ========================================================================
-    # ACCOUNT MANAGEMENT: 15% of user behavior
-    # ========================================================================
+    def on_start(self):
+        """Authenticate admin user, establish session, and preload administrative data."""
+        # Load admin interface homepage
+        api_admin.home(self.client)
+        utils.sleep_user()
 
-    @task(7)
-    @tag('account', 'view')
-    def view_contacts(self):
-        """View saved contacts"""
-        if hasattr(self, 'token'):
-            self.client.get("/api/v1/contactservice/contacts",
-                headers={"Authorization": f"Bearer {self.token}"},
-                name="View Contacts")
+        # Authenticate with admin credentials
+        self.user_id, token = api_admin.login(self.client)
 
-    @task(8)
-    @tag('account', 'view', 'critical')
-    def view_orders(self):
-        """View user's orders"""
-        if hasattr(self, 'token'):
-            try:
-                self.client.post("/api/v1/orderservice/order/refresh",
-                    json={
-                        "loginId": self.user_data['username'],
-                        "enableStateQuery": False,
-                        "enableTravelDateQuery": False,
-                        "enableBoughtDateQuery": False
-                    },
-                    headers={"Authorization": f"Bearer {self.token}"},
-                    timeout=10,  # 10 second timeout to prevent long waits
-                    name="View Orders")
-            except Exception as e:
-                # Log timeout or connection errors but don't crash
-                pass
-
-    @task(2)
-    @tag('browse', 'config')
-    def check_route_info(self):
-        """Check route information"""
-        self.client.post("/api/v1/configservice/configs",
-            json={"name": "DirectTicketAllocationProportion"},
-            name="Check Config")
-
-    # ========================================================================
-    # BOOKING FUNNEL: 25% of user behavior (golden-paths: 20% conversion)
-    # Composite flow with data correlation
-    # ========================================================================
-
-    @task(12)
-    @tag('booking', 'critical', 'journey')
-    def complete_booking_journey(self):
-        """
-        COMPOSITE FLOW: Complete booking journey (golden-paths pattern)
-        Search → Check Seat → Book → Pay
-        Realistic 20% conversion rate with data correlation
-        """
-        if not hasattr(self, 'token'):
-            return
-
-        # Step 1: Always search for tickets to ensure fresh data
-        start_station = random.choice(stations)
-        end_station = random.choice([s for s in stations if s != start_station])
-        self.last_route = {
-            "startingPlace": start_station,
-            "endPlace": end_station,
-            "departureTime": "2024-12-25"
+        # Set up admin session headers
+        self.headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+            "Accept": "application/json"
         }
+        utils.sleep_automatic()
 
-        search_response = self.client.post("/api/v1/travelservice/trips/left",
-            json=self.last_route,
-            name="Booking Journey: Search")
+        # Load authenticated admin homepage
+        api_admin.home(self.client, headers=self.headers)
+        utils.sleep_automatic()
 
-        # Parse search results to get trip ID
-        trip_id = None
-        if search_response.status_code == 200:
-            try:
-                data = search_response.json()
-                if data.get('status') == 1 and data.get('data'):
-                    trips = data.get('data', [])
-                    if trips and len(trips) > 0:
-                        self.last_search_results = trips
-                        # Handle both dict and direct access patterns
-                        first_trip = trips[0]
-                        if isinstance(first_trip, dict):
-                            trip_id = first_trip.get('tripId')
-                        else:
-                            # If trips is a list of strings or other types, log it
-                            print(f"[DEBUG] Booking Journey - Unexpected trip format: {type(first_trip)}")
-
-                        if trip_id:
-                            self.last_trip_id = trip_id
-                            print(f"[DEBUG] Booking Journey - Found trip_id: {trip_id}")
-                        else:
-                            print(f"[DEBUG] Booking Journey - No tripId in first trip: {first_trip}")
-                    else:
-                        print(f"[DEBUG] Booking Journey - No trips in search results")
-                else:
-                    print(f"[DEBUG] Booking Journey - Search failed: status={data.get('status')}")
-            except Exception as e:
-                print(f"[DEBUG] Booking Journey - Parse error: {e}, data type: {type(data)}")
-
-        # Exit if no valid trip found
-        if not trip_id:
-            print(f"[DEBUG] Booking Journey - No trip_id found, skipping booking journey")
-            return
-
-        # Step 2: Check seat availability (data correlated from search)
-        # Note: stations field is REQUIRED by seat service (validated as not null/empty)
-        seat_response = self.client.post("/api/v1/seatservice/seats/left_tickets",
-            json={
-                "trainNumber": trip_id,
-                "startStation": self.last_route.get("startingPlace", "shanghai"),
-                "destStation": self.last_route.get("endPlace", "beijing"),
-                "travelDate": "2024-12-25 00:00:00",
-                "seatType": random.choice(seat_types),
-                "totalNum": 100,
-                "stations": [self.last_route.get("startingPlace", "shanghai"), self.last_route.get("endPlace", "beijing")]
-            },
-            name="Booking Journey: Check Seats")
-
-        # Step 3: Book ticket
-        book_response = self.client.post("/api/v1/preserveservice/preserve",
-            json={
-                "accountId": self.user_data['username'],
-                "contactsId": "contact_" + str(random.randint(1, 100)),
-                "tripId": trip_id,
-                "seatType": random.choice(seat_types),
-                "date": "2024-12-25",
-                "from": self.last_route.get("startingPlace"),
-                "to": self.last_route.get("endPlace")
-            },
-            headers={"Authorization": f"Bearer {self.token}"},
-            name="Booking Journey: Book")
-
-        # Store order ID for payment
-        if book_response.status_code == 200:
-            try:
-                data = book_response.json()
-                if data.get('status') == 1 and data.get('data'):
-                    order_data = data.get('data', {})
-                    order_id = order_data.get('orderId') or order_data.get('id')
-                    print(f"[DEBUG] Book response - orderId: {order_id}, data keys: {list(order_data.keys()) if isinstance(order_data, dict) else type(order_data)}")
-
-                    if order_id:
-                        # Step 4: Pay immediately (golden-paths: tight coupling)
-                        pay_response = self.client.post("/api/v1/inside_pay_service/inside_payment",
-                            json={
-                                "orderId": order_id,
-                                "tripId": trip_id,
-                                "paymentType": random.choice(["alipay", "wechat", "card"])
-                            },
-                            headers={"Authorization": f"Bearer {self.token}"},
-                            name="Booking Journey: Pay")
-
-                        if pay_response.status_code == 200:
-                            try:
-                                pay_data = pay_response.json()
-                                if pay_data.get('status') == 1:
-                                    self.completed_order_id = order_id
-                            except:
-                                pass
-            except:
-                pass
-
-    @task(2)
-    @tag('booking', 'check')
-    def check_seat_availability_standalone(self):
-        """Standalone seat check (not part of booking journey)"""
-        if self.last_trip_id and self.last_route:
-            self.client.post("/api/v1/seatservice/seats/left_tickets",
-                json={
-                    "trainNumber": self.last_trip_id,
-                    "startStation": self.last_route.get("startingPlace", "shanghai"),
-                    "destStation": self.last_route.get("endPlace", "beijing"),
-                    "travelDate": "2024-12-25 00:00:00",
-                    "seatType": random.choice(seat_types),
-                    "totalNum": 100
-                },
-                name="Check Seat Availability")
-
-    @task(1)
-    @tag('booking', 'security')
-    def security_check(self):
-        """Security check for ID verification"""
-        if hasattr(self, 'token'):
-            self.client.post("/api/v1/securityservice/securityConfigs",
-                json={
-                    "accountId": self.user_data['username'],
-                    "checkDate": "2024-12-25"
-                },
-                headers={"Authorization": f"Bearer {self.token}"},
-                name="Security Check")
-
-    @task(3)
-    @tag('account', 'cancel', 'critical')
-    def cancel_order(self):
-        """Cancel completed order with refund"""
-        if hasattr(self, 'token') and self.completed_order_id:
-            response = self.client.get(
-                f"/api/v1/cancelservice/cancel/{self.completed_order_id}/{self.user_data['username']}",
-                headers={"Authorization": f"Bearer {self.token}"},
-                name="Cancel Order")
-
-            # Clear completed order after cancellation
-            if response.status_code == 200:
-                try:
-                    data = response.json()
-                    if data.get('status') == 1:
-                        self.completed_order_id = None
-                except:
-                    pass
-
-
-class TrainTicketUser(HttpUser):
-    """
-    Simulates realistic user behavior on Train-Ticket booking system
-
-    Golden-Paths Pattern Implementation:
-    =====================================
-    - 60% Browse behavior (search, query, check details)
-    - 20% Booking conversion (complete journey: search → seat → book → pay)
-    - 15% Account management (view orders, contacts)
-    - 5% Other (config checks, cancellations)
-
-    Key Features:
-    - @tag decorators for scenario filtering (--tags browse, --tags booking)
-    - Data correlation: search results used in booking
-    - Composite flows: complete_booking_journey follows realistic path
-    - Unique session IDs per user instance
-    - Think time: 1-10 seconds between actions
-
-    Task Weight Distribution (Total: 100):
-    - search_tickets (30): Primary browse behavior
-    - query_high_speed_tickets (15): High-speed train queries
-    - complete_booking_journey (12): COMPOSITE FLOW with 20% conversion
-    - view_orders (8): Check booking history
-    - view_contacts (7): Manage saved contacts
-    - check_station_info, query_train_info (5 each): Detail checks
-    - cancel_order (3): Post-purchase actions
-    - check_seat_availability (2): Standalone seat check
-    - security_check, check_route_info (1-2): Supporting endpoints
-
-    Usage Examples:
-    ---------------
-    # Run all scenarios
-    locust -f locustfile.py --host=http://gateway:18888
-
-    # Run only browse scenarios
-    locust -f locustfile.py --host=http://gateway:18888 --tags browse
-
-    # Run critical paths only
-    locust -f locustfile.py --host=http://gateway:18888 --tags critical
-
-    # Run complete booking journey
-    locust -f locustfile.py --host=http://gateway:18888 --tags journey
-    """
-    tasks = [UserBehavior]
-    wait_time = between(1, 10)  # Realistic think time between actions
+        # Preload administrative data for efficient operations
+        self.orders = api_admin.get_all_orders(self.client, self.headers)
+        utils.sleep_user()

@@ -1,8 +1,9 @@
 # Train-Ticket Load Generator Dockerfile
-# Based on Python 3.11 with Locust framework
+# Based on Python 3.10 with Locust framework
 # Compatible with Ubuntu EC2 (AMD64/x86_64)
+# Note: Using Python 3.10 for pandas/numpy compatibility
 
-FROM python:3.11.1-slim AS base
+FROM python:3.10-slim AS base
 
 FROM base AS builder
 
@@ -18,8 +19,9 @@ WORKDIR /loadgen
 # Copy installed dependencies from builder stage
 COPY --from=builder /install /usr/local
 
-# Add application code
-COPY locustfile.py .
+# Add application code (all Python files for modular structure)
+COPY *.py .
+COPY test_avatar.b64 .
 
 # Enable gevent support in debugger
 ENV GEVENT_SUPPORT=True
