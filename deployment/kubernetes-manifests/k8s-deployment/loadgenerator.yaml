@@ -26,13 +26,13 @@ spec:
         - /bin/sh
         - -c
         - |
-          echo "Init container checking API Gateway: ${FRONTEND_ADDR}..."
-          # Check gateway connectivity - accept 404 since root path has no handler
-          if wget --spider --timeout=10 http://${FRONTEND_ADDR} 2>&1 | grep -qE "(HTTP|connected)"; then
-              echo "API Gateway is reachable!"
+          echo "Init container checking Frontend service: ${FRONTEND_ADDR}..."
+          # Check gateway connectivity using busybox wget
+          if wget --spider --timeout=10 http://${FRONTEND_ADDR} 2>&1 | grep -qE "(Connecting|remote file exists)"; then
+              echo "Frontend service is reachable!"
               exit 0
           else
-              echo "Error: Could not reach API Gateway"
+              echo "Error: Could not reach Frontend service"
               exit 1
           fi
         name: frontend-check
@@ -46,7 +46,7 @@ spec:
         image: busybox:latest
         env:
         - name: FRONTEND_ADDR
-          value: "ts-gateway-service:18888"
+          value: "ts-ui-dashboard:8080"
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -55,7 +55,7 @@ spec:
                   - key: role
                     operator: In
                     values:
-                      - node4
+                      - node8
       containers:
       - name: ts-loadgenerator
         securityContext:
@@ -65,23 +65,24 @@ spec:
               - all
           privileged: false
           readOnlyRootFilesystem: true
-        image: newrelic/train-ticket:ts-loadgenerator-0.0.9
+        image: newrelic/train-ticket:ts-loadgenerator-0.1.0
+        imagePullPolicy: Always
         env:
         - name: FRONTEND_ADDR
-          value: "ts-gateway-service:18888"
+          value: "ts-ui-dashboard:8080"
         - name: USERS
-          value: "5"
+          value: "10"
         - name: SPAWN_RATE
-          value: "1"
+          value: "2"
         - name: RUN_TIME
-          value: "1h"
+          value: ""
         resources:
           requests:
-            cpu: 300m
-            memory: 256Mi
+            cpu: 3000m
+            memory: 10Gi
           limits:
-            cpu: 500m
-            memory: 512Mi
+            cpu: 3500m
+            memory: 12Gi
 ---
 apiVersion: v1
 kind: Service

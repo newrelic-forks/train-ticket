@@ -42,9 +42,10 @@ jinja2==3.1.2
 locust==2.14.2
     # via -r requirements.in
 markupsafe==2.1.2
-    # via
-    #   jinja2
-    #   werkzeug
+numpy==1.23.5
+    # via pandas (required dependency)
+pandas==1.5.3
+    # via TrainTicket-Workload (needed for api_admin.py)
 msgpack==1.0.4
     # via locust
 psutil==5.9.4
