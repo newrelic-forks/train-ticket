@@ -46,7 +46,7 @@ spec:
         image: busybox:latest
         env:
         - name: FRONTEND_ADDR
-          value: "ts-ui-dashboard:8080"
+          value: "ts-gateway-service:18888"
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -69,7 +69,7 @@ spec:
         imagePullPolicy: Always
         env:
         - name: FRONTEND_ADDR
-          value: "ts-ui-dashboard:8080"
+          value: "ts-gateway-service:18888"
         - name: USERS
           value: "10"
         - name: SPAWN_RATE
