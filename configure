@@ -172,6 +172,10 @@ if not os.path.exists(f"{base_dir}/status_nr_k8s_done"):
         print("Please investigate the issue and re-run this process")
         sys.exit(1)
 
+# Create chaos-mesh namespace early (needed for ingress references)
+print("\nCreating chaos-mesh namespace")
+os.system("microk8s.kubectl create namespace chaos-mesh --dry-run=client -o yaml | microk8s.kubectl apply -f -")
+
 # Deploy microservices to Kubernetes
 if not os.path.exists(f"{base_dir}/status_microservices_deployed"):
     print("\nDeploying Train-Ticket microservices to Kubernetes cluster")
@@ -188,6 +192,50 @@ if not os.path.exists(f"{base_dir}/status_microservices_deployed"):
         print("Deployment of microservices failed")
         print("Please investigate the issue and re-run this process")
         os.chdir(base_dir)
+        sys.exit(1)
+
+# Install Chaos-Mesh (Golden-Paths style - simple and working!)
+if not os.path.exists(f"{base_dir}/status_chaos_mesh_done"):
+    print("\nInstalling Chaos-Mesh for chaos engineering")
+    result = os.system(
+        f"microk8s.helm repo add chaos-mesh https://charts.chaos-mesh.org && "
+        f"microk8s.helm repo update && "
+        f"microk8s.helm install chaos-mesh chaos-mesh/chaos-mesh -n=chaos-mesh "
+        f"--set chaosDaemon.runtime=containerd "
+        f"--set chaosDaemon.socketPath=/var/snap/microk8s/common/run/containerd.sock "
+        f"--set dashboard.securityMode=false "
+        f"--version 2.7.2 && "
+        f"microk8s.kubectl get pods -n chaos-mesh -l app.kubernetes.io/instance=chaos-mesh"
+    )
+    if result == 0:
+        print("Chaos-Mesh installation successful")
+
+        # Apply consolidated ingress configuration (includes both train-ticket and chaos-mesh)
+        print("Configuring Chaos-Mesh dashboard path routing")
+        k8s_dir = f"{base_dir}/deployment/kubernetes-manifests/k8s-deployment"
+        ingress_file = f"{k8s_dir}/ingress.yaml"
+        print(f"Applying consolidated ingress from: {ingress_file}")
+        result = os.system(f"microk8s.kubectl apply -f {ingress_file}")
+        if result == 0:
+            print("Chaos-Mesh dashboard path routing successful")
+            print("Dashboard accessible at: http://<public-ip>/chaos-mesh/#/dashboard")
+
+            # Apply RBAC configuration
+            rbac_file = f"{k8s_dir}/chaos-mesh-rbac.yaml"
+            print(f"Applying RBAC from: {rbac_file}")
+            result = os.system(f"microk8s.kubectl apply -f {rbac_file}")
+            if result == 0:
+                print("Chaos-Mesh RBAC configuration successful")
+                open(f"{base_dir}/status_chaos_mesh_done", "w").close()
+            else:
+                print("Chaos-Mesh RBAC configuration failed")
+                sys.exit(1)
+        else:
+            print("Chaos-Mesh dashboard configuration failed")
+            sys.exit(1)
+    else:
+        print("Chaos-Mesh installation failed")
+        print("Please investigate the issue and re-run this process")
         sys.exit(1)
 
 # Wait for ts-ui-dashboard microservice to be ready
@@ -220,8 +268,11 @@ else:
 open(f"{base_dir}/setupcomplete", "w").close()
 
 print(f"\n{bold}New Relic setup for Train-Ticket completed successfully...{unbold}")
+print(f"\n{bold}Chaos-Mesh installation completed successfully...{unbold}")
 print(f"\n{bold}Access your Train-Ticket application at: http://<public-ip>/{unbold}")
+print(f"\n{bold}Access Chaos-Mesh dashboard at: http://<ec2-public-ip>/chaos-mesh/#/dashboard (Golden-Paths style!){unbold}")
 print(f"\n{bold}Check your New Relic account for Train-Ticket monitoring data{unbold}")
+print(f"\n{bold}Use Chaos-Mesh to perform chaos engineering experiments on your microservices{unbold}")
 
 # Back to base dir
 os.chdir(base_dir)

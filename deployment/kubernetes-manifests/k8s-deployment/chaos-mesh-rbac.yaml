@@ -1,0 +1,34 @@
+# Service account for potential future chaos experiment management
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: chaos-viewer
+  namespace: store
+---
+# Read-only role for viewing chaos experiments
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: store
+  name: chaos-viewer
+rules:
+- apiGroups: ["chaos-mesh.org"]
+  resources: ["*"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["pods", "services", "endpoints"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: chaos-viewer
+  namespace: store
+subjects:
+- kind: ServiceAccount
+  name: chaos-viewer
+  namespace: store
+roleRef:
+  kind: Role
+  name: chaos-viewer
+  apiGroup: rbac.authorization.k8s.io
