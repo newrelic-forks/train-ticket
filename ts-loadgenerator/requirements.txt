@@ -6,7 +6,7 @@
 #
 brotli==1.0.9
     # via geventhttpclient
-certifi==2022.12.7
+certifi==2026.2.25
     # via
     #   geventhttpclient
     #   requests
@@ -42,17 +42,16 @@ jinja2==3.1.2
 locust==2.14.2
     # via -r requirements.in
 markupsafe==2.1.2
-numpy==1.23.5
-    # via pandas (required dependency)
-pandas==1.5.3
-    # via TrainTicket-Workload (needed for api_admin.py)
+    # via
+    #   jinja2
+    #   werkzeug
 msgpack==1.0.4
     # via locust
 psutil==5.9.4
     # via locust
 pyzmq==24.0.1
     # via locust
-requests==2.28.2
+requests==2.33.0
     # via locust
 roundrobin==0.0.4
     # via locust
